@@ -2,14 +2,15 @@
 #define PHOENIX_GAME_H_
 
 #include <memory>
-#include "PEngine.h"
 
 namespace phoenix
 {
+	class PEngine;
+
 	class PGame
 	{
 	public:
-		PGame() = default;
+		PGame();
 
 		PGame(const PGame& RHS) = delete;
 		PGame& operator = (const PGame& RHS) = delete;
@@ -17,7 +18,7 @@ namespace phoenix
 		PGame(PGame&& RHS) = default;
 		PGame& operator = (PGame&& RHS) = default;
 
-		virtual ~PGame() = default;
+		virtual ~PGame();
 
 		void StartGame();
 

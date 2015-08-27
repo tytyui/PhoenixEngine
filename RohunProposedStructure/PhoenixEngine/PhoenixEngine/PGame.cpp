@@ -1,7 +1,12 @@
 #include "PGame.h"
 #include <iostream>
+#include "PEngine.h"
 
 using namespace phoenix;
+
+PGame::PGame() = default;
+
+PGame::~PGame() = default;
 
 void PGame::StartGame()
 {
