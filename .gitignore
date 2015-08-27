@@ -6,7 +6,6 @@ RohunProposedStructure/PhoenixEngine/TestGame/Debug
 RohunProposedStructure/PhoenixEngine/TestGame/Release
 
 #VS stuff
-*.suo
 *.user
 
 # Compiled Object files
