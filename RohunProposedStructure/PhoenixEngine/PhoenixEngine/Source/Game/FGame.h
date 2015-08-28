@@ -1,8 +1,7 @@
 #ifndef PHOENIX_GAME_H
 #define PHOENIX_GAME_H
 
-//#include <memory>
-#include "FMemory.h"
+#include "Utility/FMemory.h"
 
 namespace Phoenix
 {

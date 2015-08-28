@@ -69,11 +69,11 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SolutionDir)\PhoenixEngine;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\PhoenixEngine\Source;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(SolutionDir)\PhoenixEngine;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\PhoenixEngine\Source;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)\Release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

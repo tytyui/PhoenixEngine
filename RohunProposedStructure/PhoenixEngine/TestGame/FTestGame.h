@@ -1,7 +1,7 @@
 #ifndef GAME_TEST_GAME_H
 #define GAME_TEST_GAME_H
 
-#include "FGame.h"
+#include "Game/FGame.h"
 
 class FTestGame : public Phoenix::FGame
 {
