@@ -1,9 +1,9 @@
-RohunProposedStructure/PhoenixEngine/Debug
-RohunProposedStructure/PhoenixEngine/Release
-RohunProposedStructure/PhoenixEngine/PhoenixEngine/Debug
-RohunProposedStructure/PhoenixEngine/PhoenixEngine/Release
-RohunProposedStructure/PhoenixEngine/TestGame/Debug
-RohunProposedStructure/PhoenixEngine/TestGame/Release
+Solution/Debug
+Solution/Release
+Solution/PhoenixEngine/Debug
+Solution/PhoenixEngine/Release
+Solution/TestGame/Debug
+Solution/TestGame/Release
 
 #VS stuff
 *.user
