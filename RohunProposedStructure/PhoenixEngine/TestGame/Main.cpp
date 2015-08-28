@@ -2,13 +2,13 @@
 
 #include <memory>
 #include <iostream>
-#include "PTestGame.h"
+#include "FTestGame.h"
 
 int main()
 {
-	using namespace phoenix;
+	using namespace Phoenix;
 
-	auto game = std::make_unique<PTestGame>();
+	auto game = std::make_unique<FTestGame>();
 	game->StartGame();
 
 	getchar();

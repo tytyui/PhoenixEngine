@@ -19,12 +19,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="PGame.h" />
-    <ClInclude Include="PEngine.h" />
+    <ClInclude Include="FFunction.h" />
+    <ClInclude Include="FGame.h" />
+    <ClInclude Include="FEngine.h" />
+    <ClInclude Include="FMemory.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="PEngine.cpp" />
-    <ClCompile Include="PGame.cpp" />
+    <ClCompile Include="FEngine.cpp" />
+    <ClCompile Include="FGame.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{892931AD-CBC9-4912-9EC6-54019C6502F4}</ProjectGuid>

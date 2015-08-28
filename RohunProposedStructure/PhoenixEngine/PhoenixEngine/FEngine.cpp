@@ -1,15 +1,15 @@
-#include "PEngine.h"
+#include "FEngine.h"
 #include <iostream>
 
-using namespace phoenix;
+using namespace Phoenix;
 
-void PEngine::Initialize(const UpdateCallback& OnUpdateCallback)
+void FEngine::Initialize(const UpdateCallback& OnUpdateCallback)
 {
 	std::cout << "Engine::Initialize\n";
 	this->OnUpdateCallback = OnUpdateCallback;
 }
 
-void PEngine::Run()
+void FEngine::Run()
 {
 	std::cout << "\nEngine::Run\n";
 
@@ -21,7 +21,7 @@ void PEngine::Run()
 	}
 }
 
-void PEngine::Update(float DT)
+void FEngine::Update(float DT)
 {
 	std::cout << "\nEngine::Update\n";
 	//Goes to PGame::InternalUpdate

@@ -1,9 +1,9 @@
-#include "PTestGame.h"
+#include "FTestGame.h"
 #include <iostream>
 
-using namespace phoenix;
+using namespace Phoenix;
 
-void PTestGame::Update(float dt)
+void FTestGame::Update(float dt)
 {
 	//Don't need to call BaseGame::Update because of NVI
 
