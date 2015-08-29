@@ -39,3 +39,6 @@ Solution/TestGame/Release
 *.exe
 *.out
 *.app
+
+# Misc Files
+Log.txt

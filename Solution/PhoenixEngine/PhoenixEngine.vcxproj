@@ -21,17 +21,23 @@
   <ItemGroup>
     <ClCompile Include="Source\Core\Engine.cpp" />
     <ClCompile Include="Source\Game\Game.cpp" />
+    <ClCompile Include="Source\Utility\Endian.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Core\Engine.h" />
     <ClInclude Include="Source\Game\Game.h" />
     <ClInclude Include="Source\Utility\Algorithm.h" />
     <ClInclude Include="Source\Utility\Array.h" />
+    <ClInclude Include="Source\Utility\Assert.h" />
     <ClInclude Include="Source\Utility\Atomic.h" />
     <ClInclude Include="Source\Utility\BitArray.h" />
     <ClInclude Include="Source\Utility\BitVector.h" />
     <ClInclude Include="Source\Utility\ConsoleColor.h" />
+    <ClInclude Include="Source\Utility\Debug.h" />
+    <ClInclude Include="Source\Utility\Endian.h" />
+    <ClInclude Include="Source\Utility\FileStream.h" />
     <ClInclude Include="Source\Utility\Function.h" />
+    <ClInclude Include="Source\Utility\Log.h" />
     <ClInclude Include="Source\Utility\Map.h" />
     <ClInclude Include="Source\Utility\Memory.h" />
     <ClInclude Include="Source\Utility\Mutex.h" />
@@ -39,6 +45,7 @@
     <ClInclude Include="Source\Utility\Primitives.h" />
     <ClInclude Include="Source\Utility\Queue.h" />
     <ClInclude Include="Source\Utility\Set.h" />
+    <ClInclude Include="Source\Utility\Singleton.h" />
     <ClInclude Include="Source\Utility\String.h" />
     <ClInclude Include="Source\Utility\StringStream.h" />
     <ClInclude Include="Source\Utility\Thread.h" />

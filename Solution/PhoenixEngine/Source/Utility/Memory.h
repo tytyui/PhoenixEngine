@@ -14,4 +14,5 @@ namespace Phoenix
 	template <class T>
 	using TWeakPtr = std::weak_ptr<T>;
 }
+
 #endif

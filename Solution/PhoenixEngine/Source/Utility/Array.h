@@ -5,7 +5,7 @@
 
 namespace Phoenix
 {
-	template <class T, std::array::size_type Size>
+	template <class T, size_t Size>
 	using TArray = std::array<T, Size>;
 }
 

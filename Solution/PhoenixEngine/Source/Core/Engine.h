@@ -18,6 +18,9 @@ namespace Phoenix
 		~FEngine() = default;
 		
 		void Initialize(const UpdateCallback& OnUpdateCallback);
+
+		void DeInit();
+
 		void Run();
 
 	private:

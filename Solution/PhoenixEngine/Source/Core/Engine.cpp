@@ -1,17 +1,23 @@
 #include "Core/Engine.h"
-#include <iostream>
+
+#include "Utility/Debug.h"
 
 using namespace Phoenix;
 
 void FEngine::Initialize(const UpdateCallback& OnUpdateCallback)
 {
-	std::cout << "Engine::Initialize\n";
+	F_LOG_TRACE("Engine::Initialize()\n");
 	this->OnUpdateCallback = OnUpdateCallback;
+}
+
+void FEngine::DeInit()
+{
+	F_LOG_CLOSE();
 }
 
 void FEngine::Run()
 {
-	std::cout << "\nEngine::Run\n";
+	F_LOG_TRACE("Engine::Run()\n");
 
 	//Game Loop
 	{
@@ -23,7 +29,8 @@ void FEngine::Run()
 
 void FEngine::Update(float DT)
 {
-	std::cout << "\nEngine::Update\n";
+	F_LOG_TRACE("Engine::Update()");
+
 	//Goes to PGame::InternalUpdate
 	OnUpdateCallback(DT);
 }
