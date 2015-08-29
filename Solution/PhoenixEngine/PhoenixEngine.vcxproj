@@ -53,6 +53,7 @@
     <ClInclude Include="Source\Utility\Thread.h" />
     <ClInclude Include="Source\Utility\List.h" />
     <ClInclude Include="Source\Utility\PriorityQueue.h" />
+    <ClInclude Include="Source\Utility\Timer.h" />
     <ClInclude Include="Source\Utility\UnorderedMap.h" />
     <ClInclude Include="Source\Utility\Vector.h" />
   </ItemGroup>

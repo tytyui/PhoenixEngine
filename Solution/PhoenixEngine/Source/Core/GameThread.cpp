@@ -2,6 +2,7 @@
 
 #include "Utility/Assert.h"
 #include "Utility/Debug.h"
+#include "Utility/Timer.h"
 
 using namespace Phoenix;
 
@@ -18,7 +19,7 @@ void FGameThread::Init(const FUpdateCallback& OnUpdateCallback)
 {
 	F_Assert(OnUpdateCallback, "UpdateCallback must not be null.");
 	F_Assert(!IsRunning, "Game Thread is already running.");
-	F_Log("GameThread::Init()");
+	F_LogTrace("GameThread::Init()");
 
 	UpdateCallback = OnUpdateCallback;
 	IsRunning = true;
@@ -38,8 +39,14 @@ void FGameThread::ThreadRun()
 	ThreadInit();
 	F_LogTrace("GameThread::ThreadRun()");
 
+	FHighResTimer Timer;
+	Timer.Reset();
+
 	while (true)
 	{
+		Timer.Update();
+		const Float32 DeltaSeconds = Timer.GetDeltaSeconds<Float32>();
+
 		F_LogTrace("GameThread::ThreadRun() - Tick.  Do Lots Of Stuff.");
 
 		UpdateCallback(0);

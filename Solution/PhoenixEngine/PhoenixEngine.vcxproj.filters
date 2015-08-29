@@ -128,5 +128,8 @@
     <ClInclude Include="Source\Core\GameThread.h">
       <Filter>Source\Core</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Utility\Timer.h">
+      <Filter>Source\Utility</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

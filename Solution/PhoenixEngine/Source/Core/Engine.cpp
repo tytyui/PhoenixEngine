@@ -4,6 +4,7 @@
 #include "Utility/Endian.h"
 #include "Utility/Primitives.h"
 #include "Utility/Thread.h"
+#include "Utility/Timer.h"
 
 using namespace Phoenix;
 
@@ -31,8 +32,14 @@ void FEngine::Run()
 {
 	F_LogTrace("Engine::Run()\n");
 
+	FHighResTimer Timer;
+	Timer.Reset();
+
 	while (true)
 	{
+		Timer.Update();
+		const Float32 DeltaSeconds = Timer.GetDeltaSeconds<Float32>();
+
 		F_LogTrace("Engine::Run() - Tick.  Poll, Dispatch, Receive.\n");
 
 		FThr::SleepThread(5000);
