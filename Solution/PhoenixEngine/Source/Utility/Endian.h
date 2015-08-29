@@ -27,35 +27,35 @@ namespace Phoenix
 		template <class T>
 		using TSwapFunc = T(*)(const T);
 
-		static TSwapFunc<SI16> SwapLittleSI16;
-		static TSwapFunc<SI32> SwapLittleSI32;
-		static TSwapFunc<UI16> SwapLittleUI16;
-		static TSwapFunc<UI32> SwapLittleUI32;
-		static TSwapFunc<F32> SwapLittleF32;
+		static TSwapFunc<Int16> SwapLittleInt16;
+		static TSwapFunc<Int32> SwapLittleInt32;
+		static TSwapFunc<UInt16> SwapLittleUInt16;
+		static TSwapFunc<UInt32> SwapLittleUInt32;
+		static TSwapFunc<Float32> SwapLittleFloat32;
 
-		static TSwapFunc<SI16> SwapBigSI16;
-		static TSwapFunc<SI32> SwapBigSI32;
-		static TSwapFunc<UI16> SwapBigUI16;
-		static TSwapFunc<UI32> SwapBigUI32;
-		static TSwapFunc<F32> SwapBigF32;
+		static TSwapFunc<Int16> SwapBigInt16;
+		static TSwapFunc<Int32> SwapBigInt32;
+		static TSwapFunc<UInt16> SwapBigUInt16;
+		static TSwapFunc<UInt32> SwapBigUInt32;
+		static TSwapFunc<Float32> SwapBigFloat32;
 
 		template <class T>
 		static T InternalSwap(const T Data);
 
 		template <>
-		static SI16 InternalSwap(const SI16 Data);
+		static Int16 InternalSwap(const Int16 Data);
 
 		template <>
-		static SI32 InternalSwap(const SI32 Data);
+		static Int32 InternalSwap(const Int32 Data);
 
 		template <>
-		static UI16 InternalSwap(const UI16 Data);
+		static UInt16 InternalSwap(const UInt16 Data);
 
 		template <>
-		static UI32 InternalSwap(const UI32 Data);
+		static UInt32 InternalSwap(const UInt32 Data);
 
 		template <>
-		static F32 InternalSwap(const F32 Data);
+		static Float32 InternalSwap(const Float32 Data);
 
 		template <class T>
 		static T InternalNoSwap(const T Data);
@@ -65,8 +65,8 @@ namespace Phoenix
 	{
 		union
 		{
-			UI32 Byte4;
-			UI8 Byte1;
+			UInt32 Byte4;
+			UInt8 Byte1;
 		} EndianTest;
 
 		EndianTest.Byte4 = 0x01;
@@ -75,32 +75,32 @@ namespace Phoenix
 		if (bIsLittleEndian)
 		{
 			// FIXME: LOG("Little endian system detected.");
-			FEndian::SwapLittleSI16 = &FEndian::InternalNoSwap<SI16>;
-			FEndian::SwapLittleSI32 = &FEndian::InternalNoSwap<SI32>;
-			FEndian::SwapLittleUI16 = &FEndian::InternalNoSwap<UI16>;
-			FEndian::SwapLittleUI32 = &FEndian::InternalNoSwap<UI32>;
-			FEndian::SwapLittleF32 = &FEndian::InternalNoSwap<F32>;
+			FEndian::SwapLittleInt16 = &FEndian::InternalNoSwap<Int16>;
+			FEndian::SwapLittleInt32 = &FEndian::InternalNoSwap<Int32>;
+			FEndian::SwapLittleUInt16 = &FEndian::InternalNoSwap<UInt16>;
+			FEndian::SwapLittleUInt32 = &FEndian::InternalNoSwap<UInt32>;
+			FEndian::SwapLittleFloat32 = &FEndian::InternalNoSwap<Float32>;
 
-			FEndian::SwapBigSI16 = &FEndian::InternalSwap<SI16>;
-			FEndian::SwapBigSI32 = &FEndian::InternalSwap<SI32>;
-			FEndian::SwapBigUI16 = &FEndian::InternalSwap<UI16>;
-			FEndian::SwapBigUI32 = &FEndian::InternalSwap<UI32>;
-			FEndian::SwapBigF32 = &FEndian::InternalSwap<F32>;
+			FEndian::SwapBigInt16 = &FEndian::InternalSwap<Int16>;
+			FEndian::SwapBigInt32 = &FEndian::InternalSwap<Int32>;
+			FEndian::SwapBigUInt16 = &FEndian::InternalSwap<UInt16>;
+			FEndian::SwapBigUInt32 = &FEndian::InternalSwap<UInt32>;
+			FEndian::SwapBigFloat32 = &FEndian::InternalSwap<Float32>;
 		}
 		else
 		{
 			// FIXME: LOG("Big endian system detected.");
-			FEndian::SwapLittleSI16 = &FEndian::InternalSwap<SI16>;
-			FEndian::SwapLittleSI32 = &FEndian::InternalSwap<SI32>;
-			FEndian::SwapLittleUI16 = &FEndian::InternalSwap<UI16>;
-			FEndian::SwapLittleUI32 = &FEndian::InternalSwap<UI32>;
-			FEndian::SwapLittleF32 = &FEndian::InternalSwap<F32>;
+			FEndian::SwapLittleInt16 = &FEndian::InternalSwap<Int16>;
+			FEndian::SwapLittleInt32 = &FEndian::InternalSwap<Int32>;
+			FEndian::SwapLittleUInt16 = &FEndian::InternalSwap<UInt16>;
+			FEndian::SwapLittleUInt32 = &FEndian::InternalSwap<UInt32>;
+			FEndian::SwapLittleFloat32 = &FEndian::InternalSwap<Float32>;
 
-			FEndian::SwapBigSI16 = &FEndian::InternalNoSwap<SI16>;
-			FEndian::SwapBigSI32 = &FEndian::InternalNoSwap<SI32>;
-			FEndian::SwapBigUI16 = &FEndian::InternalNoSwap<UI16>;
-			FEndian::SwapBigUI32 = &FEndian::InternalNoSwap<UI32>;
-			FEndian::SwapBigF32 = &FEndian::InternalNoSwap<F32>;
+			FEndian::SwapBigInt16 = &FEndian::InternalNoSwap<Int16>;
+			FEndian::SwapBigInt32 = &FEndian::InternalNoSwap<Int32>;
+			FEndian::SwapBigUInt16 = &FEndian::InternalNoSwap<UInt16>;
+			FEndian::SwapBigUInt32 = &FEndian::InternalNoSwap<UInt32>;
+			FEndian::SwapBigFloat32 = &FEndian::InternalNoSwap<Float32>;
 		}
 	}
 
@@ -117,59 +117,59 @@ namespace Phoenix
 	}
 
 	template <>
-	inline SI16 FEndian::SwapLE(const SI16 LEData)
+	inline Int16 FEndian::SwapLE(const Int16 LEData)
 	{
-		// FIXME: ASSERT(FEndian::SwapLittleSI16, "Endian::SwapLittleSI16 is null.");
-		return FEndian::SwapLittleSI16(LEData);
+		// FIXME: ASSERT(FEndian::SwapLittleInt16, "Endian::SwapLittleInt16 is null.");
+		return FEndian::SwapLittleInt16(LEData);
 	}
 
 	template <>
-	inline SI32 FEndian::SwapLE(const SI32 LEData)
+	inline Int32 FEndian::SwapLE(const Int32 LEData)
 	{
-		// FIXME: ASSERT(FEndian::SwapLittleSI32, "Endian::SwapLittleSI32 is null.");
-		return FEndian::SwapLittleSI32(LEData);
+		// FIXME: ASSERT(FEndian::SwapLittleInt32, "Endian::SwapLittleInt32 is null.");
+		return FEndian::SwapLittleInt32(LEData);
 	}
 
 	template <>
-	inline UI16 FEndian::SwapLE(const UI16 LEData)
+	inline UInt16 FEndian::SwapLE(const UInt16 LEData)
 	{
-		// FIXME: ASSERT(FEndian::SwapLittleUI16, "Endian::SwapLittleUI16 is null.");
-		return FEndian::SwapLittleUI16(LEData);
+		// FIXME: ASSERT(FEndian::SwapLittleUInt16, "Endian::SwapLittleUInt16 is null.");
+		return FEndian::SwapLittleUInt16(LEData);
 	}
 
 	template <>
-	inline UI32 FEndian::SwapLE(const UI32 LEData)
+	inline UInt32 FEndian::SwapLE(const UInt32 LEData)
 	{
-		// FIXME: ASSERT(FEndian::SwapLittleUI32, "Endian::SwapLittleUI32 is null.");
-		return FEndian::SwapLittleUI32(LEData);
+		// FIXME: ASSERT(FEndian::SwapLittleUInt32, "Endian::SwapLittleUInt32 is null.");
+		return FEndian::SwapLittleUInt32(LEData);
 	}
 
 	template <>
-	inline SI16 FEndian::SwapBE(const SI16 BEData)
+	inline Int16 FEndian::SwapBE(const Int16 BEData)
 	{
-		// FIXME: ASSERT(FEndian::SwapBigSI16, "Endian::SwapBigSI16 is null.");
-		return FEndian::SwapBigSI16(BEData);
+		// FIXME: ASSERT(FEndian::SwapBigInt16, "Endian::SwapBigInt16 is null.");
+		return FEndian::SwapBigInt16(BEData);
 	}
 
 	template <>
-	inline SI32 FEndian::SwapBE(const SI32 BEData)
+	inline Int32 FEndian::SwapBE(const Int32 BEData)
 	{
-		// FIXME: ASSERT(FEndian::SwapBigSI32, "Endian::SwapBigSI32 is null.");
-		return FEndian::SwapBigSI32(BEData);
+		// FIXME: ASSERT(FEndian::SwapBigInt32, "Endian::SwapBigInt32 is null.");
+		return FEndian::SwapBigInt32(BEData);
 	}
 
 	template <>
-	inline UI16 FEndian::SwapBE(const UI16 BEData)
+	inline UInt16 FEndian::SwapBE(const UInt16 BEData)
 	{
-		// FIXME: ASSERT(FEndian::SwapBigUI16, "Endian::SwapBigUI16 is null.");
-		return FEndian::SwapBigUI16(BEData);
+		// FIXME: ASSERT(FEndian::SwapBigUInt16, "Endian::SwapBigUInt16 is null.");
+		return FEndian::SwapBigUInt16(BEData);
 	}
 
 	template <>
-	inline UI32 FEndian::SwapBE(const UI32 BEData)
+	inline UInt32 FEndian::SwapBE(const UInt32 BEData)
 	{
-		// FIXME: ASSERT(FEndian::SwapBigUI32, "Endian::SwapBigUI32 is null.");
-		return FEndian::SwapBigUI32(BEData);
+		// FIXME: ASSERT(FEndian::SwapBigUInt32, "Endian::SwapBigUInt32 is null.");
+		return FEndian::SwapBigUInt32(BEData);
 	}
 
 	template <class T>
@@ -179,38 +179,38 @@ namespace Phoenix
 	}
 
 	template <>
-	inline SI16 FEndian::InternalSwap(const SI16 Data)
+	inline Int16 FEndian::InternalSwap(const Int16 Data)
 	{
-		const UI16* const UI16Ptr = reinterpret_cast<const UI16*>(&Data);
-		const UI16 UI16Result = FEndian::InternalSwap(*UI16Ptr);
-		const SI16* const SI16Ptr = reinterpret_cast<const SI16*>(&UI16Result);
-		const SI16 Result = *SI16Ptr;
+		const UInt16* const UInt16Ptr = reinterpret_cast<const UInt16*>(&Data);
+		const UInt16 UInt16Result = FEndian::InternalSwap(*UInt16Ptr);
+		const Int16* const Int16Ptr = reinterpret_cast<const Int16*>(&UInt16Result);
+		const Int16 Result = *Int16Ptr;
 		return Result;
 	}
 
 	template <>
-	inline SI32 FEndian::InternalSwap(const SI32 Data)
+	inline Int32 FEndian::InternalSwap(const Int32 Data)
 	{
-		const UI32* const UI32Ptr = reinterpret_cast<const UI32*>(&Data);
-		const UI32 UI32Result = FEndian::InternalSwap(*UI32Ptr);
-		const SI32* const SI32Ptr = reinterpret_cast<const SI32*>(&UI32Result);
-		const SI32 Result = *SI32Ptr;
+		const UInt32* const UInt32Ptr = reinterpret_cast<const UInt32*>(&Data);
+		const UInt32 UInt32Result = FEndian::InternalSwap(*UInt32Ptr);
+		const Int32* const Int32Ptr = reinterpret_cast<const Int32*>(&UInt32Result);
+		const Int32 Result = *Int32Ptr;
 		return Result;
 	}
 
 	template <>
-	inline UI16 FEndian::InternalSwap(const UI16 Data)
+	inline UInt16 FEndian::InternalSwap(const UInt16 Data)
 	{
-		const UI16 Result =
+		const UInt16 Result =
 			((Data >> 8) & 0x00FF) +
 			((Data << 8) & 0xFF00);
 		return Result;
 	}
 
 	template <>
-	inline UI32 FEndian::InternalSwap(const UI32 Data)
+	inline UInt32 FEndian::InternalSwap(const UInt32 Data)
 	{
-		const UI32 Result =
+		const UInt32 Result =
 			((Data >> 24) & 0x000000FF) +
 			((Data >> 8) & 0x0000FF00) +
 			((Data << 8) & 0x00FF0000) +
@@ -219,19 +219,19 @@ namespace Phoenix
 	}
 
 	template <>
-	inline F32 FEndian::InternalSwap(const F32 Data)
+	inline Float32 FEndian::InternalSwap(const Float32 Data)
 	{
-		static_assert(sizeof(UI32) == sizeof(F32), "UI32 size does not equal F32 size.");
+		static_assert(sizeof(UInt32) == sizeof(Float32), "UInt32 size does not equal Float32 size.");
 		union
 		{
-			UI32 UI32Data;
-			F32 F32Data;
+			UInt32 UInt32Data;
+			Float32 Float32Data;
 		} FloatSwap;
 
-		FloatSwap.F32Data = Data;
-		FloatSwap.UI32Data = FEndian::InternalSwap(FloatSwap.UI32Data);
+		FloatSwap.Float32Data = Data;
+		FloatSwap.UInt32Data = FEndian::InternalSwap(FloatSwap.UInt32Data);
 
-		return FloatSwap.F32Data;
+		return FloatSwap.Float32Data;
 	}
 
 	template <class T>
