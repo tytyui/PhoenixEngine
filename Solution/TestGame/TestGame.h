@@ -1,7 +1,7 @@
 #ifndef GAME_TEST_GAME_H
 #define GAME_TEST_GAME_H
 
-#include "Game/FGame.h"
+#include "Game/Game.h"
 
 class FTestGame : public Phoenix::FGame
 {
@@ -12,4 +12,4 @@ protected:
 	virtual void Update(float dt) override;
 };
 
-#endif // GAME_TEST_GAME_H_
+#endif

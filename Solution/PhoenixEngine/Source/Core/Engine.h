@@ -1,7 +1,7 @@
 #ifndef PHOENIX_ENGINE_H
 #define PHOENIX_ENGINE_H
 
-#include "Utility/FFunction.h"
+#include "Utility/Function.h"
 
 namespace Phoenix
 {
@@ -27,5 +27,5 @@ namespace Phoenix
 	};
 }
 
-#endif // PHOENIX_ENGINE_H_
+#endif
 

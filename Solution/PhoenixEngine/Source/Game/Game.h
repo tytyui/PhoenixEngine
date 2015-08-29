@@ -1,7 +1,7 @@
 #ifndef PHOENIX_GAME_H
 #define PHOENIX_GAME_H
 
-#include "Utility/FMemory.h"
+#include "Utility/Memory.h"
 
 namespace Phoenix
 {
@@ -23,11 +23,11 @@ namespace Phoenix
 		virtual void Update(float DT) = 0;
 
 	private:
-		TUnique<FEngine> Engine;
+		TUniquePtr<FEngine> Engine;
 
 		//NVI pattern
 		void InternalUpdate(float DT);
 	};
 }
 
-#endif // PHOENIX_GAME_H_
+#endif

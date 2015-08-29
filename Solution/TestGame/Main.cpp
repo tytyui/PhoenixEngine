@@ -1,16 +1,13 @@
 #pragma comment (lib, "PhoenixEngine.lib")
 
-#include <memory>
 #include <iostream>
-#include "FTestGame.h"
+#include "TestGame.h"
 
 int main()
 {
-	using namespace Phoenix;
+	FTestGame TestGame;
+	TestGame.StartGame();
 
-	auto game = std::make_unique<FTestGame>();
-	game->StartGame();
-
-	getchar();
+	std::getchar();
 	return 0;
 }

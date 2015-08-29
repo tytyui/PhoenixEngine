@@ -19,14 +19,33 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\Core\FEngine.cpp" />
-    <ClCompile Include="Source\Game\FGame.cpp" />
+    <ClCompile Include="Source\Core\Engine.cpp" />
+    <ClCompile Include="Source\Game\Game.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\Core\FEngine.h" />
-    <ClInclude Include="Source\Game\FGame.h" />
-    <ClInclude Include="Source\Utility\FFunction.h" />
-    <ClInclude Include="Source\Utility\FMemory.h" />
+    <ClInclude Include="Source\Core\Engine.h" />
+    <ClInclude Include="Source\Game\Game.h" />
+    <ClInclude Include="Source\Utility\Algorithm.h" />
+    <ClInclude Include="Source\Utility\Array.h" />
+    <ClInclude Include="Source\Utility\Atomic.h" />
+    <ClInclude Include="Source\Utility\BitArray.h" />
+    <ClInclude Include="Source\Utility\BitVector.h" />
+    <ClInclude Include="Source\Utility\ConsoleColor.h" />
+    <ClInclude Include="Source\Utility\Function.h" />
+    <ClInclude Include="Source\Utility\Map.h" />
+    <ClInclude Include="Source\Utility\Memory.h" />
+    <ClInclude Include="Source\Utility\Mutex.h" />
+    <ClInclude Include="Source\Utility\OutputStream.h" />
+    <ClInclude Include="Source\Utility\Primitives.h" />
+    <ClInclude Include="Source\Utility\Queue.h" />
+    <ClInclude Include="Source\Utility\Set.h" />
+    <ClInclude Include="Source\Utility\String.h" />
+    <ClInclude Include="Source\Utility\StringStream.h" />
+    <ClInclude Include="Source\Utility\Thread.h" />
+    <ClInclude Include="Source\Utility\List.h" />
+    <ClInclude Include="Source\Utility\PriorityQueue.h" />
+    <ClInclude Include="Source\Utility\UnorderedMap.h" />
+    <ClInclude Include="Source\Utility\Vector.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{892931AD-CBC9-4912-9EC6-54019C6502F4}</ProjectGuid>

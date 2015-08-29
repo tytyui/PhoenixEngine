@@ -8,6 +8,8 @@ Solution/TestGame/Release
 #VS stuff
 *.user
 *.sdf
+*.opensdf
+*.suo
 
 # Compiled Object files
 *.slo
