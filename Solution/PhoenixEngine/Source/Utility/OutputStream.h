@@ -5,7 +5,7 @@
 
 namespace Phoenix
 {
-	using FOutputStream = std::ostream;
+	typedef std::ostream FOutputStream;
 }
 
 #endif

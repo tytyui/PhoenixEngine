@@ -3,9 +3,11 @@
 
 #include <string>
 
+#include "Utility/Primitives.h"
+
 namespace Phoenix
 {
-	using FString = std::string;
+	typedef std::string FString;
 
 	namespace FStr // FIXME: Come up with a naming convention.
 	{
@@ -17,8 +19,7 @@ namespace Phoenix
 		*/
 		static inline FString ExtractFileName(const FString& FileDirectory)
 		{
-			// FIXME: This should probably be a static const char* const.
-			static const FString PathDelimiters = "/\\";
+			static const FChar* const PathDelimiters = "/\\";
 
 			const size_t Index = FileDirectory.find_last_of(PathDelimiters);
 

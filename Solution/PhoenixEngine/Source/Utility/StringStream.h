@@ -5,7 +5,7 @@
 
 namespace Phoenix
 {
-	using FStringStream = std::stringstream;
+	typedef std::stringstream FStringStream;
 }
 
 #endif

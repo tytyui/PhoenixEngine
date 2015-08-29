@@ -5,9 +5,9 @@
 
 namespace Phoenix
 {
-	using FFileStream = std::fstream;
-	using FOutputFileStream = std::ofstream;
-	using FInputFileStream = std::ifstream;
+	typedef std::fstream FFileStream;
+	typedef std::ofstream FOutputFileStream;
+	typedef std::ifstream FInputFileStream;
 }
 
 #endif

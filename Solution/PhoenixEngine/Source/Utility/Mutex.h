@@ -5,8 +5,8 @@
 
 namespace Phoenix
 {
-	using FMutex = std::mutex;
-	using FTimedMutex = std::timed_mutex;
+	typedef std::mutex FMutex;
+	typedef std::timed_mutex FTimedMutex;
 
 	template <class T>
 	using TLockGuard = std::lock_guard<T>;
@@ -14,8 +14,8 @@ namespace Phoenix
 	template <class T>
 	using TUniqueLock = std::unique_lock<T>;
 
-	using FMutexLock = TLockGuard<FMutex>;
-	using FTimedMutexLock = TLockGuard<FTimedMutex>;
+	typedef TLockGuard<FMutex> FMutexLock;
+	typedef TLockGuard<FTimedMutex> FTimedMutexLock;
 }
 
 #endif

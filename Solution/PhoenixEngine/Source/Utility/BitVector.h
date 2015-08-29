@@ -5,7 +5,7 @@
 
 namespace Phoenix
 {
-	using FBitVector = std::vector<bool>;
+	typedef std::vector<bool> FBitVector;
 }
 
 #endif
