@@ -3,23 +3,23 @@
 
 namespace Phoenix
 {
-	using FChar = char;
+	typedef char FChar;
 
-	using Int8 = signed char;
-	using Int16 = signed short;
-	using Int32 = signed int;
-	using Int64 = signed long long;
+	typedef signed char Int8;
+	typedef signed short Int16;
+	typedef signed int Int32;
+	typedef signed long long Int64;
 
-	using UInt8 = unsigned char;
-	using UInt16 = unsigned short;
-	using UInt32 = unsigned int;
-	using UInt64 = unsigned long long;
+	typedef unsigned char UInt8;
+	typedef unsigned short UInt16;
+	typedef unsigned int UInt32;
+	typedef unsigned long long UInt64;
 
-	using Float32 = float;
-	using Float64 = double;
+	typedef float Float32;
+	typedef double Float64;
 
-	using SizeT = size_t;
-	using NullptrT = std::nullptr_t;
+	typedef size_t SizeT;
+	typedef std::nullptr_t NullptrT;
 
 	enum class EInitParam
 	{

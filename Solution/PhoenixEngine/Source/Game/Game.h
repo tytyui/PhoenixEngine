@@ -11,10 +11,13 @@ namespace Phoenix
 	{
 	public:
 		FGame();
+
 		FGame(const FGame&) = delete;
+		FGame& operator=(const FGame&) = delete;
+
 		FGame(FGame&&) = default;
-		FGame& operator = (const FGame&) = delete;
-		FGame& operator = (FGame&&) = default;
+		FGame& operator=(FGame&&) = default;
+
 		virtual ~FGame();
 
 		void StartGame();
@@ -25,7 +28,6 @@ namespace Phoenix
 	private:
 		TUniquePtr<FEngine> Engine;
 
-		//NVI pattern
 		void InternalUpdate(float DT);
 	};
 }

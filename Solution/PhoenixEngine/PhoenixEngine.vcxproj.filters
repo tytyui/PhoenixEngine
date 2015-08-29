@@ -33,6 +33,9 @@
     <ClCompile Include="Source\Utility\Endian.cpp">
       <Filter>Source\Utility</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Core\GameThread.cpp">
+      <Filter>Source\Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Utility\Algorithm.h">
@@ -121,6 +124,9 @@
     </ClInclude>
     <ClInclude Include="Source\Utility\FileStream.h">
       <Filter>Source\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Core\GameThread.h">
+      <Filter>Source\Core</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

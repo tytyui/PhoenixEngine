@@ -25,7 +25,7 @@ void FGame::StartGame()
 
 void FGame::InternalUpdate(float DT)
 {
-	F_LogTrace("Game::InternalUpdate()");
+	F_Log("Game::InternalUpdate()");
 
 	Update(DT);
 }

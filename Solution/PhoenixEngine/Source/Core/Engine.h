@@ -1,35 +1,30 @@
 #ifndef PHOENIX_ENGINE_H
 #define PHOENIX_ENGINE_H
 
-#include "Utility/Function.h"
+#include "Core/GameThread.h"
 
 namespace Phoenix
 {
 	class FEngine
 	{
 	public:
-		using UpdateCallback = TFunction<void(float)>;
-
-		FEngine() = default;
+		FEngine();
 
 		FEngine(const FEngine&) = delete;
 		FEngine& operator=(const FEngine&) = delete;
 
-		FEngine(FEngine&&) = default;
-		FEngine& operator=(FEngine&&) = default;
+		FEngine(FEngine&&) = delete;
+		FEngine& operator=(FEngine&&) = delete;
 
-		~FEngine() = default;
 
-		void Init(const UpdateCallback& OnUpdateCallback);
+		void Init(const FGameThread::FUpdateCallback& UpdateCallback);
 
 		void DeInit();
 
 		void Run();
 
 	private:
-		UpdateCallback OnUpdateCallback;
-
-		void Update(float DT);
+		FGameThread GameThread;
 	};
 }
 

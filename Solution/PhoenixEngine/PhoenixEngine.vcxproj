@@ -20,11 +20,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Core\Engine.cpp" />
+    <ClCompile Include="Source\Core\GameThread.cpp" />
     <ClCompile Include="Source\Game\Game.cpp" />
     <ClCompile Include="Source\Utility\Endian.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Core\Engine.h" />
+    <ClInclude Include="Source\Core\GameThread.h" />
     <ClInclude Include="Source\Game\Game.h" />
     <ClInclude Include="Source\Utility\Algorithm.h" />
     <ClInclude Include="Source\Utility\Array.h" />
