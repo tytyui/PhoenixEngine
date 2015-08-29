@@ -1,6 +1,8 @@
 #ifndef PHOENIX_ENDIAN_H
 #define PHOENIX_ENDIAN_H
 
+#include "Utility/Assert.h"
+#include "Utility/Debug.h"
 #include "Utility/Primitives.h"
 
 namespace Phoenix
@@ -58,6 +60,12 @@ namespace Phoenix
 		static Float32 InternalSwap(const Float32 Data);
 
 		template <class T>
+		static T InternalSwap16(const T Data16);
+
+		template <class T>
+		static T InternalSwap32(const T Data32);
+
+		template <class T>
 		static T InternalNoSwap(const T Data);
 	};
 
@@ -70,11 +78,11 @@ namespace Phoenix
 		} EndianTest;
 
 		EndianTest.Byte4 = 0x01;
-		const bool bIsLittleEndian = EndianTest.Byte1 == 1;
+		const bool bIsLittleEndian = EndianTest.Byte1 == 0x01;
 
 		if (bIsLittleEndian)
 		{
-			// FIXME: LOG("Little endian system detected.");
+			F_LOG("Little endian system detected.");
 			FEndian::SwapLittleInt16 = &FEndian::InternalNoSwap<Int16>;
 			FEndian::SwapLittleInt32 = &FEndian::InternalNoSwap<Int32>;
 			FEndian::SwapLittleUInt16 = &FEndian::InternalNoSwap<UInt16>;
@@ -89,7 +97,7 @@ namespace Phoenix
 		}
 		else
 		{
-			// FIXME: LOG("Big endian system detected.");
+			F_LOG("Big endian system detected.");
 			FEndian::SwapLittleInt16 = &FEndian::InternalSwap<Int16>;
 			FEndian::SwapLittleInt32 = &FEndian::InternalSwap<Int32>;
 			FEndian::SwapLittleUInt16 = &FEndian::InternalSwap<UInt16>;
@@ -119,57 +127,71 @@ namespace Phoenix
 	template <>
 	inline Int16 FEndian::SwapLE(const Int16 LEData)
 	{
-		// FIXME: ASSERT(FEndian::SwapLittleInt16, "Endian::SwapLittleInt16 is null.");
+		F_ASSERT(FEndian::SwapLittleInt16, "You must call FEndian::Init prior to calling this method.");
 		return FEndian::SwapLittleInt16(LEData);
 	}
 
 	template <>
 	inline Int32 FEndian::SwapLE(const Int32 LEData)
 	{
-		// FIXME: ASSERT(FEndian::SwapLittleInt32, "Endian::SwapLittleInt32 is null.");
+		F_ASSERT(FEndian::SwapLittleInt32, "You must call FEndian::Init prior to calling this method.");
 		return FEndian::SwapLittleInt32(LEData);
 	}
 
 	template <>
 	inline UInt16 FEndian::SwapLE(const UInt16 LEData)
 	{
-		// FIXME: ASSERT(FEndian::SwapLittleUInt16, "Endian::SwapLittleUInt16 is null.");
+		F_ASSERT(FEndian::SwapLittleUInt16, "You must call FEndian::Init prior to calling this method.");
 		return FEndian::SwapLittleUInt16(LEData);
 	}
 
 	template <>
 	inline UInt32 FEndian::SwapLE(const UInt32 LEData)
 	{
-		// FIXME: ASSERT(FEndian::SwapLittleUInt32, "Endian::SwapLittleUInt32 is null.");
+		F_ASSERT(FEndian::SwapLittleUInt32, "You must call FEndian::Init prior to calling this method.");
 		return FEndian::SwapLittleUInt32(LEData);
+	}
+
+	template <>
+	inline Float32 FEndian::SwapLE(const Float32 LEData)
+	{
+		F_ASSERT(FEndian::SwapLittleFloat32, "You must call FEndian::Init prior to calling this method.");
+		return FEndian::SwapLittleFloat32(LEData);
 	}
 
 	template <>
 	inline Int16 FEndian::SwapBE(const Int16 BEData)
 	{
-		// FIXME: ASSERT(FEndian::SwapBigInt16, "Endian::SwapBigInt16 is null.");
+		F_ASSERT(FEndian::SwapBigInt16, "You must call FEndian::Init prior to calling this method.");
 		return FEndian::SwapBigInt16(BEData);
 	}
 
 	template <>
 	inline Int32 FEndian::SwapBE(const Int32 BEData)
 	{
-		// FIXME: ASSERT(FEndian::SwapBigInt32, "Endian::SwapBigInt32 is null.");
+		F_ASSERT(FEndian::SwapBigInt32, "You must call FEndian::Init prior to calling this method.");
 		return FEndian::SwapBigInt32(BEData);
 	}
 
 	template <>
 	inline UInt16 FEndian::SwapBE(const UInt16 BEData)
 	{
-		// FIXME: ASSERT(FEndian::SwapBigUInt16, "Endian::SwapBigUInt16 is null.");
+		F_ASSERT(FEndian::SwapBigUInt16, "You must call FEndian::Init prior to calling this method.");
 		return FEndian::SwapBigUInt16(BEData);
 	}
 
 	template <>
 	inline UInt32 FEndian::SwapBE(const UInt32 BEData)
 	{
-		// FIXME: ASSERT(FEndian::SwapBigUInt32, "Endian::SwapBigUInt32 is null.");
+		F_ASSERT(FEndian::SwapBigUInt32, "You must call FEndian::Init prior to calling this method.");
 		return FEndian::SwapBigUInt32(BEData);
+	}
+
+	template <>
+	inline Float32 FEndian::SwapBE(const Float32 BEData)
+	{
+		F_ASSERT(FEndian::SwapBigFloat32, "You must call FEndian::Init prior to calling this method.");
+		return FEndian::SwapBigFloat32(BEData);
 	}
 
 	template <class T>
@@ -181,40 +203,28 @@ namespace Phoenix
 	template <>
 	inline Int16 FEndian::InternalSwap(const Int16 Data)
 	{
-		const UInt16* const UInt16Ptr = reinterpret_cast<const UInt16*>(&Data);
-		const UInt16 UInt16Result = FEndian::InternalSwap(*UInt16Ptr);
-		const Int16* const Int16Ptr = reinterpret_cast<const Int16*>(&UInt16Result);
-		const Int16 Result = *Int16Ptr;
+		const Int16 Result = InternalSwap16(Data);
 		return Result;
 	}
 
 	template <>
 	inline Int32 FEndian::InternalSwap(const Int32 Data)
 	{
-		const UInt32* const UInt32Ptr = reinterpret_cast<const UInt32*>(&Data);
-		const UInt32 UInt32Result = FEndian::InternalSwap(*UInt32Ptr);
-		const Int32* const Int32Ptr = reinterpret_cast<const Int32*>(&UInt32Result);
-		const Int32 Result = *Int32Ptr;
+		const Int32 Result = InternalSwap32(Data);
 		return Result;
 	}
 
 	template <>
 	inline UInt16 FEndian::InternalSwap(const UInt16 Data)
 	{
-		const UInt16 Result =
-			((Data >> 8) & 0x00FF) +
-			((Data << 8) & 0xFF00);
+		const UInt16 Result = InternalSwap16(Data);
 		return Result;
 	}
 
 	template <>
 	inline UInt32 FEndian::InternalSwap(const UInt32 Data)
 	{
-		const UInt32 Result =
-			((Data >> 24) & 0x000000FF) +
-			((Data >> 8) & 0x0000FF00) +
-			((Data << 8) & 0x00FF0000) +
-			((Data << 24) & 0xFF000000);
+		const UInt32 Result = InternalSwap32(Data);
 		return Result;
 	}
 
@@ -232,6 +242,30 @@ namespace Phoenix
 		FloatSwap.UInt32Data = FEndian::InternalSwap(FloatSwap.UInt32Data);
 
 		return FloatSwap.Float32Data;
+	}
+
+	template <class T>
+	T FEndian::InternalSwap16(const T Data16)
+	{
+		static_assert(sizeof(T) == 2, "You must use a 16 bit integer type with this function.");
+		
+		const T Result =
+			((Data16 >> 8) & 0x00FF) +
+			((Data16 << 8) & 0xFF00);
+		return Result;
+	}
+
+	template <class T>
+	T FEndian::InternalSwap32(const T Data32)
+	{
+		static_assert(sizeof(T) == 4, "You must use a 32 bit integer type with this function.");
+
+		const T Result =
+			((Data32 >> 24) & 0x000000FF) +
+			((Data32 >> 8) & 0x0000FF00) +
+			((Data32 << 8) & 0x00FF0000) +
+			((Data32 << 24) & 0xFF000000);
+		return Result;
 	}
 
 	template <class T>

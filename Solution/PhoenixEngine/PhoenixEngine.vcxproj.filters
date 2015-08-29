@@ -19,6 +19,9 @@
     <Filter Include="Source\Core">
       <UniqueIdentifier>{c2449c6e-7dfe-4217-8925-29c5f98ce09a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Audio">
+      <UniqueIdentifier>{32d5dee3-b553-4014-b152-49c38bf5a6d1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Game\Game.cpp">

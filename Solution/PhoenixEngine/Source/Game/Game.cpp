@@ -5,17 +5,21 @@
 
 using namespace Phoenix;
 
-FGame::FGame() {}
+FGame::FGame()
+{
+}
 
-FGame::~FGame() {}
+FGame::~FGame()
+{
+}
 
 void FGame::StartGame()
 {
-	F_LOG_OPEN("Log.txt");
-	F_LOG_TRACE("Game::StartGame()\n");
-
 	Engine = std::make_unique<FEngine>();
-	Engine->Initialize([this](float DT) {InternalUpdate(DT);});
+	Engine->Initialize([this](float DT)
+	{
+		InternalUpdate(DT);
+	});
 	Engine->Run();
 }
 

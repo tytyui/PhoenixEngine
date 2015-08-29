@@ -1,12 +1,16 @@
 #include "Core/Engine.h"
 
 #include "Utility/Debug.h"
+#include "Utility/Endian.h"
 
 using namespace Phoenix;
 
 void FEngine::Initialize(const UpdateCallback& OnUpdateCallback)
 {
+	F_LOG_OPEN("Log.txt");
 	F_LOG_TRACE("Engine::Initialize()\n");
+	FEndian::Init();
+
 	this->OnUpdateCallback = OnUpdateCallback;
 }
 
