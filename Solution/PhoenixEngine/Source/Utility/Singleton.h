@@ -28,7 +28,7 @@ namespace Phoenix
 	}
 }
 
-#define F_DECLARE_TSINGLETON(Class)				\
+#define F_DeclareTSingleton(Class)				\
 	friend class TSingleton<Class>;				\
 public:											\
 	Class(const Class&) = delete;				\

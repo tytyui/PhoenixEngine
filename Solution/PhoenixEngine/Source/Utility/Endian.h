@@ -82,7 +82,7 @@ namespace Phoenix
 
 		if (bIsLittleEndian)
 		{
-			F_LOG("Little endian system detected.");
+			F_Log("Little endian system detected.");
 			FEndian::SwapLittleInt16 = &FEndian::InternalNoSwap<Int16>;
 			FEndian::SwapLittleInt32 = &FEndian::InternalNoSwap<Int32>;
 			FEndian::SwapLittleUInt16 = &FEndian::InternalNoSwap<UInt16>;
@@ -97,7 +97,7 @@ namespace Phoenix
 		}
 		else
 		{
-			F_LOG("Big endian system detected.");
+			F_Log("Big endian system detected.");
 			FEndian::SwapLittleInt16 = &FEndian::InternalSwap<Int16>;
 			FEndian::SwapLittleInt32 = &FEndian::InternalSwap<Int32>;
 			FEndian::SwapLittleUInt16 = &FEndian::InternalSwap<UInt16>;
@@ -127,70 +127,70 @@ namespace Phoenix
 	template <>
 	inline Int16 FEndian::SwapLE(const Int16 LEData)
 	{
-		F_ASSERT(FEndian::SwapLittleInt16, "You must call FEndian::Init prior to calling this method.");
+		F_Assert(FEndian::SwapLittleInt16, "You must call FEndian::Init prior to calling this method.");
 		return FEndian::SwapLittleInt16(LEData);
 	}
 
 	template <>
 	inline Int32 FEndian::SwapLE(const Int32 LEData)
 	{
-		F_ASSERT(FEndian::SwapLittleInt32, "You must call FEndian::Init prior to calling this method.");
+		F_Assert(FEndian::SwapLittleInt32, "You must call FEndian::Init prior to calling this method.");
 		return FEndian::SwapLittleInt32(LEData);
 	}
 
 	template <>
 	inline UInt16 FEndian::SwapLE(const UInt16 LEData)
 	{
-		F_ASSERT(FEndian::SwapLittleUInt16, "You must call FEndian::Init prior to calling this method.");
+		F_Assert(FEndian::SwapLittleUInt16, "You must call FEndian::Init prior to calling this method.");
 		return FEndian::SwapLittleUInt16(LEData);
 	}
 
 	template <>
 	inline UInt32 FEndian::SwapLE(const UInt32 LEData)
 	{
-		F_ASSERT(FEndian::SwapLittleUInt32, "You must call FEndian::Init prior to calling this method.");
+		F_Assert(FEndian::SwapLittleUInt32, "You must call FEndian::Init prior to calling this method.");
 		return FEndian::SwapLittleUInt32(LEData);
 	}
 
 	template <>
 	inline Float32 FEndian::SwapLE(const Float32 LEData)
 	{
-		F_ASSERT(FEndian::SwapLittleFloat32, "You must call FEndian::Init prior to calling this method.");
+		F_Assert(FEndian::SwapLittleFloat32, "You must call FEndian::Init prior to calling this method.");
 		return FEndian::SwapLittleFloat32(LEData);
 	}
 
 	template <>
 	inline Int16 FEndian::SwapBE(const Int16 BEData)
 	{
-		F_ASSERT(FEndian::SwapBigInt16, "You must call FEndian::Init prior to calling this method.");
+		F_Assert(FEndian::SwapBigInt16, "You must call FEndian::Init prior to calling this method.");
 		return FEndian::SwapBigInt16(BEData);
 	}
 
 	template <>
 	inline Int32 FEndian::SwapBE(const Int32 BEData)
 	{
-		F_ASSERT(FEndian::SwapBigInt32, "You must call FEndian::Init prior to calling this method.");
+		F_Assert(FEndian::SwapBigInt32, "You must call FEndian::Init prior to calling this method.");
 		return FEndian::SwapBigInt32(BEData);
 	}
 
 	template <>
 	inline UInt16 FEndian::SwapBE(const UInt16 BEData)
 	{
-		F_ASSERT(FEndian::SwapBigUInt16, "You must call FEndian::Init prior to calling this method.");
+		F_Assert(FEndian::SwapBigUInt16, "You must call FEndian::Init prior to calling this method.");
 		return FEndian::SwapBigUInt16(BEData);
 	}
 
 	template <>
 	inline UInt32 FEndian::SwapBE(const UInt32 BEData)
 	{
-		F_ASSERT(FEndian::SwapBigUInt32, "You must call FEndian::Init prior to calling this method.");
+		F_Assert(FEndian::SwapBigUInt32, "You must call FEndian::Init prior to calling this method.");
 		return FEndian::SwapBigUInt32(BEData);
 	}
 
 	template <>
 	inline Float32 FEndian::SwapBE(const Float32 BEData)
 	{
-		F_ASSERT(FEndian::SwapBigFloat32, "You must call FEndian::Init prior to calling this method.");
+		F_Assert(FEndian::SwapBigFloat32, "You must call FEndian::Init prior to calling this method.");
 		return FEndian::SwapBigFloat32(BEData);
 	}
 

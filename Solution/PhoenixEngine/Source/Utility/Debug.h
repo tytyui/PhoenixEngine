@@ -1,5 +1,5 @@
-#ifndef F_PHOENIX_DEBUG_H
-#define F_PHOENIX_DEBUG_H
+#ifndef PHOENIX_DEBUG_H
+#define PHOENIX_DEBUG_H
 
 #include <iomanip>
 #include <iostream>
@@ -14,7 +14,7 @@ namespace Phoenix
 {
 	class Debug : public TSingleton<Debug>
 	{
-		F_DECLARE_TSINGLETON(Debug);
+		F_DeclareTSingleton(Debug);
 	public:
 		FMutex& GetLock();
 
@@ -46,163 +46,163 @@ namespace Phoenix
 	}
 }
 
-#define F_DEBUG_LEVEL_0 0
-#define F_DEBUG_LEVEL_1 1
-#define F_DEBUG_LEVEL_2 2
-#define F_DEBUG_LEVEL_3 3
+#define PHOENIX_DEBUG_LEVEL_0 0
+#define PHOENIX_DEBUG_LEVEL_1 1
+#define PHOENIX_DEBUG_LEVEL_2 2
+#define PHOENIX_DEBUG_LEVEL_3 3
 
-#define F_DEBUG_LEVEL F_DEBUG_LEVEL_3
-#define F_DEBUG_USE_CONSOLE 1
-#define F_DEBUG_THREAD_SAFE 1
+#define PHOENIX_DEBUG_LEVEL PHOENIX_DEBUG_LEVEL_3
+#define PHOENIX_DEBUG_USE_CONSOLE 1
+#define PHOENIX_DEBUG_THREAD_SAFE 1
 
-#ifndef F_DEBUG_LEVEL
+#ifndef PHOENIX_DEBUG_LEVEL
 #	if _DEBUG
-#		define F_DEBUG_LEVEL F_DEBUG_LEVEL_3
+#		define PHOENIX_DEBUG_LEVEL PHOENIX_DEBUG_LEVEL_3
 #	else
-#		define F_DEBUG_LEVEL F_DEBUG_LEVEL_0
+#		define PHOENIX_DEBUG_LEVEL PHOENIX_DEBUG_LEVEL_0
 #	endif
 #endif
 
-#ifndef F_DEBUG_USE_CONSOLE
+#ifndef PHOENIX_DEBUG_USE_CONSOLE
 #	if _DEBUG
-#		define F_DEBUG_USE_CONSOLE 1
+#		define PHOENIX_DEBUG_USE_CONSOLE 1
 #	else
-#		define F_DEBUG_USE_CONSOLE 0
+#		define PHOENIX_DEBUG_USE_CONSOLE 0
 #	endif
 #endif
 
-#ifndef F_DEBUG_THREAD_SAFE
+#ifndef PHOENIX_DEBUG_THREAD_SAFE
 #	if _DEBUG
-#		define F_DEBUG_THREAD_SAFE 1
+#		define PHOENIX_DEBUG_THREAD_SAFE 1
 #	else
-#		define F_DEBUG_THREAD_SAFE 1
+#		define PHOENIX_DEBUG_THREAD_SAFE 1
 #	endif
 #endif
 
-#if F_DEBUG_USE_CONSOLE
+#if PHOENIX_DEBUG_USE_CONSOLE
 
-#	if F_DEBUG_THREAD_SAFE
-#		define F_DEBUG_LOCK()	FMutexLock MutexLock(Debug::Get().GetLock());
+#	if PHOENIX_DEBUG_THREAD_SAFE
+#		define PHOENIX_DEBUG_LOCK()	FMutexLock MutexLock(Debug::Get().GetLock());
 #	else
-#		define F_DEBUG_LOCK()
+#		define PHOENIX_DEBUG_LOCK()
 #	endif
 
-#	define F_LOG_OPEN(File)
+#	define F_LogOpen(File)
 
-#	define F_LOG_CLOSE()
+#	define F_LogClose()
 
-#	define F_DEBUG_INTERNAL(Color, PreMsg, Msg)		\
-		{											\
-			FStringStream SS;						\
-			SS	<< PreMsg 							\
-				<< FStr::ExtractFileName(__FILE__)	\
-				<< " @ "							\
-				<< __LINE__							\
-				<< ": "								\
-				<< Msg								\
-				<< '\n';							\
-													\
-			F_DEBUG_LOCK();							\
-			Debug::Get() 							\
-				<< FConsoleColor(Color) 			\
-				<< SS.str();						\
+#	define PHOENIX_DEBUG_INTERNAL(Color, PreMsg, Msg)	\
+		{												\
+			FStringStream SS;							\
+			SS	<< PreMsg 								\
+				<< FStr::ExtractFileName(__FILE__)		\
+				<< " @ "								\
+				<< __LINE__								\
+				<< ": "									\
+				<< Msg									\
+				<< '\n';								\
+														\
+			PHOENIX_DEBUG_LOCK();						\
+			Debug::Get() 								\
+				<< FConsoleColor(Color) 				\
+				<< SS.str();							\
 		}
 
-#	if F_DEBUG_LEVEL >= F_DEBUG_LEVEL_1
-#		define F_LOG_ERROR(Msg)		F_DEBUG_INTERNAL(EConsoleColor::Red, "..", Msg)
+#	if PHOENIX_DEBUG_LEVEL >= PHOENIX_DEBUG_LEVEL_1
+#		define F_LogError(Msg)		PHOENIX_DEBUG_INTERNAL(EConsoleColor::Red, "..", Msg)
 #	endif
 
-#	if F_DEBUG_LEVEL >= F_DEBUG_LEVEL_2
-#		define F_LOG_WARNING(Msg)	F_DEBUG_INTERNAL(EConsoleColor::Yellow, "..", Msg)
+#	if PHOENIX_DEBUG_LEVEL >= PHOENIX_DEBUG_LEVEL_2
+#		define F_LogWarning(Msg)	PHOENIX_DEBUG_INTERNAL(EConsoleColor::Yellow, "..", Msg)
 #	endif
 
-#	if F_DEBUG_LEVEL >= F_DEBUG_LEVEL_3
-#		define F_LOG_TRACE(Msg)		F_DEBUG_INTERNAL(EConsoleColor::White, "..", Msg)
+#	if PHOENIX_DEBUG_LEVEL >= PHOENIX_DEBUG_LEVEL_3
+#		define F_LogTrace(Msg)		PHOENIX_DEBUG_INTERNAL(EConsoleColor::White, "..", Msg)
 #	endif
 
-#	if F_DEBUG_LEVEL >= F_DEBUG_LEVEL_3
-#		define F_LOG(Msg)			F_DEBUG_INTERNAL(EConsoleColor::Grey, "..", Msg)
+#	if PHOENIX_DEBUG_LEVEL >= PHOENIX_DEBUG_LEVEL_3
+#		define F_Log(Msg)			PHOENIX_DEBUG_INTERNAL(EConsoleColor::Grey, "..", Msg)
 #	endif
 
 #else
 
-#	if F_DEBUG_THREAD_SAFE
-#		define F_DEBUG_LOCK()	FMutexLock MutexLock(Log::Get().GetLock());
+#	if PHOENIX_DEBUG_THREAD_SAFE
+#		define PHOENIX_DEBUG_LOCK()	FMutexLock MutexLock(Log::Get().GetLock());
 #	else
-#		define F_DEBUG_LOCK()
+#		define PHOENIX_DEBUG_LOCK()
 #	endif
 
-#	if F_DEBUG_LEVEL >= F_DEBUG_LEVEL_1
-#		define F_LOG_OPEN(File)												\
+#	if PHOENIX_DEBUG_LEVEL >= PHOENIX_DEBUG_LEVEL_1
+#		define F_LogOpen(File)												\
 			{																\
-				F_DEBUG_LOCK();												\
+				PHOENIX_DEBUG_LOCK();										\
 				Log::Get().Init(File);										\
-				F_ASSERT(Log::Get().IsValid(), "Failed to open file.");		\
+				F_Assert(Log::Get().IsValid(), "Failed to open file.");		\
 			}
 
-#		define F_LOG_CLOSE()												\
+#		define F_LogClose()													\
 			{																\
-				F_DEBUG_LOCK();												\
+				PHOENIX_DEBUG_LOCK();										\
 				Log::Get().DeInit();										\
 			}
 #	endif
 
-#	define F_DEBUG_INTERNAL(PreMsg, Msg)			\
-		{											\
-			FStringStream SS;						\
-			SS	<< PreMsg 							\
-				<< FStr::ExtractFileName(__FILE__)	\
-				<< " @ "							\
-				<< __LINE__							\
-				<< ": "								\
-				<< Msg								\
-				<< '\n';							\
-													\
-			F_DEBUG_LOCK();							\
-			Log::Get() 								\
-				<< SS.str();						\
+#	define PHOENIX_DEBUG_INTERNAL(PreMsg, Msg)			\
+		{												\
+			FStringStream SS;							\
+			SS	<< PreMsg 								\
+				<< FStr::ExtractFileName(__FILE__)		\
+				<< " @ "								\
+				<< __LINE__								\
+				<< ": "									\
+				<< Msg									\
+				<< '\n';								\
+														\
+			PHOENIX_DEBUG_LOCK();						\
+			Log::Get() 									\
+				<< SS.str();							\
 		}
 
-#	if F_DEBUG_LEVEL >= F_DEBUG_LEVEL_1
-#		define F_LOG_ERROR(Msg)		F_DEBUG_INTERNAL("Error: ..", Msg)
+#	if PHOENIX_DEBUG_LEVEL >= PHOENIX_DEBUG_LEVEL_1
+#		define F_LogError(Msg)		PHOENIX_DEBUG_INTERNAL("Error: ..", Msg)
 #	endif
 
-#	if F_DEBUG_LEVEL >= F_DEBUG_LEVEL_2
-#		define F_LOG_WARNING(Msg)	F_DEBUG_INTERNAL("Warning: ..", Msg)
+#	if PHOENIX_DEBUG_LEVEL >= PHOENIX_DEBUG_LEVEL_2
+#		define F_LogWarning(Msg)	PHOENIX_DEBUG_INTERNAL("Warning: ..", Msg)
 #	endif
 
-#	if F_DEBUG_LEVEL >= F_DEBUG_LEVEL_3
-#		define F_LOG_TRACE(Msg)		F_DEBUG_INTERNAL("Trace: ..", Msg)
+#	if PHOENIX_DEBUG_LEVEL >= PHOENIX_DEBUG_LEVEL_3
+#		define F_LogTrace(Msg)		PHOENIX_DEBUG_INTERNAL("Trace: ..", Msg)
 #	endif
 
-#	if F_DEBUG_LEVEL >= F_DEBUG_LEVEL_3
-#		define F_LOG(Msg)			F_DEBUG_INTERNAL("Misc: ..", Msg)
+#	if PHOENIX_DEBUG_LEVEL >= PHOENIX_DEBUG_LEVEL_3
+#		define F_Log(Msg)			PHOENIX_DEBUG_INTERNAL("Misc: ..", Msg)
 #	endif
 
 #endif
 
-#ifndef F_LOG_OPEN
-#	define F_LOG_OPEN(File)
+#ifndef F_LogOpen
+#	define F_LogOpen(File)
 #endif
 
-#ifndef F_LOG_CLOSE
-#	define F_LOG_CLOSE()
+#ifndef F_LogClose
+#	define F_LogClose()
 #endif
 
-#ifndef F_LOG_ERROR
-#	define F_LOG_ERROR(Msg)
+#ifndef F_LogError
+#	define F_LogError(Msg)
 #endif
 
-#ifndef F_LOG_WARNING
-#	define F_LOG_WARNING(Msg)
+#ifndef F_LogWarning
+#	define F_LogWarning(Msg)
 #endif
 
-#ifndef F_LOG_TRACE
-#	define F_LOG_TRACE(Msg)
+#ifndef F_LogTrace
+#	define F_LogTrace(Msg)
 #endif
 
-#ifndef F_LOG
-#	define F_LOG(Msg)
+#ifndef F_Log
+#	define F_Log(Msg)
 #endif
 
 #endif

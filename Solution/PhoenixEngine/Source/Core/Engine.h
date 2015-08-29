@@ -11,13 +11,16 @@ namespace Phoenix
 		using UpdateCallback = TFunction<void(float)>;
 
 		FEngine() = default;
+
 		FEngine(const FEngine&) = delete;
+		FEngine& operator=(const FEngine&) = delete;
+
 		FEngine(FEngine&&) = default;
-		FEngine& operator = (const FEngine&) = delete;
-		FEngine& operator = (FEngine&& RHS) = default;
+		FEngine& operator=(FEngine&&) = default;
+
 		~FEngine() = default;
-		
-		void Initialize(const UpdateCallback& OnUpdateCallback);
+
+		void Init(const UpdateCallback& OnUpdateCallback);
 
 		void DeInit();
 
@@ -25,7 +28,7 @@ namespace Phoenix
 
 	private:
 		UpdateCallback OnUpdateCallback;
-		
+
 		void Update(float DT);
 	};
 }

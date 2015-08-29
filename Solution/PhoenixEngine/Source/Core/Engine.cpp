@@ -2,13 +2,14 @@
 
 #include "Utility/Debug.h"
 #include "Utility/Endian.h"
+#include "Utility/Primitives.h"
 
 using namespace Phoenix;
 
-void FEngine::Initialize(const UpdateCallback& OnUpdateCallback)
+void FEngine::Init(const UpdateCallback& OnUpdateCallback)
 {
-	F_LOG_OPEN("Log.txt");
-	F_LOG_TRACE("Engine::Initialize()\n");
+	F_LogOpen("Log.txt");
+	F_LogTrace("Engine::Init()\n");
 	FEndian::Init();
 
 	this->OnUpdateCallback = OnUpdateCallback;
@@ -16,14 +17,58 @@ void FEngine::Initialize(const UpdateCallback& OnUpdateCallback)
 
 void FEngine::DeInit()
 {
-	F_LOG_CLOSE();
+	F_LogClose();
 }
 
 void FEngine::Run()
 {
-	F_LOG_TRACE("Engine::Run()\n");
+	F_LogTrace("Engine::Run()\n");
 
-	//Game Loop
+	// Main Thread
+	/* 
+	while running
+		
+		poll events
+		dispatch events to game thread
+
+		if game thread sent events to main thread
+			retrieve events
+			process events
+
+	end while loop
+	*/
+
+	// Game Thread
+	/*
+		while running
+			
+			update game timer
+			get delta time
+			add to accumulated time
+
+			while accumulated time >= max delta time
+				reduce accumulated time
+				get current time
+
+				if main thread sent events to game thread
+					retrieve events
+					process events
+				
+				dispatch events to main thread
+
+				update audio
+				update physics
+				update c++ scripts
+
+				if multiple updates occured this frame
+					display a warning
+					potentially reduce target frame rate
+			
+			draw graphics
+
+		end while loop
+	*/
+
 	{
 		Update(0.016f);
 		Update(0.016f);
@@ -33,7 +78,7 @@ void FEngine::Run()
 
 void FEngine::Update(float DT)
 {
-	F_LOG_TRACE("Engine::Update()");
+	F_LogTrace("Engine::Update()");
 
 	//Goes to PGame::InternalUpdate
 	OnUpdateCallback(DT);

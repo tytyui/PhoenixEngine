@@ -11,7 +11,7 @@ namespace Phoenix
 {
 	class Log : public TSingleton<Log>
 	{
-		F_DECLARE_TSINGLETON(Log);
+		F_DeclareTSingleton(Log);
 	public:
 		~Log();
 
@@ -65,7 +65,7 @@ namespace Phoenix
 	template <class T>
 	Log& Log::operator<<(const T& Data)
 	{
-		F_ASSERT(IsValid(), "This class must be valid.");
+		F_Assert(IsValid(), "This class must be valid.");
 		OFStream << Data;
 		return *this;
 	}
@@ -73,7 +73,7 @@ namespace Phoenix
 	template <>
 	inline Log& Log::operator<<(const FConsoleColor& Data)
 	{
-		F_ASSERT(IsValid(), "This class must be valid.");
+		F_Assert(IsValid(), "This class must be valid.");
 		return *this;
 	}
 }

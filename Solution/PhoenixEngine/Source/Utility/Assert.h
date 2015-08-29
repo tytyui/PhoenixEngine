@@ -8,6 +8,6 @@ namespace Phoenix
 
 }
 
-#define F_ASSERT(Expr, Msg) assert(Msg && Expr)
+#define F_Assert(Expr, Msg) assert(Msg && Expr)
 
 #endif
