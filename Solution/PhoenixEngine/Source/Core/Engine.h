@@ -2,6 +2,7 @@
 #define PHOENIX_ENGINE_H
 
 #include "Core/GameThread.h"
+#include "Rendering/GLIncludes.h"
 
 namespace Phoenix
 {

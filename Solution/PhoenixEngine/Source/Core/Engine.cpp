@@ -6,6 +6,20 @@
 #include "Utility/Thread.h"
 #include "Utility/Timer.h"
 
+#include <GLFW/glfw3.h>
+
+//TODO: Move somewhere better
+#ifdef _DEBUG
+	#pragma comment (lib, "glew32sd.lib")
+#else
+	#pragma comment (lib, "glew32s.lib")
+#endif
+
+#pragma comment (lib, "glu32.lib")
+#pragma comment (lib, "opengl32.lib")
+
+#pragma comment (lib, "glfw3.lib")
+
 using namespace Phoenix;
 
 FEngine::FEngine()
@@ -21,6 +35,22 @@ void FEngine::Init(const FGameThread::FUpdateCallback& OnUpdateCallback)
 	GameThread.Init(OnUpdateCallback);
 
 	F_Assert(GameThread.IsValid(), "Game Thread failed to initialize.");
+
+	//TEMP GLFW Stuff
+	//glfwInit();
+	//glewExperimental = GL_TRUE;
+	//int status = glewInit();
+
+	glfwInit();
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+	GLFWwindow* window = glfwCreateWindow(800, 600, "Test", nullptr, nullptr);
+	glfwMakeContextCurrent(window);
+	glewExperimental = GL_TRUE;
+	int status = glewInit();
+
 }
 
 void FEngine::DeInit()
