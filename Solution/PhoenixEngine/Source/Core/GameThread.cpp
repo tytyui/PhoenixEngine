@@ -13,6 +13,10 @@ FGameThread::FGameThread()
 FGameThread::~FGameThread()
 {
 	F_Assert(!IsRunning, "Game Thread should have already been deinitialized.");
+	F_Assert(Thread.joinable(), "Game Thread should not have been detached.");
+
+	IsRunning = false;
+	Thread.join();
 }
 
 void FGameThread::Init(const FUpdateCallback& OnUpdateCallback)
@@ -25,13 +29,18 @@ void FGameThread::Init(const FUpdateCallback& OnUpdateCallback)
 	IsRunning = true;
 
 	Thread = FThread(&FGameThread::ThreadRun, this);
-	Thread.detach();
 }
 
 bool FGameThread::IsValid() const
 {
 	const bool LocalIsRunning = IsRunning.load();
 	return LocalIsRunning;
+}
+
+void FGameThread::ForceShutDown()
+{
+	F_LogWarning("Subsystems may not have been shut down properly.")
+	IsRunning = false;
 }
 
 void FGameThread::ThreadRun()
@@ -42,15 +51,45 @@ void FGameThread::ThreadRun()
 	FHighResTimer Timer;
 	Timer.Reset();
 
-	while (true)
+	const Float32 FPS = 60.f;
+	Float32 AccumulatedTime = 0.f;
+	Float32 MaxDeltaTimePerFrame = 1.f / FPS;
+	UInt32 UpdateCount = 0;
+
+	while (IsRunning)
 	{
 		Timer.Update();
 		const Float32 DeltaSeconds = Timer.GetDeltaSeconds<Float32>();
 
-		F_LogTrace("GameThread::ThreadRun() - Tick.  Do Lots Of Stuff.");
+		AccumulatedTime += DeltaSeconds;
+		UpdateCount = 0;
 
+		while (AccumulatedTime >= MaxDeltaTimePerFrame)
+		{
+			AccumulatedTime -= MaxDeltaTimePerFrame;
+			const Float32 CurrentTime = Timer.GetDeltaSeconds<Float32>() - AccumulatedTime;
+
+			// FIXME: Receive and process messages from Engine.cpp here.
+
+			// FIXME: Update
+
+			// FIXME: Dispatch any messages to Engine.cpp here.
+
+			++UpdateCount;
+			static const UInt32 MinFramesBeforeWarning = 2;
+			if (UpdateCount == MinFramesBeforeWarning)
+			{
+				F_LogWarning("Two or more updates occurred.  AccT: " << AccumulatedTime);
+			}
+		}
+
+		// FIXME: Render
+
+		// FIXME: Remove this when everyone has seen the game loop.
+		F_LogTrace("GameThread::ThreadRun() - Tick.  Do Lots Of Stuff.");
 		UpdateCallback(0);
 		FThr::SleepThread(10000);
+		// END FIXME		
 	}
 
 	ThreadDeInit();
@@ -65,9 +104,9 @@ void FGameThread::ThreadDeInit()
 {
 	F_LogTrace("GameThread::ThreadDeInit()");
 	UpdateCallback = nullptr;
-	IsRunning = false;
 }
 
+// FIXME: Remove this when it is no longer needed.
 // Main Thread
 //while (true)
 //{
@@ -79,6 +118,8 @@ void FGameThread::ThreadDeInit()
 		// Process events
 //}
 
+
+// FIXME: Remove this when it is no longer needed.
 // Game Thread
 /*
 	while running

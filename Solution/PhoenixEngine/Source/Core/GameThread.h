@@ -26,6 +26,8 @@ namespace Phoenix
 
 		bool IsValid() const;
 
+		void ForceShutDown();
+
 	protected:
 	private:
 		FThread Thread;

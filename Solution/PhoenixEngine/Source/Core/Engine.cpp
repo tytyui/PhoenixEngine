@@ -36,11 +36,7 @@ void FEngine::Init(const FGameThread::FUpdateCallback& OnUpdateCallback)
 
 	F_Assert(GameThread.IsValid(), "Game Thread failed to initialize.");
 
-	//TEMP GLFW Stuff
-	//glfwInit();
-	//glewExperimental = GL_TRUE;
-	//int status = glewInit();
-
+	// FIXME: For whoever is doing the window stuff.
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -50,7 +46,9 @@ void FEngine::Init(const FGameThread::FUpdateCallback& OnUpdateCallback)
 	glfwMakeContextCurrent(window);
 	glewExperimental = GL_TRUE;
 	int status = glewInit();
+	// END FIXME
 
+	IsRunning = true;
 }
 
 void FEngine::DeInit()
@@ -65,17 +63,23 @@ void FEngine::Run()
 	FHighResTimer Timer;
 	Timer.Reset();
 
-	while (true)
+	while (IsRunning)
 	{
 		Timer.Update();
 		const Float32 DeltaSeconds = Timer.GetDeltaSeconds<Float32>();
 
-		F_LogTrace("Engine::Run() - Tick.  Poll, Dispatch, Receive.\n");
 
+
+
+
+		// FIXME: Remove this when everyone has seen the game loop.
+		F_LogTrace("Engine::Run() - Tick.  Poll, Dispatch, Receive.\n");
 		FThr::SleepThread(5000);
+		// END FIXME
 	}
 }
 
+// FIXME: Remove this when it is no longer needed.
 // Main Thread
 //while (true)
 //{
@@ -87,6 +91,8 @@ void FEngine::Run()
 		// Process events
 //}
 
+
+// FIXME: Remove this when it is no longer needed.
 // Game Thread
 /*
 	while running

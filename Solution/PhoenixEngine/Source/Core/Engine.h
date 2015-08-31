@@ -26,6 +26,7 @@ namespace Phoenix
 
 	private:
 		FGameThread GameThread;
+		bool IsRunning{ false };
 	};
 }
 
