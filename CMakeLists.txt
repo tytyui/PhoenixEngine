@@ -82,11 +82,14 @@ endif()
 
 include_directories(${PH_EXTINC_DIR})
 set(GLEW_INCLUDE_DIR "${PH_EXTINC_DIR}/GLEW")
-  file(GLOB GLEW_LIBRARIES
-	"${PH_EXTLIB_DIR}/${CMAKE_BUILD_TYPE}/GLEW/*.lib"
-  )
-  target_link_libraries(${ENGINE_NAME} ${GLEW_LIBRARIES})
-  message ("${GLEW_LIBRARIES}")
+file(GLOB GLEW_LIBRARIES
+	"${PH_EXTLIB_DIR}/${CMAKE_BUILD_TYPE}/GLEW/*.lib")
+target_link_libraries(${ENGINE_NAME} ${GLEW_LIBRARIES})
+
+set(GLFW_INCLUDE_DIR "${PH_EXTINC_DIR}/GLFW")
+file(GLOB GLFW_LIBRARIES
+	"${PH_EXTLIB_DIR}/${CMAKE_BUILD_TYPE}/GLFW/*.lib")
+target_link_libraries(${ENGINE_NAME} ${GLFW_LIBRARIES})
   
 # Install target
 install(TARGETS ${ENGINE_NAME} DESTINATION bin)
