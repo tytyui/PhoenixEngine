@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="D:\Dropbox\Documents\Projects\C++\PhoenixEngine\CMakeLists.txt" />
+    <CustomBuild Include="D:\Dropbox\Documents\Projects\C++\PhoenixEngine\Solution\CMakeFiles\e4bff916994c5d253ab4828b1456199b\FORCE_BUILD.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="D:\Dropbox\Documents\Projects\C++\PhoenixEngine\Solution\CMakeFiles\FORCE_BUILD" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{583A32EE-603E-4E00-A7DE-DCA80B9017CA}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

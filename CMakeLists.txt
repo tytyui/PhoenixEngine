@@ -90,7 +90,11 @@ set(GLFW_INCLUDE_DIR "${PH_EXTINC_DIR}/GLFW")
 file(GLOB GLFW_LIBRARIES
 	"${PH_EXTLIB_DIR}/${CMAKE_BUILD_TYPE}/GLFW/*.lib")
 target_link_libraries(${ENGINE_NAME} ${GLFW_LIBRARIES})
-  
+
+# Add an empty library to force regenerating of the project
+add_custom_target(FORCE_BUILD ${CMAKE_COMMAND} ${CMAKE_SOURCE_DIR})
+add_dependencies(PhoenixEngine FORCE_BUILD)
+
 # Install target
 install(TARGETS ${ENGINE_NAME} DESTINATION bin)
 
