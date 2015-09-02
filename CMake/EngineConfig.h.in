@@ -1,0 +1,7 @@
+#ifndef CONFIG_ENGINE_CONFIG_H
+#define CONFIG_ENGINE_CONFIG_H
+
+#define myproject_VERSION_MAJOR @PH_VERSION_MAJOR@
+#define myproject_VERSION_MINOR @PH_VERSION_MINOR@
+
+#endif
