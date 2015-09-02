@@ -23,6 +23,7 @@
     <ClCompile Include="Source\Core\GameThread.cpp" />
     <ClCompile Include="Source\Game\Game.cpp" />
     <ClCompile Include="Source\Utility\Endian.cpp" />
+    <ClCompile Include="Source\Utility\Thread.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Core\Engine.h" />

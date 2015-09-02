@@ -36,6 +36,9 @@
     <ClCompile Include="Source\Core\GameThread.cpp">
       <Filter>Source\Core</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Utility\Thread.cpp">
+      <Filter>Source\Utility</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Utility\Algorithm.h">

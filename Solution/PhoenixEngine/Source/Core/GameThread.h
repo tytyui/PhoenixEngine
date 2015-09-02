@@ -30,7 +30,7 @@ namespace Phoenix
 
 	protected:
 	private:
-		FThread Thread;
+		FThreadRAII Thread;
 		FUpdateCallback UpdateCallback;
 
 		TAtomic<bool> IsRunning{ false };
