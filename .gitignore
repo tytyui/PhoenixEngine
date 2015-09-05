@@ -41,6 +41,7 @@ Solution/CMakeCache.txt
 
 # Executables
 *.exe
+!Premake5.exe
 *.out
 *.app
 
