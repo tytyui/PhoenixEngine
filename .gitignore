@@ -4,12 +4,16 @@ Solution/PhoenixEngine/Debug
 Solution/PhoenixEngine/Release
 Solution/TestGame/Debug
 Solution/TestGame/Release
-
+Solution/CMakeCache.txt
 #VS stuff
 *.user
 *.sdf
+*.sln
+*.vcxproj*
 *.opensdf
 *.suo
+*.cmake
+*.tlog
 
 # Compiled Object files
 *.slo

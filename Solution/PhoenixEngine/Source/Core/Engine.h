@@ -17,7 +17,6 @@ namespace Phoenix
 		FEngine(FEngine&&) = delete;
 		FEngine& operator=(FEngine&&) = delete;
 
-
 		void Init(const FGameThread::FUpdateCallback& UpdateCallback);
 
 		void DeInit();

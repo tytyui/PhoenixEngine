@@ -13,10 +13,10 @@ FGameThread::FGameThread()
 FGameThread::~FGameThread()
 {
 	F_Assert(!IsRunning, "Game Thread should have already been deinitialized.");
-	F_Assert(Thread.joinable(), "Game Thread should not have been detached.");
+	F_Assert(Thread.Get().joinable(), "Game Thread should not have been detached.");
 
 	IsRunning = false;
-	Thread.join();
+	Thread.Join();
 }
 
 void FGameThread::Init(const FUpdateCallback& OnUpdateCallback)
@@ -71,9 +71,9 @@ void FGameThread::ThreadRun()
 
 			// FIXME: Receive and process messages from Engine.cpp here.
 
-			// FIXME: Update
+			// #FIXME: Update
 
-			// FIXME: Dispatch any messages to Engine.cpp here.
+			// #FIXME: Dispatch any messages to Engine.cpp here.
 
 			++UpdateCount;
 			static const UInt32 MinFramesBeforeWarning = 2;
@@ -83,13 +83,13 @@ void FGameThread::ThreadRun()
 			}
 		}
 
-		// FIXME: Render
+		// #FIXME: Render
 
-		// FIXME: Remove this when everyone has seen the game loop.
+		// #FIXME: Remove this when everyone has seen the game loop.
 		F_LogTrace("GameThread::ThreadRun() - Tick.  Do Lots Of Stuff.");
 		UpdateCallback(0);
 		FThr::SleepThread(10000);
-		// END FIXME		
+		// END #FIXME		
 	}
 
 	ThreadDeInit();
@@ -106,7 +106,7 @@ void FGameThread::ThreadDeInit()
 	UpdateCallback = nullptr;
 }
 
-// FIXME: Remove this when it is no longer needed.
+// #FIXME: Remove this when it is no longer needed.
 // Main Thread
 //while (true)
 //{
@@ -119,7 +119,7 @@ void FGameThread::ThreadDeInit()
 //}
 
 
-// FIXME: Remove this when it is no longer needed.
+// #FIXME: Remove this when it is no longer needed.
 // Game Thread
 /*
 	while running
