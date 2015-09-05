@@ -3,7 +3,6 @@ workspace "PhoenixEngine"
 	configurations { "Debug", "Release" }
 	includedirs { "PhoenixEngine/Source", "Libraries/Include" }
 	libdirs { "Libraries/Lib/%{cfg.buildcfg}/GLEW/", "Libraries/Lib/%{cfg.buildcfg}/GLFW/", "Binaries/%{cfg.buildcfg}" }
-	linkoptions "-stdlib=libc++"
 	
 project "PhoenixEngine"
 	kind "StaticLib"
@@ -24,6 +23,9 @@ project "PhoenixEngine"
 		optimize "On"
 	
 	links { "glew", "glfw" }
+	configuration "gmake"
+            linkoptions  { "-std=c++0x", "-stdlib=libc++" }
+            buildoptions { "-std=c++0x", "-stdlib=libc++" }
 
 project "TestGame"
 	kind "ConsoleApp"
@@ -44,4 +46,5 @@ project "TestGame"
 	links { "PhoenixEngine" }
 	
 	configuration "gmake"
-		buildoptions { "-std=c++0x" }
+            linkoptions  { "-std=c++0x", "-stdlib=libc++" }
+            buildoptions { "-std=c++0x", "-stdlib=libc++" }
