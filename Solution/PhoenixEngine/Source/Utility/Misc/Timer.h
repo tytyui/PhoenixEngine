@@ -17,6 +17,9 @@ namespace Phoenix
 		template <class T>
 		T GetDeltaSeconds();
 
+		template <class T>
+		T GetTimeInSeconds();
+
 	protected:
 	private:
 		typedef std::chrono::high_resolution_clock ClockT;
@@ -56,6 +59,18 @@ namespace Phoenix
 
 		const T DeltaSeconds = Duration.count();
 		return DeltaSeconds;
+	}
+
+	template <class T>
+	T FHighResolutionTimer::GetTimeInSeconds()
+	{
+		static_assert(std::is_floating_point<T>::value, "This template must be a floating point type.");
+
+		const TimeStampT TimeStamp = ClockT::now();
+		const TDuration<T> Duration = TimeStamp.time_since_epoch();
+
+		const T TimeInSeconds = Duration.count();
+		return TimeInSeconds;
 	}
 }
 

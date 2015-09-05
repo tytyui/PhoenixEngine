@@ -1,8 +1,9 @@
 #ifndef PHOENIX_ENGINE_H
 #define PHOENIX_ENGINE_H
 
-#include "Core/GameThread.h"
+#include "Utility/Threading/ThreadSafeVector.h"
 #include "Rendering/GLIncludes.h"
+#include "Core/GameThread.h"
 
 namespace Phoenix
 {
@@ -25,6 +26,9 @@ namespace Phoenix
 
 	private:
 		FGameThread GameThread;
+		// FIXME: Change UInt32 to the Event structure.
+		TThreadSafeVector<UInt32> OutgoingEvents;
+		TThreadSafeVector<UInt32> IncomingEvents;
 		bool IsRunning{ false };
 	};
 }

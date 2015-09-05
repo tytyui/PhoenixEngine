@@ -6,6 +6,20 @@
 
 using namespace Phoenix;
 
+bool FGameThread::FInitParams::IsValid() const
+{
+	const bool AreOutgoingEventsValid = OutgoingEvents != nullptr;
+	const bool AreIncomingEventsValid = IncomingEvents != nullptr;
+	const bool IsUpdateCallbackValid = UpdateCallback != nullptr;
+
+	const bool Result =
+		AreOutgoingEventsValid &&
+		AreIncomingEventsValid &&
+		IsUpdateCallbackValid;
+
+	return Result;
+}
+
 FGameThread::FGameThread()
 {
 }
@@ -19,13 +33,17 @@ FGameThread::~FGameThread()
 	Thread.Join();
 }
 
-void FGameThread::Init(const FUpdateCallback& OnUpdateCallback)
+void FGameThread::Init(const FInitParams& InitParams)
 {
-	F_Assert(OnUpdateCallback, "UpdateCallback must not be null.");
+	F_Assert(InitParams.IsValid(), "Initialization parameters must be valid.");
 	F_Assert(!IsRunning, "Game Thread is already running.");
 	F_LogTrace("GameThread::Init()");
 
-	UpdateCallback = OnUpdateCallback;
+	OutgoingEvents = InitParams.OutgoingEvents;
+	IncomingEvents = InitParams.IncomingEvents;
+
+	UpdateCallback = InitParams.UpdateCallback;
+
 	IsRunning = true;
 	
 	Thread = FThread(&FGameThread::ThreadRun, this);
@@ -48,13 +66,15 @@ void FGameThread::ThreadRun()
 	ThreadInit();
 	F_LogTrace("GameThread::ThreadRun()");
 
+	const Float32 FramesPerSec = .125f; // FIXME: This low value is simply for demonstration purposes.
+	const Float32 MaxDeltaTime = 1.f / FramesPerSec;
+
+	TThreadSafeVector<UInt32>::ContainerT ReceivedEvents;
+	Float32 AccumulatedTime = 0.f;
+	UInt32 UpdateCount = 0;
+
 	FHighResTimer Timer;
 	Timer.Reset();
-
-	const Float32 FPS = 60.f;
-	Float32 AccumulatedTime = 0.f;
-	Float32 MaxDeltaTimePerFrame = 1.f / FPS;
-	UInt32 UpdateCount = 0;
 
 	while (IsRunning)
 	{
@@ -64,16 +84,27 @@ void FGameThread::ThreadRun()
 		AccumulatedTime += DeltaSeconds;
 		UpdateCount = 0;
 
-		while (AccumulatedTime >= MaxDeltaTimePerFrame)
+		while (AccumulatedTime >= MaxDeltaTime)
 		{
-			AccumulatedTime -= MaxDeltaTimePerFrame;
-			const Float32 CurrentTime = Timer.GetDeltaSeconds<Float32>() - AccumulatedTime;
+			AccumulatedTime -= MaxDeltaTime;
+			const Float32 CurrentTime = Timer.GetTimeInSeconds<Float32>() - AccumulatedTime;
 
 			// FIXME: Receive and process messages from Engine.cpp here.
+			IncomingEvents->GetDataAndClear(ReceivedEvents);
+
+			for (const auto& ReceivedEvent : ReceivedEvents)
+			{
+				F_LogTrace("GameThread::ThreadRun() - Received event: " << ReceivedEvent);
+			}
+
+			ReceivedEvents.clear();
 
 			// #FIXME: Update
+			UpdateCallback(0);
 
 			// #FIXME: Dispatch any messages to Engine.cpp here.
+			F_LogTrace("GameThread::ThreadRun() - Dispatching event: " << 1 << "\n");
+			OutgoingEvents->AddEntry(1);
 
 			++UpdateCount;
 			static const UInt32 MinFramesBeforeWarning = 2;
@@ -84,12 +115,6 @@ void FGameThread::ThreadRun()
 		}
 
 		// #FIXME: Render
-
-		// #FIXME: Remove this when everyone has seen the game loop.
-		F_LogTrace("GameThread::ThreadRun() - Tick.  Do Lots Of Stuff.");
-		UpdateCallback(0);
-		FThr::SleepThread(10000);
-		// END #FIXME		
 	}
 
 	ThreadDeInit();

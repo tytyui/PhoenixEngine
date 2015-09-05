@@ -4,6 +4,7 @@
 #include "Utility/Misc/Function.h"
 #include "Utility/Threading/Atomic.h"
 #include "Utility/Threading/Thread.h"
+#include "Utility/Threading/ThreadSafeVector.h"
 
 namespace Phoenix
 {
@@ -11,6 +12,15 @@ namespace Phoenix
 	{
 	public:
 		typedef TFunction<void(float)> FUpdateCallback;
+
+		struct FInitParams
+		{
+			TThreadSafeVector<UInt32>* OutgoingEvents{ nullptr };
+			TThreadSafeVector<UInt32>* IncomingEvents{ nullptr };
+			FUpdateCallback UpdateCallback;
+
+			bool IsValid() const;
+		};
 		
 		FGameThread();
 
@@ -22,7 +32,7 @@ namespace Phoenix
 
 		~FGameThread();
 
-		void Init(const FUpdateCallback& OnUpdateCallback);
+		void Init(const FInitParams& InitParams);
 
 		bool IsValid() const;
 
@@ -31,6 +41,11 @@ namespace Phoenix
 	protected:
 	private:
 		FThreadRAII Thread;
+		// FIXME: These should probably be shared pointers instead.
+		// However, we haven't discussed memory management and 
+		// ownership semantics yet, so they're raw pointers for now.
+		TThreadSafeVector<UInt32>* OutgoingEvents{ nullptr };
+		TThreadSafeVector<UInt32>* IncomingEvents{ nullptr };
 		FUpdateCallback UpdateCallback;
 
 		TAtomic<bool> IsRunning{ false };

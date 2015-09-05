@@ -1,21 +1,24 @@
 #include "Core/Engine.h"
 
+#include <cmath> // FIXME: We need a math layer.
+
 #include "Utility/Debug/Debug.h"
 #include "Utility/FileIO/Endian.h"
 #include "Utility/Misc/Primitives.h"
 #include "Utility/Misc/Timer.h"
 #include "Utility/Threading/Thread.h"
 
+// FIXME: For whoever is doing the window stuff.
 #include <GLFW/glfw3.h>
+// END FIXME
 
-//TODO: Move somewhere better
+// FIXME: Move somewhere better
 #ifdef _DEBUG
 	#pragma comment (lib, "glew32sd.lib")
 #else
 	#pragma comment (lib, "glew32s.lib")
 #endif
 
-#pragma comment (lib, "glu32.lib")
 #pragma comment (lib, "opengl32.lib")
 
 #pragma comment (lib, "glfw3.lib")
@@ -32,9 +35,17 @@ void FEngine::Init(const FGameThread::FUpdateCallback& OnUpdateCallback)
 	F_LogTrace("Engine::Init()\n");
 
 	FEndian::Init();
-	GameThread.Init(OnUpdateCallback);
 
-	F_Assert(GameThread.IsValid(), "Game Thread failed to initialize.");
+	{
+		FGameThread::FInitParams InitParams;
+
+		InitParams.OutgoingEvents = &IncomingEvents;
+		InitParams.IncomingEvents = &OutgoingEvents;
+		InitParams.UpdateCallback = OnUpdateCallback;
+
+		GameThread.Init(InitParams);
+		F_Assert(GameThread.IsValid(), "Game Thread failed to initialize.");
+	}
 
 	// FIXME: For whoever is doing the window stuff.
 	glfwInit();
@@ -60,22 +71,41 @@ void FEngine::Run()
 {
 	F_LogTrace("Engine::Run()\n");
 
+	const Float32 FramesPerSec = 0.25f; // FIXME: This low value is simply for demonstration purposes.
+	const Float32 MaxDeltaTime = 1.f / FramesPerSec;
+
+	TThreadSafeVector<UInt32>::ContainerT ReceivedEvents;
+	Float32 AccumulatedTime = 0.f;
+
 	FHighResTimer Timer;
 	Timer.Reset();
-
+	
 	while (IsRunning)
 	{
 		Timer.Update();
 		const Float32 DeltaSeconds = Timer.GetDeltaSeconds<Float32>();
+		AccumulatedTime += DeltaSeconds;
 
+		if (AccumulatedTime >= MaxDeltaTime)
+		{
+			// FIXME: Wrap std::fmod
+			AccumulatedTime = std::fmod(AccumulatedTime, MaxDeltaTime);
 
+			F_LogTrace("Engine::Run() - Dispatching event: " << 0);
 
+			OutgoingEvents.AddEntry(0);
+			IncomingEvents.GetDataAndClear(ReceivedEvents);
 
+			for (const auto& ReceivedEvent : ReceivedEvents)
+			{
+				F_LogTrace("Engine::Run() - Received event: " << ReceivedEvent << "\n");
+			}
+			
+			ReceivedEvents.clear();
+		}
 
-		// FIXME: Remove this when everyone has seen the game loop.
-		F_LogTrace("Engine::Run() - Tick.  Poll, Dispatch, Receive.\n");
-		FThr::SleepThread(5000);
-		// END FIXME
+		// FIXME: Calculate an appropriate time to 
+		// sleep in order to prevent a busy wait.
 	}
 }
 
