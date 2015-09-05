@@ -1,4 +1,4 @@
-require "../Tools/xcode"
+
 workspace "PhoenixEngine"
 	configurations { "Debug", "Release" }
 	includedirs { "PhoenixEngine/Source", "Libraries/Include" }
