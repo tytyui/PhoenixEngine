@@ -29,6 +29,7 @@
     <ClInclude Include="Source\Core\GameThread.h" />
     <ClInclude Include="Source\Game\Game.h" />
     <ClInclude Include="Source\Rendering\GLIncludes.h" />
+    <ClInclude Include="Source\Rendering\GLInterface.h" />
     <ClInclude Include="Source\Utility\Algorithm.h" />
     <ClInclude Include="Source\Utility\Array.h" />
     <ClInclude Include="Source\Utility\Assert.h" />

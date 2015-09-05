@@ -134,5 +134,8 @@
     <ClInclude Include="Source\Rendering\GLIncludes.h">
       <Filter>Source\Rendering</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Rendering\GLInterface.h">
+      <Filter>Source\Rendering</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
