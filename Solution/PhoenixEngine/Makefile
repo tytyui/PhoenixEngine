@@ -19,12 +19,12 @@ ifeq ($(config),debug)
   INCLUDES += -ISource -I../Libraries/Include
   FORCE_INCLUDE +=
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
-  ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -g
+  ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -g -std=c++0x
   ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CFLAGS)
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
   LIBS +=
   LDDEPS +=
-  ALL_LDFLAGS += $(LDFLAGS) -L../Libraries/Lib/Debug/GLEW -L../Libraries/Lib/Debug/GLFW -L../Binaries/Debug
+  ALL_LDFLAGS += $(LDFLAGS) -L../Libraries/Lib/Debug/GLEW -L../Libraries/Lib/Debug/GLFW -L../Binaries/Debug -std=c++0x
   LINKCMD = $(AR) -rcs "$@" $(OBJECTS)
   define PREBUILDCMDS
   endef
@@ -46,12 +46,12 @@ ifeq ($(config),release)
   INCLUDES += -ISource -I../Libraries/Include
   FORCE_INCLUDE +=
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
-  ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -O2
+  ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -O2 -std=c++0x
   ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CFLAGS)
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
   LIBS += -lglew -lglfw
   LDDEPS +=
-  ALL_LDFLAGS += $(LDFLAGS) -L../Libraries/Lib/Release/GLEW -L../Libraries/Lib/Release/GLFW -L../Binaries/Release -s
+  ALL_LDFLAGS += $(LDFLAGS) -L../Libraries/Lib/Release/GLEW -L../Libraries/Lib/Release/GLFW -L../Binaries/Release -s -std=c++0x
   LINKCMD = $(AR) -rcs "$@" $(OBJECTS)
   define PREBUILDCMDS
   endef
@@ -136,10 +136,10 @@ $(OBJDIR)/GameThread.o: Source/Core/GameThread.cpp
 $(OBJDIR)/Game.o: Source/Game/Game.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/Endian.o: Source/Utility/Endian.cpp
+$(OBJDIR)/Endian.o: Source/Utility/FileIO/Endian.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/Thread.o: Source/Utility/Thread.cpp
+$(OBJDIR)/Thread.o: Source/Utility/Threading/Thread.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 
