@@ -24,9 +24,13 @@ project "PhoenixEngine"
 	
 	links { "glew", "glfw" }
 	configuration "gmake"
-            linkoptions  { "-std=c++0x", "-stdlib=libc++" }
-            buildoptions { "-std=c++0x", "-stdlib=libc++" }
+            linkoptions  { "-std=c++0x" }
+            buildoptions { "-std=c++0x" }
 
+	configuration "macos"
+            linkoptions  { "-std=c++11", "-stdlib=libc++" }
+            buildoptions { "-std=c++11", "-stdlib=libc++" }
+			
 project "TestGame"
 	kind "ConsoleApp"
 	language "C++"
@@ -46,5 +50,9 @@ project "TestGame"
 	links { "PhoenixEngine" }
 	
 	configuration "gmake"
-            linkoptions  { "-std=c++0x", "-stdlib=libc++" }
-            buildoptions { "-std=c++0x", "-stdlib=libc++" }
+            linkoptions  { "-std=c++0x" }
+            buildoptions { "-std=c++0x" }
+		
+	configuration "macos"
+            linkoptions  { "-std=c++11", "-stdlib=libc++" }
+            buildoptions { "-std=c++11", "-stdlib=libc++" }
