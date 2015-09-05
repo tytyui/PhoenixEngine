@@ -1,11 +1,11 @@
 #ifndef PHOENIX_LOG_H
 #define PHOENIX_LOG_H
 
-#include "Utility/Assert.h"
-#include "Utility/FileStream.h"
-#include "Utility/Mutex.h"
-#include "Utility/Singleton.h"
-#include "Utility/String.h"
+#include "Utility/Debug/Assert.h"
+#include "Utility/FileIO/FileStream.h"
+#include "Utility/Misc/Singleton.h"
+#include "Utility/Misc/String.h"
+#include "Utility/Threading/Mutex.h"
 
 namespace Phoenix
 {

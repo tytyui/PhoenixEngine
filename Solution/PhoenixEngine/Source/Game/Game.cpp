@@ -1,6 +1,6 @@
 #include "Game/Game.h"
 
-#include "Utility/Debug.h"
+#include "Utility/Debug/Debug.h"
 #include "Core/Engine.h"
 
 using namespace Phoenix;

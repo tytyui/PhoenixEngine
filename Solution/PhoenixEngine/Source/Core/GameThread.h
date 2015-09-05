@@ -1,9 +1,9 @@
 #ifndef PHOENIX_GAME_THREAD_H
 #define PHOENIX_GAME_THREAD_H
 
-#include "Utility/Atomic.h"
-#include "Utility/Function.h"
-#include "Utility/Thread.h"
+#include "Utility/Misc/Function.h"
+#include "Utility/Threading/Atomic.h"
+#include "Utility/Threading/Thread.h"
 
 namespace Phoenix
 {

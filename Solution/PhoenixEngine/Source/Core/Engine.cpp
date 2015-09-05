@@ -1,10 +1,10 @@
 #include "Core/Engine.h"
 
-#include "Utility/Debug.h"
-#include "Utility/Endian.h"
-#include "Utility/Primitives.h"
-#include "Utility/Thread.h"
-#include "Utility/Timer.h"
+#include "Utility/Debug/Debug.h"
+#include "Utility/FileIO/Endian.h"
+#include "Utility/Misc/Primitives.h"
+#include "Utility/Misc/Timer.h"
+#include "Utility/Threading/Thread.h"
 
 #include <GLFW/glfw3.h>
 

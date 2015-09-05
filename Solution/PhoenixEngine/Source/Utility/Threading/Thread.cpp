@@ -1,6 +1,6 @@
-#include "Utility/Thread.h"
+#include "Utility/Threading/Thread.h"
 
-#include "Utility/Assert.h"
+#include "Utility/Debug/Assert.h"
 
 using namespace Phoenix;
 

@@ -1,8 +1,8 @@
 #include "Core/GameThread.h"
 
-#include "Utility/Assert.h"
-#include "Utility/Debug.h"
-#include "Utility/Timer.h"
+#include "Utility/Debug/Assert.h"
+#include "Utility/Debug/Debug.h"
+#include "Utility/Misc/Timer.h"
 
 using namespace Phoenix;
 
@@ -27,7 +27,7 @@ void FGameThread::Init(const FUpdateCallback& OnUpdateCallback)
 
 	UpdateCallback = OnUpdateCallback;
 	IsRunning = true;
-
+	
 	Thread = FThread(&FGameThread::ThreadRun, this);
 }
 

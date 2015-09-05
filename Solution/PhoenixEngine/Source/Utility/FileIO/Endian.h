@@ -1,9 +1,9 @@
 #ifndef PHOENIX_ENDIAN_H
 #define PHOENIX_ENDIAN_H
 
-#include "Utility/Assert.h"
-#include "Utility/Debug.h"
-#include "Utility/Primitives.h"
+#include "Utility/Debug/Assert.h"
+#include "Utility/Debug/Debug.h"
+#include "Utility/Misc/Primitives.h"
 
 namespace Phoenix
 {

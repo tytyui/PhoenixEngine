@@ -4,11 +4,11 @@
 #include <iomanip>
 #include <iostream>
 
-#include "Utility/ConsoleColor.h"
-#include "Utility/Log.h"
-#include "Utility/Mutex.h"
-#include "Utility/Singleton.h"
-#include "Utility/StringStream.h"
+#include "Utility/Debug/ConsoleColor.h"
+#include "Utility/Debug/Log.h"
+#include "Utility/Misc/Singleton.h"
+#include "Utility/Misc/StringStream.h"
+#include "Utility/Threading/Mutex.h"
 
 namespace Phoenix
 {

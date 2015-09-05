@@ -5,8 +5,8 @@
 #include <windows.h> 
 #endif
 
-#include "Utility/Array.h"
-#include "Utility/Assert.h"
+#include "Utility/Containers/Array.h"
+#include "Utility/Debug/Assert.h"
 
 namespace Phoenix
 {
