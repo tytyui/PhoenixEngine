@@ -1,16 +1,20 @@
 language: cpp
 
-addons:
-  coverity_scan:
-    project:
-      name: "PhoenixOrg/PhoenixEngine"
-      description: "C++ game engine."
-    notification_email: mitchdandrews@gmail.com
-    build_command:   "make -C Solution config=debug"
-    branch_pattern: master
+compiler:
+  - gcc
+  
+branches:
+  only:
+    - master
 
+notifications:
+  email: 
+    - mitchdandrews@gmail.com
+	
 sudo: false
 
 script:
   - make -C Solution config=release
- 
+
+os: 
+  - linux
