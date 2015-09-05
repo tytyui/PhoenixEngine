@@ -1,6 +1,6 @@
 #include "TestGame.h"
 
-#include "Utility/Debug.h"
+#include "Utility/Debug/Debug.h"
 
 using namespace Phoenix;
 

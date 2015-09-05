@@ -1,7 +1,7 @@
 #ifndef PHOENIX_GAME_H
 #define PHOENIX_GAME_H
 
-#include "Utility/Memory.h"
+#include "Utility/Misc/Memory.h"
 #include "Rendering/GLIncludes.h"
 
 namespace Phoenix

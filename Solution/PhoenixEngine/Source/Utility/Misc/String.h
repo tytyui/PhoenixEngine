@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include "Utility/Primitives.h"
+#include "Utility/Misc/Primitives.h"
 
 namespace Phoenix
 {
