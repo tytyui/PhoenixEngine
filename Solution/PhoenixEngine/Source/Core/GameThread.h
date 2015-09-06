@@ -21,7 +21,7 @@ namespace Phoenix
 
 			bool IsValid() const;
 		};
-		
+
 		FGameThread();
 
 		FGameThread(const FGameThread&) = delete;

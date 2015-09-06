@@ -3,7 +3,7 @@
 
 #include <functional>
 
-namespace Phoenix 
+namespace Phoenix
 {
 	template<class T>
 	using TFunction = std::function<T>;

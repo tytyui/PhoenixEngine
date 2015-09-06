@@ -80,7 +80,7 @@ namespace Phoenix
 	void TThreadSafeVector<T>::AddData(const ContainerT& AddedData)
 	{
 		FMutexLock Guard(Lock);
-		
+
 		for (const auto& Entry : AddedData)
 		{
 			Data.push_back(Entry);
@@ -91,7 +91,7 @@ namespace Phoenix
 	void TThreadSafeVector<T>::AddData(ContainerT&& MovedData)
 	{
 		FMutexLock Guard(Lock);
-		
+
 		for (auto& Entry : MovedData)
 		{
 			Data.push_back(std::move(Entry));

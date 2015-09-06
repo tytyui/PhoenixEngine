@@ -6,7 +6,8 @@ using namespace Phoenix;
 
 FThreadRAII::FThreadRAII(FThread&& Thread)
 	: Thread(std::move(Thread))
-{}
+{
+}
 
 FThreadRAII::~FThreadRAII()
 {

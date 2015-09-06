@@ -45,7 +45,7 @@ void FGameThread::Init(const FInitParams& InitParams)
 	UpdateCallback = InitParams.UpdateCallback;
 
 	IsRunning = true;
-	
+
 	Thread = FThread(&FGameThread::ThreadRun, this);
 }
 
@@ -58,7 +58,7 @@ bool FGameThread::IsValid() const
 void FGameThread::ForceShutDown()
 {
 	F_LogWarning("Subsystems may not have been shut down properly.")
-	IsRunning = false;
+		IsRunning = false;
 }
 
 void FGameThread::ThreadRun()
@@ -148,7 +148,7 @@ void FGameThread::ThreadDeInit()
 // Game Thread
 /*
 	while running
-			
+
 		update game timer
 		get delta time
 		add to accumulated time
@@ -160,7 +160,7 @@ void FGameThread::ThreadDeInit()
 			if main thread sent events to game thread
 				retrieve events
 				process events
-				
+
 			dispatch events to main thread
 
 			update audio
@@ -170,7 +170,7 @@ void FGameThread::ThreadDeInit()
 			if multiple updates occured this frame
 				display a warning
 				potentially reduce target frame rate
-			
+
 		draw graphics
 
 	end while loop

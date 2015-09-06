@@ -248,7 +248,7 @@ namespace Phoenix
 	T FEndian::InternalSwap16(const T Data16)
 	{
 		static_assert(sizeof(T) == 2, "You must use a 16 bit integer type with this function.");
-		
+
 		const T Result =
 			((Data16 >> 8) & 0x00FF) +
 			((Data16 << 8) & 0xFF00);
