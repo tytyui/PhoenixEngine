@@ -13,9 +13,9 @@
 
 // FIXME: Move somewhere better
 #ifdef _DEBUG
-#pragma comment (lib, "glew32sd.lib")
+#	pragma comment (lib, "glew32sd.lib")
 #else
-#pragma comment (lib, "glew32s.lib")
+#	pragma comment (lib, "glew32s.lib")
 #endif
 
 #pragma comment (lib, "opengl32.lib")
