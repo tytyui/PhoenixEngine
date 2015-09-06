@@ -44,9 +44,7 @@ namespace Phoenix
 		// FIXME: These should probably be shared pointers instead.
 		// However, we haven't discussed memory management and 
 		// ownership semantics yet, so they're raw pointers for now.
-		TThreadSafeVector<UInt32>* OutgoingEvents{ nullptr };
-		TThreadSafeVector<UInt32>* IncomingEvents{ nullptr };
-		FUpdateCallback UpdateCallback;
+		FInitParams InitData;
 
 		TAtomic<bool> IsRunning{ false };
 

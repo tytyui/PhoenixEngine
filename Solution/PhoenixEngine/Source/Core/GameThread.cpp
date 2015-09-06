@@ -39,10 +39,7 @@ void FGameThread::Init(const FInitParams& InitParams)
 	F_Assert(!IsRunning, "Game Thread is already running.");
 	F_LogTrace("GameThread::Init()");
 
-	OutgoingEvents = InitParams.OutgoingEvents;
-	IncomingEvents = InitParams.IncomingEvents;
-
-	UpdateCallback = InitParams.UpdateCallback;
+	InitData = InitParams;
 
 	IsRunning = true;
 
@@ -57,8 +54,8 @@ bool FGameThread::IsValid() const
 
 void FGameThread::ForceShutDown()
 {
-	F_LogWarning("Subsystems may not have been shut down properly.")
-		IsRunning = false;
+	F_LogWarning("Subsystems may not have been shut down properly.");
+	IsRunning = false;
 }
 
 void FGameThread::ThreadRun()
@@ -90,7 +87,7 @@ void FGameThread::ThreadRun()
 			const Float32 CurrentTime = Timer.GetTimeInSeconds<Float32>() - AccumulatedTime;
 
 			// FIXME: Receive and process messages from Engine.cpp here.
-			IncomingEvents->GetDataAndClear(ReceivedEvents);
+			InitData.IncomingEvents->GetDataAndClear(ReceivedEvents);
 
 			for (const auto& ReceivedEvent : ReceivedEvents)
 			{
@@ -100,11 +97,11 @@ void FGameThread::ThreadRun()
 			ReceivedEvents.clear();
 
 			// #FIXME: Update
-			UpdateCallback(0);
+			InitData.UpdateCallback(0);
 
 			// #FIXME: Dispatch any messages to Engine.cpp here.
 			F_LogTrace("GameThread::ThreadRun() - Dispatching event: " << 1 << "\n");
-			OutgoingEvents->AddEntry(1);
+			InitData.OutgoingEvents->AddEntry(1);
 
 			++UpdateCount;
 			static const UInt32 MinFramesBeforeWarning = 2;
@@ -128,7 +125,7 @@ void FGameThread::ThreadInit()
 void FGameThread::ThreadDeInit()
 {
 	F_LogTrace("GameThread::ThreadDeInit()");
-	UpdateCallback = nullptr;
+	InitData = FInitParams();
 }
 
 // #FIXME: Remove this when it is no longer needed.

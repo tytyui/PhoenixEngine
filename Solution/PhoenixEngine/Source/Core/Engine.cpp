@@ -1,12 +1,11 @@
 #include "Core/Engine.h"
 
-#include <cmath> // FIXME: We need a math layer.
-
 #include "Utility/Debug/Debug.h"
 #include "Utility/FileIO/Endian.h"
 #include "Utility/Misc/Primitives.h"
 #include "Utility/Misc/Timer.h"
 #include "Utility/Threading/Thread.h"
+#include "Math/Math.h"
 
 // FIXME: For whoever is doing the window stuff.
 #include <GLFW/glfw3.h>
@@ -88,8 +87,7 @@ void FEngine::Run()
 
 		if (AccumulatedTime >= MaxDeltaTime)
 		{
-			// FIXME: Wrap std::fmod
-			AccumulatedTime = std::fmod(AccumulatedTime, MaxDeltaTime);
+			AccumulatedTime = FMathf::Modulo(AccumulatedTime, MaxDeltaTime);
 
 			F_LogTrace("Engine::Run() - Dispatching event: " << 0);
 
