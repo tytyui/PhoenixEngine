@@ -59,13 +59,15 @@ namespace Phoenix
 	template <class T>
 	T FEndian::SwapLE(const T LEData)
 	{
-		static_assert(false, "This function must be specialized.");
+		F_Assert(false, "This function must be specialized.");
+		F_Win32StaticAssert(false, "This function must be specialized.");
 	}
 
 	template <class T>
 	T FEndian::SwapBE(const T BEData)
 	{
-		static_assert(false, "This function must be specialized.");
+		F_Assert(false, "This function must be specialized.");
+		F_Win32StaticAssert(false, "This function must be specialized.");
 	}
 
 	template <>
@@ -141,7 +143,8 @@ namespace Phoenix
 	template <class T>
 	T FEndian::InternalSwap(const T Data)
 	{
-		static_assert(false, "This function must be specialized.");
+		F_Assert(false, "This function must be specialized.");
+		F_Win32StaticAssert(false, "This function must be specialized.");
 	}
 
 	template <>
