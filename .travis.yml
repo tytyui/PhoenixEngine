@@ -2,6 +2,12 @@ language: cpp
 
 compiler:
   - gcc
+  - clang
+
+install:
+  - sudo apt-get install -qq gcc-4.6 g++-4.6
+  - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.6 60 --slave /usr/bin/g++ g++ /usr/bin/g++-4.6
+  - gcc --version && g++ --version
   
 branches:
   only:
@@ -11,7 +17,7 @@ notifications:
   email: 
     - mitchdandrews@gmail.com
 
-sudo: false
+sudo: required
 
 script:
   - make -C Solution config=release

@@ -19,12 +19,12 @@ ifeq ($(config),debug)
   INCLUDES += -I../PhoenixEngine/Source -I../Libraries/Include
   FORCE_INCLUDE +=
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
-  ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -g -std=c++0x
+  ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -g -std=gnu++0x
   ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CFLAGS)
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
   LIBS +=
   LDDEPS +=
-  ALL_LDFLAGS += $(LDFLAGS) -L../Libraries/Lib/Debug/GLEW -L../Libraries/Lib/Debug/GLFW -L../Binaries/Debug -std=c++0x
+  ALL_LDFLAGS += $(LDFLAGS) -L../Libraries/Lib/Debug/GLEW -L../Libraries/Lib/Debug/GLFW -L../Binaries/Debug -std=gnu++0x
   LINKCMD = $(CXX) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
   define PREBUILDCMDS
   endef
@@ -46,12 +46,12 @@ ifeq ($(config),release)
   INCLUDES += -I../PhoenixEngine/Source -I../Libraries/Include
   FORCE_INCLUDE +=
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
-  ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -O2 -std=c++0x
+  ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -O2 -std=gnu++0x
   ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CFLAGS)
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
   LIBS += ../Binaries/Release/PhoenixEngine.lib
   LDDEPS += ../Binaries/Release/PhoenixEngine.lib
-  ALL_LDFLAGS += $(LDFLAGS) -L../Libraries/Lib/Release/GLEW -L../Libraries/Lib/Release/GLFW -L../Binaries/Release -s -std=c++0x
+  ALL_LDFLAGS += $(LDFLAGS) -L../Libraries/Lib/Release/GLEW -L../Libraries/Lib/Release/GLFW -L../Binaries/Release -s -std=gnu++0x
   LINKCMD = $(CXX) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
   define PREBUILDCMDS
   endef
