@@ -17,7 +17,7 @@ notifications:
   email: 
     - mitchdandrews@gmail.com
 
-sudo: false
+sudo: required
 
 script:
   - make -C Solution config=release
