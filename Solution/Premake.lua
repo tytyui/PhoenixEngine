@@ -1,4 +1,3 @@
-
 workspace "PhoenixEngine"
 	configurations { "Debug", "Release" }
 	includedirs { "PhoenixEngine/Source", "Libraries/Include" }
@@ -24,13 +23,13 @@ project "PhoenixEngine"
 	
 	links { "glew", "glfw" }
 	configuration "gmake"
-            linkoptions  { "-std=gnu++0x" }
-            buildoptions { "-std=gnu++0x" }
+            linkoptions  { "-std=c++1y" }
+            buildoptions { "-std=c++1y" }
 
-	configuration "macos"
-            linkoptions  { "-std=c++11", "-stdlib=libc++" }
-            buildoptions { "-std=c++11", "-stdlib=libc++" }
-			
+	configuration "xcode4"
+            linkoptions  { "-std=c++1y", "-stdlib=libc++" }
+            buildoptions { "-std=c++1y", "-stdlib=libc++" }
+	
 project "TestGame"
 	kind "ConsoleApp"
 	language "C++"
@@ -50,9 +49,9 @@ project "TestGame"
 	links { "PhoenixEngine" }
 	
 	configuration "gmake"
-            linkoptions  { "-std=gnu++0x" }
-            buildoptions { "-std=gnu++0x" }
+            linkoptions  { "-std=c++1y" }
+            buildoptions { "-std=c++1y" }
 		
-	configuration "macos"
-            linkoptions  { "-std=c++11", "-stdlib=libc++" }
-            buildoptions { "-std=c++11", "-stdlib=libc++" }
+	configuration "xcode4"
+            linkoptions  { "-std=c++1y", "-stdlib=libc++" }
+            buildoptions { "-std=c++1y", "-stdlib=libc++" }
