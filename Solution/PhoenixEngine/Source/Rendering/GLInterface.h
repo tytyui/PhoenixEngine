@@ -180,7 +180,7 @@ namespace Phoenix
 				SourceLength = GL_SHADER_SOURCE_LENGTH,
 			};
 		}
-		
+
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glAttachShader.xml */
 		static inline void AttachShader(const GLuint Program, const GLuint Shader)
 		{

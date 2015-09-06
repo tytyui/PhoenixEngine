@@ -14,9 +14,9 @@
 
 // FIXME: Move somewhere better
 #ifdef _DEBUG
-	#pragma comment (lib, "glew32sd.lib")
+#pragma comment (lib, "glew32sd.lib")
 #else
-	#pragma comment (lib, "glew32s.lib")
+#pragma comment (lib, "glew32s.lib")
 #endif
 
 #pragma comment (lib, "opengl32.lib")
@@ -79,7 +79,7 @@ void FEngine::Run()
 
 	FHighResTimer Timer;
 	Timer.Reset();
-	
+
 	while (IsRunning)
 	{
 		Timer.Update();
@@ -100,7 +100,7 @@ void FEngine::Run()
 			{
 				F_LogTrace("Engine::Run() - Received event: " << ReceivedEvent << "\n");
 			}
-			
+
 			ReceivedEvents.clear();
 		}
 
@@ -126,7 +126,7 @@ void FEngine::Run()
 // Game Thread
 /*
 	while running
-			
+
 		update game timer
 		get delta time
 		add to accumulated time
@@ -138,7 +138,7 @@ void FEngine::Run()
 			if main thread sent events to game thread
 				retrieve events
 				process events
-				
+
 			dispatch events to main thread
 
 			update audio
@@ -148,7 +148,7 @@ void FEngine::Run()
 			if multiple updates occured this frame
 				display a warning
 				potentially reduce target frame rate
-			
+
 		draw graphics
 
 	end while loop
