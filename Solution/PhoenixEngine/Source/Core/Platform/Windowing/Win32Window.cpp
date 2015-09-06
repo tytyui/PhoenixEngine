@@ -22,7 +22,7 @@ FWin32Window::FWin32Window(int Width, int Height, const FString& WindowTitle)
 	Init();
 }
 
-Phoenix::FWin32Window::~FWin32Window()
+FWin32Window::~FWin32Window()
 {
 	
 }

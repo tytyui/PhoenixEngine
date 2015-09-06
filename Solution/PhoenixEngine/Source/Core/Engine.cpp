@@ -90,6 +90,9 @@ void FEngine::Run()
 			ReceivedEvents.clear();
 		}
 
+		// #FIXME Probably will be moved. But we need window control for now.
+		MainWindow->ProcessEvents();
+
 		// FIXME: Calculate an appropriate time to 
 		// sleep in order to prevent a busy wait.
 	}
