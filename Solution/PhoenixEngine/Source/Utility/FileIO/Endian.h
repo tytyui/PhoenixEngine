@@ -11,8 +11,10 @@ namespace Phoenix
 	{
 	public:
 		FEndian() = delete;
+
 		FEndian(const FEndian&) = delete;
 		FEndian(FEndian&&) = delete;
+
 		FEndian& operator=(const FEndian&) = delete;
 		FEndian& operator=(FEndian&&) = delete;
 
@@ -44,21 +46,6 @@ namespace Phoenix
 		template <class T>
 		static T InternalSwap(const T Data);
 
-		template <>
-		static Int16 InternalSwap(const Int16 Data);
-
-		template <>
-		static Int32 InternalSwap(const Int32 Data);
-
-		template <>
-		static UInt16 InternalSwap(const UInt16 Data);
-
-		template <>
-		static UInt32 InternalSwap(const UInt32 Data);
-
-		template <>
-		static Float32 InternalSwap(const Float32 Data);
-
 		template <class T>
 		static T InternalSwap16(const T Data16);
 
@@ -69,59 +56,18 @@ namespace Phoenix
 		static T InternalNoSwap(const T Data);
 	};
 
-	inline void FEndian::Init()
-	{
-		union
-		{
-			UInt32 Byte4;
-			UInt8 Byte1;
-		} EndianTest;
-
-		EndianTest.Byte4 = 0x01;
-		const bool bIsLittleEndian = EndianTest.Byte1 == 0x01;
-
-		if (bIsLittleEndian)
-		{
-			F_Log("Little endian system detected.");
-			FEndian::SwapLittleInt16 = &FEndian::InternalNoSwap<Int16>;
-			FEndian::SwapLittleInt32 = &FEndian::InternalNoSwap<Int32>;
-			FEndian::SwapLittleUInt16 = &FEndian::InternalNoSwap<UInt16>;
-			FEndian::SwapLittleUInt32 = &FEndian::InternalNoSwap<UInt32>;
-			FEndian::SwapLittleFloat32 = &FEndian::InternalNoSwap<Float32>;
-
-			FEndian::SwapBigInt16 = &FEndian::InternalSwap<Int16>;
-			FEndian::SwapBigInt32 = &FEndian::InternalSwap<Int32>;
-			FEndian::SwapBigUInt16 = &FEndian::InternalSwap<UInt16>;
-			FEndian::SwapBigUInt32 = &FEndian::InternalSwap<UInt32>;
-			FEndian::SwapBigFloat32 = &FEndian::InternalSwap<Float32>;
-		}
-		else
-		{
-			F_Log("Big endian system detected.");
-			FEndian::SwapLittleInt16 = &FEndian::InternalSwap<Int16>;
-			FEndian::SwapLittleInt32 = &FEndian::InternalSwap<Int32>;
-			FEndian::SwapLittleUInt16 = &FEndian::InternalSwap<UInt16>;
-			FEndian::SwapLittleUInt32 = &FEndian::InternalSwap<UInt32>;
-			FEndian::SwapLittleFloat32 = &FEndian::InternalSwap<Float32>;
-
-			FEndian::SwapBigInt16 = &FEndian::InternalNoSwap<Int16>;
-			FEndian::SwapBigInt32 = &FEndian::InternalNoSwap<Int32>;
-			FEndian::SwapBigUInt16 = &FEndian::InternalNoSwap<UInt16>;
-			FEndian::SwapBigUInt32 = &FEndian::InternalNoSwap<UInt32>;
-			FEndian::SwapBigFloat32 = &FEndian::InternalNoSwap<Float32>;
-		}
-	}
-
 	template <class T>
 	T FEndian::SwapLE(const T LEData)
 	{
-		static_assert(false, "This function must be specialized.");
+		F_Assert(false, "This function must be specialized.");
+		F_Win32StaticAssert(false, "This function must be specialized.");
 	}
 
 	template <class T>
 	T FEndian::SwapBE(const T BEData)
 	{
-		static_assert(false, "This function must be specialized.");
+		F_Assert(false, "This function must be specialized.");
+		F_Win32StaticAssert(false, "This function must be specialized.");
 	}
 
 	template <>
@@ -197,7 +143,8 @@ namespace Phoenix
 	template <class T>
 	T FEndian::InternalSwap(const T Data)
 	{
-		static_assert(false, "This function must be specialized.");
+		F_Assert(false, "This function must be specialized.");
+		F_Win32StaticAssert(false, "This function must be specialized.");
 	}
 
 	template <>
