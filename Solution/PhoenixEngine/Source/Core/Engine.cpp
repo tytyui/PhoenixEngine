@@ -1,26 +1,11 @@
 #include "Core/Engine.h"
 
+#include "Math/Math.h"
 #include "Utility/Debug/Debug.h"
 #include "Utility/FileIO/Endian.h"
 #include "Utility/Misc/Primitives.h"
 #include "Utility/Misc/Timer.h"
 #include "Utility/Threading/Thread.h"
-#include "Math/Math.h"
-
-// FIXME: For whoever is doing the window stuff.
-#include <GLFW/glfw3.h>
-// END FIXME
-
-// FIXME: Move somewhere better
-#ifdef _DEBUG
-#	pragma comment (lib, "glew32sd.lib")
-#else
-#	pragma comment (lib, "glew32s.lib")
-#endif
-
-#pragma comment (lib, "opengl32.lib")
-
-#pragma comment (lib, "glfw3.lib")
 
 using namespace Phoenix;
 
@@ -46,16 +31,19 @@ void FEngine::Init(const FGameThread::FUpdateCallback& OnUpdateCallback)
 		F_Assert(GameThread.IsValid(), "Game Thread failed to initialize.");
 	}
 
+	// This will change, calm your horses
+	MainWindow = new FWin32Window(1024, 768, "PhoenixEngine");
+
 	// FIXME: For whoever is doing the window stuff.
-	glfwInit();
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-	GLFWwindow* window = glfwCreateWindow(800, 600, "Test", nullptr, nullptr);
-	glfwMakeContextCurrent(window);
-	glewExperimental = GL_TRUE;
-	int status = glewInit();
+	//glfwInit();
+	//glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	//glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	//glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	//glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+	//GLFWwindow* window = glfwCreateWindow(800, 600, "Test", nullptr, nullptr);
+	//glfwMakeContextCurrent(window);
+	//glewExperimental = GL_TRUE;
+	//int status = glewInit();
 	// END FIXME
 
 	IsRunning = true;
