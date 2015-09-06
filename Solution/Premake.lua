@@ -46,7 +46,7 @@ project "TestGame"
 		defines { "NDEBUG" }
 		optimize "On"
 	
-	links { "PhoenixEngine" }
+	links { "PhoenixEngine", "glew", "glfw" }
 	
 	configuration "gmake"
             linkoptions  { "-std=c++1y" }
