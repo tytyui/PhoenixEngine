@@ -5,7 +5,7 @@ compiler:
   - clang
 
 install:
-  - sudo apt-get install -qq libXmu-dev libXi-dev glew-utils dos2unix git wget glfw 
+  - sudo apt-get install -qq libXmu-dev libXi-dev glew-utils dos2unix git wget libglfw3 
 branches:
   only:
     - master
