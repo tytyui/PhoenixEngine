@@ -1,14 +1,11 @@
 language: objective-c
 
-xcode_project: Solution/PhoenixEngine.xcworkspace
-xcode_scheme: TestGame
-
 compiler:
   - gcc
 
 osx_image: xcode6.4
 
-install: make get-deps
+install: brew install glfw3 glew
 
 branches:
   only:
@@ -20,8 +17,8 @@ notifications:
 
 sudo: required
 
-script:
-  - make -C Solution config=debug
+script: xcodebuild -workspace PhoenixEngine.xcworkspace -scheme TestGame -sdk macosx ONLY_ACTIVE_ARCH=NO
+
 
 os: 
   - linux
