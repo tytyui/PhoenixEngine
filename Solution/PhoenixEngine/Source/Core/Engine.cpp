@@ -34,19 +34,7 @@ void FEngine::Init(const FGameThread::FUpdateCallback& OnUpdateCallback)
 
 	// This will change, calm your horses
 	MainWindow = new FWin32Window(1024, 768, "PhoenixEngine");
-
-	// #FIXME: For whoever is doing the window stuff.
-	//glfwInit();
-	//glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	//glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	//glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	//glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-	//GLFWwindow* window = glfwCreateWindow(800, 600, "Test", nullptr, nullptr);
-	//glfwMakeContextCurrent(window);
-	//glewExperimental = GL_TRUE;
-	//int status = glewInit();
-	// #END_FIXME
-
+	
 	IsRunning = true;
 }
 

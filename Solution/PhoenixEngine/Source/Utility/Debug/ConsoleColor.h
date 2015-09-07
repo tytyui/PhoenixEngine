@@ -7,12 +7,13 @@
 
 #include "Utility/Containers/Array.h"
 #include "Utility/Debug/Assert.h"
+#include "Utility/Misc/Primitives.h"
 
 namespace Phoenix
 {
 	namespace EConsoleColor
 	{
-		using Type = unsigned char;
+		typedef UInt8 Type;
 
 		enum Value : Type
 		{
