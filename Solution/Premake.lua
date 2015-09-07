@@ -1,7 +1,13 @@
 workspace "PhoenixEngine"
 	configurations { "Debug", "Release" }
 	includedirs { "PhoenixEngine/Source", "Libraries/Include" }
-	libdirs { "Libraries/Lib/%{cfg.buildcfg}/GLEW/", "Libraries/Lib/%{cfg.buildcfg}/GLFW/", "Binaries/%{cfg.buildcfg}" }
+	libdirs { "Libraries/Lib/%{cfg.buildcfg}/GLEW/",
+		"Libraries/Lib/%{cfg.buildcfg}/GLFW/",
+		"Binaries/%{cfg.buildcfg}"
+		os.findlib("glfw"),
+		os.findlib("glew"),
+		os.findlib("glfw3")
+	}
 	
 project "PhoenixEngine"
 	kind "StaticLib"
@@ -21,7 +27,7 @@ project "PhoenixEngine"
 		defines { "NDEBUG" }
 		optimize "On"
 	
-	links { "glew", "glfw3" }
+	links { "glew", "glfw3", "glfw" }
 	configuration "gmake"
             linkoptions  { "-std=c++1y" }
             buildoptions { "-std=c++1y" }
