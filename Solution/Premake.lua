@@ -5,7 +5,8 @@ workspace "PhoenixEngine"
 		"Libraries/Lib/%{cfg.buildcfg}/GLFW/",
 		"Libraries/Lib/%{cfg.buildcfg}/IrrKlang/",
 		"/usr/local/lib",
-		"Binaries/%{cfg.buildcfg}"
+		"Binaries/%{cfg.buildcfg}",
+		os.findlib("glfw3")
 	}
 	
 project "PhoenixEngine"
@@ -14,7 +15,7 @@ project "PhoenixEngine"
 	location "PhoenixEngine"
 	targetdir "Build/%{cfg.buildcfg}"
 
-	links { "glew", "glfw", "IrrKlang", "ikpMP3", "ikpFLAC" }
+	links { "glew", "glfw3", "IrrKlang", "ikpMP3", "ikpFLAC" }
 	
 	files { "PhoenixEngine/Source/**.h", "PhoenixEngine/Source/**.cpp", "PhoenixEngine/Source/**.txt" }
 	
@@ -27,22 +28,22 @@ project "PhoenixEngine"
 	filter "configurations:Release"
 		defines { "NDEBUG" }
 		optimize "On"
-	
+
 	configuration "gmake"
-            linkoptions  { "-std=c++1y" }
-            buildoptions { "-std=c++1y" }
+        	linkoptions  { "-std=c++1y" }
+        	buildoptions { "-std=c++1y" }
 
 	configuration "xcode4"
-            linkoptions  { "-std=c++1y", "-stdlib=libc++" }
-            buildoptions { "-std=c++1y", "-stdlib=libc++" }
-	
+        	linkoptions  { "-std=c++1y", "-stdlib=libc++" }
+        	buildoptions { "-std=c++1y", "-stdlib=libc++" }	
+
 project "TestGame"
 	kind "ConsoleApp"
 	language "C++"
 	location "TestGame"
 	targetdir "Build/%{cfg.buildcfg}"
 
-	links { "PhoenixEngine" }
+	links { "PhoenixEngine", "glew", "glfw3" }
 
 	files { "TestGame/**.h", "TestGame/**.cpp", "TestGame/**.txt" }
 	
@@ -55,9 +56,9 @@ project "TestGame"
 		optimize "On"
 		
 	configuration "gmake"
-            linkoptions  { "-std=c++1y" }
-            buildoptions { "-std=c++1y" }
+        	linkoptions  { "-std=c++1y" }
+        	buildoptions { "-std=c++1y" }
 		
 	configuration "xcode4"
-            linkoptions  { "-std=c++1y", "-stdlib=libc++" }
-            buildoptions { "-std=c++1y", "-stdlib=libc++" }
+        	linkoptions  { "-std=c++1y", "-stdlib=libc++" }
+        	buildoptions { "-std=c++1y", "-stdlib=libc++" } 
