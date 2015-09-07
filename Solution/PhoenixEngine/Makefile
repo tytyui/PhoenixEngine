@@ -12,7 +12,7 @@ endif
 
 ifeq ($(config),debug)
   RESCOMP = windres
-  TARGETDIR = ../Binaries/Debug
+  TARGETDIR = ../Build/Debug
   TARGET = $(TARGETDIR)/libPhoenixEngine.a
   OBJDIR = obj/Debug
   DEFINES += -DDEBUG
@@ -22,9 +22,9 @@ ifeq ($(config),debug)
   ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -g -std=c++1y
   ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CFLAGS)
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  LIBS +=
+  LIBS += -lglew -lglfw
   LDDEPS +=
-  ALL_LDFLAGS += $(LDFLAGS) -L../Libraries/Lib/Debug/GLEW -L../Libraries/Lib/Debug/GLFW -L../Binaries/Debug -std=c++1y
+  ALL_LDFLAGS += $(LDFLAGS) -L../Libraries/Lib/Debug/GLEW -L../Libraries/Lib/Debug/GLFW -L/usr/local/lib -std=c++1y
   LINKCMD = $(AR) -rcs "$@" $(OBJECTS)
   define PREBUILDCMDS
   endef
@@ -39,7 +39,7 @@ endif
 
 ifeq ($(config),release)
   RESCOMP = windres
-  TARGETDIR = ../Binaries/Release
+  TARGETDIR = ../Build/Release
   TARGET = $(TARGETDIR)/libPhoenixEngine.a
   OBJDIR = obj/Release
   DEFINES += -DNDEBUG
@@ -51,7 +51,7 @@ ifeq ($(config),release)
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
   LIBS += -lglew -lglfw
   LDDEPS +=
-  ALL_LDFLAGS += $(LDFLAGS) -L../Libraries/Lib/Release/GLEW -L../Libraries/Lib/Release/GLFW -L../Binaries/Release -Wl,-x -std=c++1y
+  ALL_LDFLAGS += $(LDFLAGS) -L../Libraries/Lib/Release/GLEW -L../Libraries/Lib/Release/GLFW -L/usr/local/lib -Wl,-x -std=c++1y
   LINKCMD = $(AR) -rcs "$@" $(OBJECTS)
   define PREBUILDCMDS
   endef
@@ -67,6 +67,7 @@ endif
 OBJECTS := \
 	$(OBJDIR)/Engine.o \
 	$(OBJDIR)/GameThread.o \
+	$(OBJDIR)/Win32Window.o \
 	$(OBJDIR)/Game.o \
 	$(OBJDIR)/Endian.o \
 	$(OBJDIR)/Thread.o \
@@ -131,6 +132,9 @@ $(OBJDIR)/Engine.o: Source/Core/Engine.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/GameThread.o: Source/Core/GameThread.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/Win32Window.o: Source/Core/Platform/Windowing/Win32Window.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Game.o: Source/Game/Game.cpp
