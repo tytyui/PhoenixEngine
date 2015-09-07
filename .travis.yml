@@ -17,7 +17,7 @@ notifications:
 
 sudo: required
 
-script: xcodebuild -workspace PhoenixEngine.xcworkspace -scheme TestGame -sdk macosx ONLY_ACTIVE_ARCH=NO
+script: xcodebuild -workspace Solution/PhoenixEngine.xcworkspace -scheme TestGame -sdk macosx ONLY_ACTIVE_ARCH=NO
 
 
 os: 
