@@ -34,8 +34,8 @@ Solution/TestGame/obj/Release
 *.pch
 
 # Compiled Dynamic libraries
-*.so
-*.dylib
+#*.so
+#*.dylib
 #*.dll
 
 # Fortran module files
