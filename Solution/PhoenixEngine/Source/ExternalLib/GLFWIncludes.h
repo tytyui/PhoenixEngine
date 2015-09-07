@@ -2,6 +2,6 @@
 #define PHOENIX_GLFW_INCLUDES_H
 
 #include "ExternalLib/GLEWIncludes.h"
-#include <GLFW/glfw3.h>
+#include "GLFW/glfw3.h"
 
 #endif

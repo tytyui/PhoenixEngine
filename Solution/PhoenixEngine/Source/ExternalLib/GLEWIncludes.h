@@ -2,6 +2,6 @@
 #define PHOENIX_GLEW_INCLUDES_H
 
 #define GLEW_STATIC
-#include <GLEW/glew.h>
+#include "GLEW/glew.h"
 
 #endif
