@@ -11,7 +11,10 @@ install:
   - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5 40 --slave /usr/bin/g++ g++ /usr/bin/g++-5		
   - export CXX="g++-5" CC="gcc-5"		
   - gcc --version && g++ --version
-  - sudo apt-get install -qq libXmu-dev libXi-dev glew-utils dos2unix git wget
+  - sudo apt-get install -qq libXmu-dev libXi-dev glew-utils dos2unix git wget aptitude
+  - aptitude search glfw
+  - aptitude search glew
+  - aptitude install libglew-dev libglfw3-dev
 
 branches:
   only:
