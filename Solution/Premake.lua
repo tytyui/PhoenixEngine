@@ -1,18 +1,20 @@
 workspace "PhoenixEngine"
 	configurations { "Debug", "Release" }
 	includedirs { "PhoenixEngine/Source", "Libraries/Include" }
-
+	libdirs { "Libraries/Lib/%{cfg.buildcfg}/GLEW/",
+		"Libraries/Lib/%{cfg.buildcfg}/GLFW/",
+		"Libraries/Lib/%{cfg.buildcfg}/IrrKlang/",
+		"/usr/local/lib",
+		"Binaries/%{cfg.buildcfg}"
+	}
+	
 project "PhoenixEngine"
 	kind "StaticLib"
 	language "C++"
 	location "PhoenixEngine"
 	targetdir "Build/%{cfg.buildcfg}"
-	libdirs { "Libraries/Lib/%{cfg.buildcfg}/GLEW/",
-		"Libraries/Lib/%{cfg.buildcfg}/GLFW/",
-		"/usr/local/lib",
-		os.findlib("glew")
-	}
-	links { "glew", "glfw" }
+
+	links { "glew", "glfw", "IrrKlang", "ikpMP3", "ikpFLAC" }
 	
 	files { "PhoenixEngine/Source/**.h", "PhoenixEngine/Source/**.cpp", "PhoenixEngine/Source/**.txt" }
 	
@@ -39,7 +41,6 @@ project "TestGame"
 	language "C++"
 	location "TestGame"
 	targetdir "Build/%{cfg.buildcfg}"
-	libdirs { "Binaries/%{cfg.buildcfg}" }
 
 	links { "PhoenixEngine" }
 

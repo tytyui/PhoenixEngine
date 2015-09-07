@@ -13,7 +13,7 @@ endif
 ifeq ($(config),debug)
   RESCOMP = windres
   TARGETDIR = ../Build/Debug
-  TARGET = $(TARGETDIR)/TestGame
+  TARGET = $(TARGETDIR)/TestGame.exe
   OBJDIR = obj/Debug
   DEFINES += -DDEBUG
   INCLUDES += -I../PhoenixEngine/Source -I../Libraries/Include
@@ -22,9 +22,9 @@ ifeq ($(config),debug)
   ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -g -std=c++1y
   ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CFLAGS)
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  LIBS += ../Build/Debug/libPhoenixEngine.a
-  LDDEPS += ../Build/Debug/libPhoenixEngine.a
-  ALL_LDFLAGS += $(LDFLAGS) -L../Binaries/Debug -std=c++1y
+  LIBS += ../Build/Debug/PhoenixEngine.lib
+  LDDEPS += ../Build/Debug/PhoenixEngine.lib
+  ALL_LDFLAGS += $(LDFLAGS) -L../Libraries/Lib/Debug/GLEW -L../Libraries/Lib/Debug/GLFW -L../Libraries/Lib/Debug/IrrKlang -L/usr/local/lib -L../Binaries/Debug -std=c++1y
   LINKCMD = $(CXX) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
   define PREBUILDCMDS
   endef
@@ -40,7 +40,7 @@ endif
 ifeq ($(config),release)
   RESCOMP = windres
   TARGETDIR = ../Build/Release
-  TARGET = $(TARGETDIR)/TestGame
+  TARGET = $(TARGETDIR)/TestGame.exe
   OBJDIR = obj/Release
   DEFINES += -DNDEBUG
   INCLUDES += -I../PhoenixEngine/Source -I../Libraries/Include
@@ -49,9 +49,9 @@ ifeq ($(config),release)
   ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -O2 -std=c++1y
   ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CFLAGS)
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  LIBS += ../Build/Release/libPhoenixEngine.a
-  LDDEPS += ../Build/Release/libPhoenixEngine.a
-  ALL_LDFLAGS += $(LDFLAGS) -L../Binaries/Release -Wl,-x -std=c++1y
+  LIBS += ../Build/Release/PhoenixEngine.lib
+  LDDEPS += ../Build/Release/PhoenixEngine.lib
+  ALL_LDFLAGS += $(LDFLAGS) -L../Libraries/Lib/Release/GLEW -L../Libraries/Lib/Release/GLFW -L../Libraries/Lib/Release/IrrKlang -L/usr/local/lib -L../Binaries/Release -s -std=c++1y
   LINKCMD = $(CXX) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
   define PREBUILDCMDS
   endef
