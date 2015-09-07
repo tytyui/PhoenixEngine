@@ -9,7 +9,7 @@ namespace Phoenix
 {
 	typedef std::string FString;
 
-	namespace FStr // FIXME: Come up with a naming convention.
+	namespace FStr // #FIXME: Come up with a naming convention.
 	{
 		//	--------------------------------------------------------------------------------
 		/*! \brief Extracts the file name from a file directory.

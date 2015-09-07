@@ -1,16 +1,6 @@
 #include "Core/Platform/Windowing/Win32Window.h"
 
-#ifdef _DEBUG
-#	pragma comment (lib, "glew32sd.lib")
-#else
-#	pragma comment (lib, "glew32s.lib")
-#endif
-
-#pragma comment (lib, "opengl32.lib")
-
-#pragma comment (lib, "glfw3.lib")
-
-#include "Rendering/GLIncludes.h"
+#include "ExternalLib/GLFWIncludes.h"
 
 using namespace Phoenix;
 

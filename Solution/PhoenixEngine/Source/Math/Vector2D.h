@@ -1,8 +1,11 @@
-#pragma once
+#ifndef PHOENIX_VECTOR_2D_H
+#define PHOENIX_VECTOR_2D_H
 
-#include "GLM/vec2.hpp"
+#include "ExternalLib/GLMIncludes.h"
 
 namespace Phoenix
 {
-	using FVector2D = glm::vec2;
+	typedef glm::vec2 FVector2D;
 }
+
+#endif

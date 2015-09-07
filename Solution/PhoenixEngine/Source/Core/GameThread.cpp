@@ -63,7 +63,7 @@ void FGameThread::ThreadRun()
 	ThreadInit();
 	F_LogTrace("GameThread::ThreadRun()");
 
-	const Float32 FramesPerSec = .125f; // FIXME: This low value is simply for demonstration purposes.
+	const Float32 FramesPerSec = .125f; // #FIXME: This low value is simply for demonstration purposes.
 	const Float32 MaxDeltaTime = 1.f / FramesPerSec;
 
 	TThreadSafeVector<UInt32>::ContainerT ReceivedEvents;
@@ -86,7 +86,7 @@ void FGameThread::ThreadRun()
 			AccumulatedTime -= MaxDeltaTime;
 			const Float32 CurrentTime = Timer.GetTimeInSeconds<Float32>() - AccumulatedTime;
 
-			// FIXME: Receive and process messages from Engine.cpp here.
+			// #FIXME: Receive and process messages from Engine.cpp here.
 			InitData.IncomingEvents->GetDataAndClear(ReceivedEvents);
 
 			for (const auto& ReceivedEvent : ReceivedEvents)

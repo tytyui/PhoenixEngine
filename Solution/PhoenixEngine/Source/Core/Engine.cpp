@@ -1,11 +1,12 @@
 #include "Core/Engine.h"
 
-#include "Math/Math.h"
+#include "ExternalLib/LibIncludes.h"
 #include "Utility/Debug/Debug.h"
 #include "Utility/FileIO/Endian.h"
 #include "Utility/Misc/Primitives.h"
 #include "Utility/Misc/Timer.h"
 #include "Utility/Threading/Thread.h"
+#include "Math/Math.h"
 
 using namespace Phoenix;
 
@@ -34,7 +35,7 @@ void FEngine::Init(const FGameThread::FUpdateCallback& OnUpdateCallback)
 	// This will change, calm your horses
 	MainWindow = new FWin32Window(1024, 768, "PhoenixEngine");
 
-	// FIXME: For whoever is doing the window stuff.
+	// #FIXME: For whoever is doing the window stuff.
 	//glfwInit();
 	//glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	//glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -44,7 +45,7 @@ void FEngine::Init(const FGameThread::FUpdateCallback& OnUpdateCallback)
 	//glfwMakeContextCurrent(window);
 	//glewExperimental = GL_TRUE;
 	//int status = glewInit();
-	// END FIXME
+	// #END_FIXME
 
 	IsRunning = true;
 }
@@ -58,7 +59,7 @@ void FEngine::Run()
 {
 	F_LogTrace("Engine::Run()\n");
 
-	const Float32 FramesPerSec = 0.25f; // FIXME: This low value is simply for demonstration purposes.
+	const Float32 FramesPerSec = 0.25f; // #FIXME: This low value is simply for demonstration purposes.
 	const Float32 MaxDeltaTime = 1.f / FramesPerSec;
 
 	TThreadSafeVector<UInt32>::ContainerT ReceivedEvents;
@@ -93,12 +94,12 @@ void FEngine::Run()
 		// #FIXME Probably will be moved. But we need window control for now.
 		MainWindow->ProcessEvents();
 
-		// FIXME: Calculate an appropriate time to 
+		// #FIXME: Calculate an appropriate time to 
 		// sleep in order to prevent a busy wait.
 	}
 }
 
-// FIXME: Remove this when it is no longer needed.
+// #FIXME: Remove this when it is no longer needed.
 // Main Thread
 //while (true)
 //{
@@ -111,7 +112,7 @@ void FEngine::Run()
 //}
 
 
-// FIXME: Remove this when it is no longer needed.
+// #FIXME: Remove this when it is no longer needed.
 // Game Thread
 /*
 	while running

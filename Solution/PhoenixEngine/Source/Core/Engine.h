@@ -30,7 +30,7 @@ namespace Phoenix
 		FWin32Window* MainWindow;
 
 		FGameThread GameThread;
-		// FIXME: Change UInt32 to the Event structure.
+		// #FIXME: Change UInt32 to the Event structure.
 		TThreadSafeVector<UInt32> OutgoingEvents;
 		TThreadSafeVector<UInt32> IncomingEvents;
 		bool IsRunning{ false };

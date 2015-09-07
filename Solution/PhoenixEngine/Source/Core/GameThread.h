@@ -41,7 +41,7 @@ namespace Phoenix
 	protected:
 	private:
 		FThreadRAII Thread;
-		// FIXME: These should probably be shared pointers instead.
+		// #FIXME: These should probably be shared pointers instead.
 		// However, we haven't discussed memory management and 
 		// ownership semantics yet, so they're raw pointers for now.
 		FInitParams InitData;

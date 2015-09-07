@@ -268,7 +268,7 @@ namespace Phoenix
 	}
 }
 
-// FIXME: Move this to a config file when appropriate.
+// #FIXME: Move this to a config file when appropriate.
 #define PHOENIX_DEBUG_GL 1
 
 #ifndef PHOENIX_DEBUG_GL
