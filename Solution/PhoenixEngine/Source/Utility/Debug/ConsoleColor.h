@@ -75,6 +75,7 @@ namespace Phoenix
 		/* Ref: https://msdn.microsoft.com/en-us/library/windows/desktop/ms683231%28v=vs.85%29.aspx */
 		HANDLE const Handle = GetStdHandle(STD_OUTPUT_HANDLE);
 		const WORD Attributes = LookUpTable[Color.Color] | FOREGROUND_INTENSITY;
+
 		/* Ref: https://msdn.microsoft.com/en-us/library/windows/desktop/ms686047%28v=vs.85%29.aspx */
 		SetConsoleTextAttribute(Handle, Attributes);
 #endif

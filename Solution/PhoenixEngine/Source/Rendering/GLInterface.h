@@ -1,9 +1,9 @@
 #ifndef PHOENIX_GL_INTERFACE_H
 #define PHOENIX_GL_INTERFACE_H
 
+#include "ExternalLib/GLIncludes.h"
 #include "Utility/Debug/Debug.h"
 #include "Utility/Misc/Primitives.h"
-#include "Rendering/GLIncludes.h"
 
 namespace Phoenix
 {
