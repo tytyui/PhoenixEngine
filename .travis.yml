@@ -14,7 +14,7 @@ install:
   - sudo apt-get install -qq libXmu-dev libXi-dev glew-utils dos2unix git wget aptitude
   - aptitude search glfw
   - aptitude search glew
-  - sudo aptitude install libglew-dev libglfw3-dev
+  - sudo apt-get install -qq libglew-dev libglfw-dev
 
 branches:
   only:
