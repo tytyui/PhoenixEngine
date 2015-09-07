@@ -6,7 +6,8 @@ workspace "PhoenixEngine"
 		"Libraries/Lib/%{cfg.buildcfg}/IrrKlang/",
 		"/usr/local/lib",
 		"Binaries/%{cfg.buildcfg}",
-		os.findlib("glfw3")
+		os.findlib("glfw3"),
+		os.findlib("glew")
 	}
 	
 project "PhoenixEngine"
@@ -43,7 +44,7 @@ project "TestGame"
 	location "TestGame"
 	targetdir "Build/%{cfg.buildcfg}"
 
-	links { "PhoenixEngine", "glew", "glfw3" }
+	links { "PhoenixEngine" }
 
 	files { "TestGame/**.h", "TestGame/**.cpp", "TestGame/**.txt" }
 	
@@ -54,7 +55,7 @@ project "TestGame"
 	filter "configurations:Release"
 		defines { "NDEBUG" }
 		optimize "On"
-		
+	
 	configuration "gmake"
         	linkoptions  { "-std=c++1y" }
         	buildoptions { "-std=c++1y" }
