@@ -3,7 +3,7 @@ workspace "PhoenixEngine"
 	includedirs { "PhoenixEngine/Source", "Libraries/Include" }
 	libdirs { "Libraries/Lib/%{cfg.buildcfg}/GLEW/",
 		"Libraries/Lib/%{cfg.buildcfg}/GLFW/",
-		"Binaries/%{cfg.buildcfg}"
+		"Binaries/%{cfg.buildcfg}",
 		os.findlib("glfw"),
 		os.findlib("glew"),
 		os.findlib("glfw3")
