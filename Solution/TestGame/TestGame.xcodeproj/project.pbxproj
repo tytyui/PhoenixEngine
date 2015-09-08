@@ -215,8 +215,8 @@
 					"-stdlib=libc++",
 				);
 				OTHER_LDFLAGS = (
-					"-lglew",
 					"-lglfw3",
+					"-lglew",
 					"-std=c++1y",
 					"-stdlib=libc++",
 				);
@@ -268,8 +268,8 @@
 					"-stdlib=libc++",
 				);
 				OTHER_LDFLAGS = (
-					"-lglew",
 					"-lglfw3",
+					"-lglew",
 					"-std=c++1y",
 					"-stdlib=libc++",
 				);

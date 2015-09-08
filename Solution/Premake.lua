@@ -31,12 +31,12 @@ project "PhoenixEngine"
 		optimize "On"
 
 	configuration "gmake"
-        	linkoptions  { "-std=c++1y" }
-        	buildoptions { "-std=c++1y" }
+		linkoptions  { "-std=c++1y" }
+		buildoptions { "-std=c++1y" }
 
 	configuration "xcode4"
-        	linkoptions  { "-std=c++1y", "-stdlib=libc++" }
-        	buildoptions { "-std=c++1y", "-stdlib=libc++" }	
+		linkoptions  { "-std=c++1y", "-stdlib=libc++" }
+		buildoptions { "-std=c++1y", "-stdlib=libc++" }	
 
 project "TestGame"
 	kind "ConsoleApp"
@@ -57,9 +57,10 @@ project "TestGame"
 		optimize "On"
 	
 	configuration "gmake"
-        	linkoptions  { "-std=c++1y" }
-        	buildoptions { "-std=c++1y" }
+		linkoptions  { "-std=c++1y" }
+		buildoptions { "-std=c++1y" }
 		
 	configuration "xcode4"
-        	linkoptions  { "-std=c++1y", "-stdlib=libc++" }
-        	buildoptions { "-std=c++1y", "-stdlib=libc++" } 
+		linkoptions  { "-std=c++1y", "-stdlib=libc++" }
+		buildoptions { "-std=c++1y", "-stdlib=libc++" }
+		links { "glfw3", "glew" } 
