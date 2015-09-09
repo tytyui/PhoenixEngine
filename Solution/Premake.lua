@@ -5,7 +5,7 @@ workspace "PhoenixEngine"
 		"Libraries/Lib/%{cfg.buildcfg}/GLFW/",
 		"Libraries/Lib/%{cfg.buildcfg}/IrrKlang/",
 		"/usr/local/lib",
-		"Binaries/%{cfg.buildcfg}",
+		"Build/%{cfg.buildcfg}",
 		os.findlib("glfw3"),
 		os.findlib("glew")
 	}

@@ -375,7 +375,7 @@
 					../Libraries/Lib/Release/GLEW,
 					../Libraries/Lib/Release/GLFW,
 					../Libraries/Lib/Release/IrrKlang,
-					../Binaries/Release,
+					../Build/Release,
 					/usr/local/lib,
 				);
 				OBJROOT = obj/Release;
@@ -432,7 +432,7 @@
 					../Libraries/Lib/Debug/GLEW,
 					../Libraries/Lib/Debug/GLFW,
 					../Libraries/Lib/Debug/IrrKlang,
-					../Binaries/Debug,
+					../Build/Debug,
 					/usr/local/lib,
 				);
 				OBJROOT = obj/Debug;
