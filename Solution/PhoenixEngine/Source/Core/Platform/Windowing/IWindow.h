@@ -13,7 +13,7 @@ namespace Phoenix
 	{
 
 	public:
-		// JOSH::NOTE
+		// TODO::JOSH::NOTE
 		// Temp class so I can do stuff with this, like place it on the stack.
 		// Didn't know where to put it or what we expect from it, and just wanted
 		// to get stuff going.
@@ -72,6 +72,9 @@ namespace Phoenix
 		// Set Title Icon
 		virtual void SetTitlebarIcon(const FIcon& InIcon) = 0;
 		virtual const FIcon& GetTitlebarIcon() const = 0;
+
+		// Swap buffers
+		virtual void BufferSwap() = 0;
 
 	protected:
 

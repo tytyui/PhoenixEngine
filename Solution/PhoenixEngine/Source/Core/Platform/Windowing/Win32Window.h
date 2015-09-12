@@ -44,7 +44,9 @@ namespace Phoenix
 		virtual void SetTitlebarIcon(const FIcon& InIcon) override;
 		virtual const FIcon& GetTitlebarIcon() const override;
 
-		virtual void SetGraphicsContext(const FGraphicsContext& InContext);
+		virtual void SetGraphicsContextCurrent();
+
+		virtual void BufferSwap() override;
 
 	protected:
 

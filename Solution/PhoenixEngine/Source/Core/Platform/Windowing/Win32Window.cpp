@@ -83,6 +83,11 @@ void Phoenix::FWin32Window::Restore()
 	}
 }
 
+void Phoenix::FWin32Window::BufferSwap()
+{
+	glfwSwapBuffers(Window);
+}
+
 void FWin32Window::OnMinimize()
 {
 	
@@ -158,6 +163,7 @@ const FIcon& FWin32Window::GetTitlebarIcon() const
 	return TitlebarIcon;
 }
 
-void FWin32Window::SetGraphicsContext(const FGraphicsContext& InContext)
+void Phoenix::FWin32Window::SetGraphicsContextCurrent()
 {
+	glfwMakeContextCurrent(Window);
 }
