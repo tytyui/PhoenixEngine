@@ -100,23 +100,25 @@ void FAudioEngine::Play2D(const FString& File, const Float32 Volume)
 		SoundSource = SoundEngine->addSoundSourceFromFile(File.c_str());
 	}
 
-	F_LogErrorIf(!SoundSource, "Failed to get/add sound source for file: {" << File.c_str() << "}");
-
-	if (SoundSource)
+	if (!SoundSource)
 	{
-		SoundSource->setDefaultVolume(Volume);
-		irrklang::ISound* Sound2D = SoundEngine->play2D(SoundSource);
+		F_LogError("Failed to get/add sound source for file: {" << File.c_str() << "}");
+		return;
+	}
 
-		if (Sound2D)
-		{
-			Sound2D->drop();
-		}
+	SoundSource->setDefaultVolume(Volume);
+	irrklang::ISound* Sound2D = SoundEngine->play2D(SoundSource);
+
+	if (Sound2D)
+	{
+		Sound2D->drop();
 	}
 }
 
 void FAudioEngine::Play3D(const FString& File, const Float32 Volume, const FVector3D& Position)
 {
 	F_Assert(IsValid(), "This class must be valid.");
+	FConsoleColor::Set(EConsoleColor::LightBlue); // #FIXME: Should be in a macro.
 
 	irrklang::ISoundSource* SoundSource = SoundEngine->getSoundSource(File.c_str());
 
@@ -125,18 +127,19 @@ void FAudioEngine::Play3D(const FString& File, const Float32 Volume, const FVect
 		SoundSource = SoundEngine->addSoundSourceFromFile(File.c_str());
 	}
 
-	F_LogErrorIf(!SoundSource, "Failed to get/add sound source for file: {" << File.c_str() << "}");
-
-	if (SoundSource)
+	if (!SoundSource)
 	{
-		SoundSource->setDefaultVolume(Volume);
-		const irrklang::vec3df IrrPosition(Position.x, Position.y, Position.z);
-		irrklang::ISound* Sound3D = SoundEngine->play3D(SoundSource, IrrPosition);
+		F_LogError("Failed to get/add sound source for file: {" << File.c_str() << "}");
+		return;
+	}
 
-		if (Sound3D)
-		{
-			Sound3D->drop();
-		}
+	SoundSource->setDefaultVolume(Volume);
+	const irrklang::vec3df IrrPosition(Position.x, Position.y, Position.z);
+	irrklang::ISound* Sound3D = SoundEngine->play3D(SoundSource, IrrPosition);
+
+	if (Sound3D)
+	{
+		Sound3D->drop();
 	}
 }
 

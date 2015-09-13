@@ -93,16 +93,15 @@ void FGameThread::ThreadRun()
 
 			for (const auto& ReceivedEvent : ReceivedEvents)
 			{
-				F_LogTrace("GameThread::ThreadRun() - Received event: " << ReceivedEvent << " @" << CurrentTime << " s.");
+				// #FIXME: Handle received events.
 			}
 
 			ReceivedEvents.clear();
 
 			// #FIXME: Update
-			InitData.UpdateCallback(0);
+			InitData.UpdateCallback(MaxDeltaTime);
 
 			// #FIXME: Dispatch any messages to Engine.cpp here.
-			F_LogTrace("GameThread::ThreadRun() - Dispatching event: " << 1 << "\n");
 			InitData.OutgoingEvents->AddEntry(1);
 
 			++UpdateCount;
@@ -124,6 +123,7 @@ void FGameThread::ThreadInit()
 	{
 		AudioEngine.Init();
 		F_Assert(AudioEngine.IsValid(), "Audio Engine failed to initialize.");
+		AudioEngine.Play2D("Assets/Audio/TestWav.wav", FAudioEngine::MaxVolume / 10);
 	}
 
 	{	// #FIXME: Init Physics

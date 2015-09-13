@@ -68,15 +68,15 @@ void FEngine::Run()
 		if (AccumulatedTime >= MaxDeltaTime)
 		{
 			AccumulatedTime = FMathf::Modulo(AccumulatedTime, MaxDeltaTime);
-
-			F_LogTrace("Engine::Run() - Dispatching event: " << 0);
+			
+			// #FIXME: Dispatch events here.
 
 			OutgoingEvents.AddEntry(0);
 			IncomingEvents.GetDataAndClear(ReceivedEvents);
 
 			for (const auto& ReceivedEvent : ReceivedEvents)
 			{
-				F_LogTrace("Engine::Run() - Received event: " << ReceivedEvent << "\n");
+				// #FIXME: Handle received events here.
 			}
 
 			ReceivedEvents.clear();
