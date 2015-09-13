@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Core/Platform/Windowing/IWindow.h"
+#include "Utility/Misc/Function.h"
 
 typedef struct GLFWwindow FGLWindow;
 
@@ -15,7 +16,7 @@ namespace Phoenix
 		FWin32Window(int Width, int Height, const FString& WindowTitle);
 
 		virtual ~FWin32Window();
-
+		
 		virtual void Hide() override;
 		virtual void Show() override;
 
@@ -46,6 +47,15 @@ namespace Phoenix
 
 		virtual void SetGraphicsContext(const FGraphicsContext& InContext);
 
+		//Input
+		typedef TFunction<void(Int32 Key, Int32 ScanCode, Int32 Action, Int32 Mods)> FWindowKeyPressCallback;
+		typedef TFunction<void(Int32 Button, Int32 Action, Int32 Mods)> FWindowMouseClickCallback;
+		typedef TFunction<void(Float64 XPos, Float64 YPos)> FWindowMouseMoveCallback;
+
+		virtual void SetKeyPressCallback(const FWindowKeyPressCallback& KeyPressCallback);
+		virtual void SetMouseButtonCallback(const FWindowMouseClickCallback& MouseClickCallback);
+		virtual void SetMouseMoveCallback(const FWindowMouseMoveCallback& MouseMoveCallback);
+
 	protected:
 
 		virtual void Init() override;
@@ -53,6 +63,12 @@ namespace Phoenix
 	private:
 
 		FGLWindow* Window;
+		FWindowKeyPressCallback KeyPressCallback;
+		FWindowMouseClickCallback MouseClickCallback;
+		FWindowMouseMoveCallback MouseMoveCallback;
+
+		//GLFW interface
+		void OnKeyPressCallback(FGLWindow* Window, Int32 Key, Int32 ScanCode, Int32 Action, Int32 Mods);
 
 	};
 }

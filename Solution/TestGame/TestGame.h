@@ -3,13 +3,23 @@
 
 #include "Game/Game.h"
 
+namespace Phoenix
+{
+	struct FKeyboardEvent;
+}
+
 class FTestGame : public Phoenix::FGame
 {
 public:
 	FTestGame() = default;
 
 protected:
-	virtual void Update(float dt) override;
+
+	virtual void Init() override;
+	virtual void Update(float DT) override;
+
+private:
+	void FTestGame::OnKeyPress(const Phoenix::FKeyboardEvent& KeyEvent);
 };
 
 #endif

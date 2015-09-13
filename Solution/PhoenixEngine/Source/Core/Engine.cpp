@@ -1,12 +1,13 @@
 #include "Core/Engine.h"
 
 #include "ExternalLib/LibIncludes.h"
+#include "Input/Input.h"
+#include "Math/Math.h"
 #include "Utility/Debug/Debug.h"
 #include "Utility/FileIO/Endian.h"
 #include "Utility/Misc/Primitives.h"
 #include "Utility/Misc/Timer.h"
 #include "Utility/Threading/Thread.h"
-#include "Math/Math.h"
 
 using namespace Phoenix;
 
@@ -35,6 +36,9 @@ void FEngine::Init(const FGameThread::FUpdateCallback& OnUpdateCallback)
 	// This will change, calm your horses
 	MainWindow = new FWin32Window(1024, 768, "PhoenixEngine");
 	
+	Input = std::make_unique<FInput>();
+	Input->Init(MainWindow);
+
 	IsRunning = true;
 }
 
@@ -42,6 +46,7 @@ void FEngine::DeInit()
 {
 	F_LogClose();
 }
+
 
 void FEngine::Run()
 {
@@ -85,6 +90,11 @@ void FEngine::Run()
 		// #FIXME: Calculate an appropriate time to 
 		// sleep in order to prevent a busy wait.
 	}
+}
+
+const TUniquePtr<FInput>& Phoenix::FEngine::GetInput() const
+{
+	return Input;
 }
 
 // #FIXME: Remove this when it is no longer needed.

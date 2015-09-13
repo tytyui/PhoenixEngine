@@ -2,6 +2,7 @@
 
 #include "Utility/Debug/Debug.h"
 #include "Core/Engine.h"
+#include "Input/Input.h"
 
 using namespace Phoenix;
 
@@ -20,6 +21,10 @@ void FGame::StartGame()
 	{
 		InternalUpdate(DT);
 	});
+
+	//Callback to User Game
+	Init();
+
 	Engine->Run();
 }
 
@@ -27,5 +32,12 @@ void FGame::InternalUpdate(float DT)
 {
 	F_Log("Game::InternalUpdate()");
 
+	//Callback to User Game
 	Update(DT);
 }
+
+const TUniquePtr<FInput>& Phoenix::FGame::GetInput() const
+{
+	return Engine->GetInput();
+}
+

@@ -6,6 +6,7 @@
 namespace Phoenix
 {
 	class FEngine;
+	class FInput;
 
 	class FGame
 	{
@@ -23,7 +24,11 @@ namespace Phoenix
 		void StartGame();
 
 	protected:
-		virtual void Update(float DT) = 0;
+		const TUniquePtr<FInput>& GetInput() const;
+
+		//Callbacks to the UserGame class
+		virtual void Init() {};
+		virtual void Update(float DT) {};
 
 	private:
 		TUniquePtr<FEngine> Engine;
