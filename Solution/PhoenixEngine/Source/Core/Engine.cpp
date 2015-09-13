@@ -23,7 +23,7 @@ void FEngine::Init(const FGameThread::FUpdateCallback& OnUpdateCallback)
 	FEndian::Init();
 
 	// This will change, calm your horses
-	MainWindow = new FWin32Window(1024, 768, "PhoenixEngine");
+	MainWindow = new FWin32Window(800, 600, "PhoenixEngine");
 
 	{
 		FGameThread::FInitParams InitParams;
@@ -89,48 +89,3 @@ void FEngine::Run()
 		// sleep in order to prevent a busy wait.
 	}
 }
-
-// #FIXME: Remove this when it is no longer needed.
-// Main Thread
-//while (true)
-//{
-	// Poll events
-	// Dispatch events to game thread
-
-	// If game thread sent events to main thread
-		// Retrieve events
-		// Process events
-//}
-
-
-// #FIXME: Remove this when it is no longer needed.
-// Game Thread
-/*
-	while running
-
-		update game timer
-		get delta time
-		add to accumulated time
-
-		while accumulated time >= max delta time
-			reduce accumulated time
-			get current time
-
-			if main thread sent events to game thread
-				retrieve events
-				process events
-
-			dispatch events to main thread
-
-			update audio
-			update physics
-			update c++ scripts
-
-			if multiple updates occured this frame
-				display a warning
-				potentially reduce target frame rate
-
-		draw graphics
-
-	end while loop
-*/

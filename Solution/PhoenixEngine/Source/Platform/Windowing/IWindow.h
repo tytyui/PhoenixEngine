@@ -73,6 +73,8 @@ namespace Phoenix
 		virtual void SetTitlebarIcon(const FIcon& InIcon) = 0;
 		virtual const FIcon& GetTitlebarIcon() const = 0;
 
+		virtual void SetGraphicsContextCurrent() = 0;
+
 		// Swap buffers
 		virtual void BufferSwap() = 0;
 
