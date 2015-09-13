@@ -24,41 +24,48 @@ void FAudioEngine::Init()
 		return;
 	}
 
+	AudioListener.Init(SoundEngine);
+
 	F_Log("AudioEngine initialized.");
+
+	// #FIXME: For testing/demonstration only.
+	FSound Sound;
+	Sound.Init(SoundEngine, "Assets/Audio/TestWav.wav");
+	Sound.Play2DInstanced(FAudioEngine::MaxVolume / 10);
+	// #END_FIXME
 }
 
 bool FAudioEngine::IsValid() const
 {
-	const bool IsHandleValid = SoundEngine != nullptr;
-	return IsHandleValid;
+	const bool IsSoundEngineValid = SoundEngine != nullptr;
+	const bool IsAudioListenerValid = AudioListener.IsValid();
+
+	const bool Result =
+		IsSoundEngineValid &&
+		IsAudioListenerValid;
+
+	return Result;
 }
 
 void FAudioEngine::DeInit()
 {
-	if (SoundEngine)
+	AudioListener.DeInit();
+
+	if (!SoundEngine)
 	{
-		if (!SoundEngine->drop())
-		{
-			F_LogError("AudioEngine was shut down but an asset still has a strong reference.");
-		}
-
-		SoundEngine = nullptr;
-
-		F_Log("AudioEngine deinitialized.");
+		return;
 	}
+
+	if (!SoundEngine->drop())
+	{
+		F_LogError("AudioEngine was shut down but an asset still has a strong reference.");
+	}
+
+	SoundEngine = nullptr;
+
+	F_Log("AudioEngine deinitialized.");
 }
 
-void FAudioEngine::SetListenerDirection(const FVector3D& Direction)
-{
-	F_Assert(IsValid(), "This class must be valid.");
-	// #FIXME: Code this.
-}
-
-void FAudioEngine::SetListenerPosition(const FVector3D& Position)
-{
-	F_Assert(IsValid(), "This class must be valid.");
-	// #FIXME: Code this
-}
 void FAudioEngine::SetMasterVolume(const Float32 Volume)
 {
 	F_Assert(IsValid(), "This class must be valid.");
@@ -68,25 +75,21 @@ void FAudioEngine::SetMasterVolume(const Float32 Volume)
 	SoundEngine->setSoundVolume(Volume);
 }
 
-FVector3D FAudioEngine::GetListenerDirection() const
-{
-	F_Assert(IsValid(), "This class must be valid.");
-	// #FIXME: Code this.
-	return FVector3D();
-}
-
-FVector3D FAudioEngine::GetListenerPosition() const
-{
-	F_Assert(IsValid(), "This class must be valid.");
-	// #FIXME: Code this.
-	return FVector3D();
-}
-
 Float32 FAudioEngine::GetMasterVolume() const
 {
 	F_Assert(IsValid(), "This class must be valid.");
 	const Float32 MasterVolume = SoundEngine->getSoundVolume();
 	return MasterVolume;
+}
+
+FAudioListener& FAudioEngine::GetAudioListener()
+{
+	return AudioListener;
+}
+
+const FAudioListener& FAudioEngine::GetAudioListener() const
+{
+	return AudioListener;
 }
 
 void FAudioEngine::Play2D(const FString& File, const Float32 Volume)
@@ -118,7 +121,6 @@ void FAudioEngine::Play2D(const FString& File, const Float32 Volume)
 void FAudioEngine::Play3D(const FString& File, const Float32 Volume, const FVector3D& Position)
 {
 	F_Assert(IsValid(), "This class must be valid.");
-	FConsoleColor::Set(EConsoleColor::LightBlue); // #FIXME: Should be in a macro.
 
 	irrklang::ISoundSource* SoundSource = SoundEngine->getSoundSource(File.c_str());
 

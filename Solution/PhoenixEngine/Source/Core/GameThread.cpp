@@ -123,7 +123,6 @@ void FGameThread::ThreadInit()
 	{
 		AudioEngine.Init();
 		F_Assert(AudioEngine.IsValid(), "Audio Engine failed to initialize.");
-		AudioEngine.Play2D("Assets/Audio/TestWav.wav", FAudioEngine::MaxVolume / 10);
 	}
 
 	{	// #FIXME: Init Physics

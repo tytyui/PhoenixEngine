@@ -5,6 +5,8 @@
 #include "Utility/Misc/Primitives.h"
 #include "Utility/Misc/String.h"
 #include "Math/Vector3D.h"
+#include "Audio/AudioListener.h"
+#include "Audio/Sound.h"
 
 namespace Phoenix
 {
@@ -28,18 +30,14 @@ namespace Phoenix
 		bool IsValid() const;
 
 		void DeInit();
-
-		void SetListenerDirection(const FVector3D& Direction);
-
-		void SetListenerPosition(const FVector3D& Position);
-
+		
 		void SetMasterVolume(const Float32 Volume);
 
-		FVector3D GetListenerDirection() const;
-
-		FVector3D GetListenerPosition() const;
-
 		Float32 GetMasterVolume() const;
+
+		FAudioListener& GetAudioListener();
+
+		const FAudioListener& GetAudioListener() const;
 
 		void Play2D(const FString& File, const Float32 Volume);
 
@@ -54,6 +52,7 @@ namespace Phoenix
 	protected:
 	private:
 		irrklang::ISoundEngine* SoundEngine { nullptr };
+		FAudioListener AudioListener;
 	};
 }
 

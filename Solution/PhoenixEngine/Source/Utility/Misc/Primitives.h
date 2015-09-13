@@ -19,7 +19,12 @@ namespace Phoenix
 	typedef double Float64;
 
 	typedef size_t SizeT;
+
+#if _WIN32
 	typedef std::nullptr_t NullptrT;
+#else
+	typedef nullptr_t NullptrT;
+#endif
 
 	enum class EInitParam
 	{
