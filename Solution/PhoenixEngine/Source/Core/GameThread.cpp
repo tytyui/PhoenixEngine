@@ -36,11 +36,6 @@ FGameThread::~FGameThread()
 	Thread.Join();
 }
 
-struct FBigDataTest
-{
-	UInt32 Data[26214400];
-};
-
 void FGameThread::Init(const FInitParams& InitParams)
 {
 	F_Assert(InitParams.IsValid(), "Initialization parameters must be valid.");
@@ -48,21 +43,7 @@ void FGameThread::Init(const FInitParams& InitParams)
 	F_LogTrace("GameThread::Init()");
 
 	InitData = InitParams;
-		
-	{	// #FIXME: Init Audio
-
-	}
-
-	{	// #FIXME: Init Physics
-
-	}
-
-	{	// #FIXME: Init Graphics
-
-	}
-
 	IsRunning = true;
-
 	Thread = FThread(&FGameThread::ThreadRun, this);
 }
 
@@ -140,15 +121,16 @@ void FGameThread::ThreadRun()
 
 void FGameThread::ThreadInit()
 {
-	{	// #FIXME: DeInit Graphics
+	{
+		AudioEngine.Init();
+		F_Assert(AudioEngine.IsValid(), "Audio Engine failed to initialize.");
+	}
+
+	{	// #FIXME: Init Physics
 
 	}
 
-	{	// #FIXME: DeInit Physics
-
-	}
-
-	{	// #FIXME: DeInit Audio
+	{	// #FIXME: Init Graphics
 
 	}
 
@@ -159,6 +141,18 @@ void FGameThread::ThreadDeInit()
 {
 	F_LogTrace("GameThread::ThreadDeInit()");
 	InitData = FInitParams();
+
+	{	// #FIXME: DeInit Graphics
+
+	}
+
+	{	// #FIXME: DeInit Physics
+
+	}
+
+	{
+		AudioEngine.DeInit();
+	}
 }
 
 // #FIXME: Remove this when it is no longer needed.
