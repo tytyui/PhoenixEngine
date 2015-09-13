@@ -1,13 +1,14 @@
 #include "Core/Engine.h"
 
 #include "ExternalLib/LibIncludes.h"
+#include "Input/Input.h"
+#include "Math/Math.h"
 #include "Utility/Debug/Debug.h"
 #include "Utility/FileIO/Endian.h"
 #include "Utility/Misc/Allocator.h"
 #include "Utility/Misc/Primitives.h"
 #include "Utility/Misc/Timer.h"
 #include "Utility/Threading/Thread.h"
-#include "Math/Math.h"
 
 using namespace Phoenix;
 
@@ -37,6 +38,9 @@ void FEngine::Init(const FGameThread::FUpdateCallback& OnUpdateCallback)
 		F_Assert(GameThread.IsValid(), "Game Thread failed to initialize.");
 	}
 	
+	Input = std::make_unique<FInput>();
+	Input->Init(MainWindow);
+
 	IsRunning = true;
 }
 
@@ -44,6 +48,7 @@ void FEngine::DeInit()
 {
 	F_LogClose();
 }
+
 
 void FEngine::Run()
 {
@@ -88,4 +93,9 @@ void FEngine::Run()
 		// #FIXME: Calculate an appropriate time to 
 		// sleep in order to prevent a busy wait.
 	}
+}
+
+const TUniquePtr<FInput>& Phoenix::FEngine::GetInput() const
+{
+	return Input;
 }
