@@ -5,10 +5,10 @@ Solution/PhoenixEngine/Debug
 Solution/PhoenixEngine/Release
 Solution/TestGame/Debug
 Solution/TestGame/Release
-*/Build
-*/obj/Debug
-*/obj/Release
 
+**/Build
+**/obj/Debug
+**/obj/Release
 
 #VS stuff
 *.user
