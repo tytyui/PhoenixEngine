@@ -5,7 +5,7 @@
 #include "Utility/Threading/Atomic.h"
 #include "Utility/Threading/Thread.h"
 #include "Utility/Threading/ThreadSafeVector.h"
-#include "Core/Platform/Windowing/IWindow.h"
+#include "Platform/Windowing/IWindow.h"
 
 namespace Phoenix
 {

@@ -3,7 +3,7 @@
 
 #include "Utility/Threading/ThreadSafeVector.h"
 #include "Core/GameThread.h"
-#include "Core/Platform/Windowing/Win32Window.h"
+#include "Platform/Windowing/Win32Window.h"
 
 namespace Phoenix
 {
