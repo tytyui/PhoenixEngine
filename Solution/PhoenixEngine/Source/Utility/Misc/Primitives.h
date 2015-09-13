@@ -1,6 +1,8 @@
 #ifndef PHOENIX_PRIMITIVES_H
 #define PHOENIX_PRIMITIVES_H
 
+#include <cstddef>
+
 namespace Phoenix
 {
 	typedef char FChar;
@@ -20,7 +22,7 @@ namespace Phoenix
 
 	typedef std::size_t SizeT;
 	typedef std::nullptr_t NullptrT;
-
+	
 	enum class EInitParam
 	{
 		Null

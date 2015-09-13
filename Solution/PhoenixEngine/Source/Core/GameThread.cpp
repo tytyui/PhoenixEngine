@@ -2,17 +2,20 @@
 
 #include "Utility/Debug/Assert.h"
 #include "Utility/Debug/Debug.h"
+#include "Utility/Misc/Allocator.h"
 #include "Utility/Misc/Timer.h"
 
 using namespace Phoenix;
 
 bool FGameThread::FInitParams::IsValid() const
 {
+	const bool IsWindowValid = Window != nullptr;
 	const bool AreOutgoingEventsValid = OutgoingEvents != nullptr;
 	const bool AreIncomingEventsValid = IncomingEvents != nullptr;
 	const bool IsUpdateCallbackValid = UpdateCallback != nullptr;
 
 	const bool Result =
+		IsWindowValid &&
 		AreOutgoingEventsValid &&
 		AreIncomingEventsValid &&
 		IsUpdateCallbackValid;
@@ -40,9 +43,7 @@ void FGameThread::Init(const FInitParams& InitParams)
 	F_LogTrace("GameThread::Init()");
 
 	InitData = InitParams;
-
 	IsRunning = true;
-
 	Thread = FThread(&FGameThread::ThreadRun, this);
 }
 
@@ -63,7 +64,8 @@ void FGameThread::ThreadRun()
 	ThreadInit();
 	F_LogTrace("GameThread::ThreadRun()");
 
-	const Float32 FramesPerSec = .125f; // #FIXME: This low value is simply for demonstration purposes.
+	// #FIXME: This low value is simply for demonstration purposes.
+	const Float32 FramesPerSec = .125f;
 	const Float32 MaxDeltaTime = 1.f / FramesPerSec;
 
 	TThreadSafeVector<UInt32>::ContainerT ReceivedEvents;
@@ -91,16 +93,15 @@ void FGameThread::ThreadRun()
 
 			for (const auto& ReceivedEvent : ReceivedEvents)
 			{
-				F_LogTrace("GameThread::ThreadRun() - Received event: " << ReceivedEvent);
+				// #FIXME: Handle received events.
 			}
 
 			ReceivedEvents.clear();
 
 			// #FIXME: Update
-			InitData.UpdateCallback(0);
+			InitData.UpdateCallback(MaxDeltaTime);
 
 			// #FIXME: Dispatch any messages to Engine.cpp here.
-			F_LogTrace("GameThread::ThreadRun() - Dispatching event: " << 1 << "\n");
 			InitData.OutgoingEvents->AddEntry(1);
 
 			++UpdateCount;
@@ -119,6 +120,19 @@ void FGameThread::ThreadRun()
 
 void FGameThread::ThreadInit()
 {
+	{
+		AudioEngine.Init();
+		F_Assert(AudioEngine.IsValid(), "Audio Engine failed to initialize.");
+	}
+
+	{	// #FIXME: Init Physics
+
+	}
+
+	{	// #FIXME: Init Graphics
+
+	}
+
 	F_LogTrace("GameThread::ThreadInit()\n");
 }
 
@@ -126,6 +140,18 @@ void FGameThread::ThreadDeInit()
 {
 	F_LogTrace("GameThread::ThreadDeInit()");
 	InitData = FInitParams();
+
+	{	// #FIXME: DeInit Graphics
+
+	}
+
+	{	// #FIXME: DeInit Physics
+
+	}
+
+	{
+		AudioEngine.DeInit();
+	}
 }
 
 // #FIXME: Remove this when it is no longer needed.

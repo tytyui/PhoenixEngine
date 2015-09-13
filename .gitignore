@@ -5,12 +5,9 @@ Solution/PhoenixEngine/Debug
 Solution/PhoenixEngine/Release
 Solution/TestGame/Debug
 Solution/TestGame/Release
-Solution/Binaries/Debug
-Solution/Binaries/Release
-Solution/PhoenixEngine/obj/Debug
-Solution/PhoenixEngine/obj/Release
-Solution/TestGame/obj/Debug
-Solution/TestGame/obj/Release
+*/Build
+*/obj/Debug
+*/obj/Release
 
 
 #VS stuff
@@ -22,6 +19,8 @@ Solution/TestGame/obj/Release
 *.suo
 *.cmake
 *.tlog
+*.idb
+*.enc
 
 # Compiled Object files
 *.slo

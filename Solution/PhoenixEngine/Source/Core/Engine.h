@@ -4,8 +4,7 @@
 #include "Utility/Threading/ThreadSafeVector.h"
 #include "Utility/Misc/Memory.h"
 #include "Core/GameThread.h"
-
-#include "Core/Platform/Windowing/Win32Window.h"
+#include "Platform/Windowing/Win32Window.h"
 
 namespace Phoenix
 {
@@ -34,7 +33,7 @@ namespace Phoenix
 	private:
 		
 		//Engine SubSystems
-		FWin32Window* MainWindow = nullptr;
+		FWin32Window* MainWindow{ nullptr };
 		FGameThread GameThread;
 		TUniquePtr<FInput> Input;
 

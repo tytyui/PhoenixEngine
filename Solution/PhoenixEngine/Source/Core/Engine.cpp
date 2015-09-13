@@ -5,6 +5,7 @@
 #include "Math/Math.h"
 #include "Utility/Debug/Debug.h"
 #include "Utility/FileIO/Endian.h"
+#include "Utility/Misc/Allocator.h"
 #include "Utility/Misc/Primitives.h"
 #include "Utility/Misc/Timer.h"
 #include "Utility/Threading/Thread.h"
@@ -22,9 +23,13 @@ void FEngine::Init(const FGameThread::FUpdateCallback& OnUpdateCallback)
 
 	FEndian::Init();
 
+	// This will change, calm your horses
+	MainWindow = new FWin32Window(1024, 768, "PhoenixEngine");
+
 	{
 		FGameThread::FInitParams InitParams;
 
+		InitParams.Window = MainWindow;
 		InitParams.OutgoingEvents = &IncomingEvents;
 		InitParams.IncomingEvents = &OutgoingEvents;
 		InitParams.UpdateCallback = OnUpdateCallback;
@@ -32,9 +37,6 @@ void FEngine::Init(const FGameThread::FUpdateCallback& OnUpdateCallback)
 		GameThread.Init(InitParams);
 		F_Assert(GameThread.IsValid(), "Game Thread failed to initialize.");
 	}
-
-	// This will change, calm your horses
-	MainWindow = new FWin32Window(1024, 768, "PhoenixEngine");
 	
 	Input = std::make_unique<FInput>();
 	Input->Init(MainWindow);
@@ -52,7 +54,8 @@ void FEngine::Run()
 {
 	F_LogTrace("Engine::Run()\n");
 
-	const Float32 FramesPerSec = 0.25f; // #FIXME: This low value is simply for demonstration purposes.
+	// #FIXME: This low value is simply for demonstration purposes.
+	const Float32 FramesPerSec = 0.25f;
 	const Float32 MaxDeltaTime = 1.f / FramesPerSec;
 
 	TThreadSafeVector<UInt32>::ContainerT ReceivedEvents;
@@ -70,15 +73,15 @@ void FEngine::Run()
 		if (AccumulatedTime >= MaxDeltaTime)
 		{
 			AccumulatedTime = FMathf::Modulo(AccumulatedTime, MaxDeltaTime);
-
-			F_LogTrace("Engine::Run() - Dispatching event: " << 0);
+			
+			// #FIXME: Dispatch events here.
 
 			OutgoingEvents.AddEntry(0);
 			IncomingEvents.GetDataAndClear(ReceivedEvents);
 
 			for (const auto& ReceivedEvent : ReceivedEvents)
 			{
-				F_LogTrace("Engine::Run() - Received event: " << ReceivedEvent << "\n");
+				// #FIXME: Handle received events here.
 			}
 
 			ReceivedEvents.clear();

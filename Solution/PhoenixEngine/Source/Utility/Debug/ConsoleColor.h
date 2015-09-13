@@ -36,6 +36,8 @@ namespace Phoenix
 
 		bool IsValid() const;
 
+		static void Set(const EConsoleColor::Value Color);
+
 		static void Set(const FConsoleColor Color);
 
 	protected:
@@ -55,12 +57,18 @@ namespace Phoenix
 		return bIsValid;
 	}
 
+	inline void FConsoleColor::Set(const EConsoleColor::Value Color)
+	{
+		Set(FConsoleColor(Color));
+	}
+
 	inline void FConsoleColor::Set(const FConsoleColor Color)
 	{
 #if _WIN32
 		F_Assert(Color.IsValid(), "ConsoleColor must be valid.");
 		static_assert(EConsoleColor::Count == 8, "This table requires updating.");
-		static const TArray<WORD, EConsoleColor::Count> LookUpTable = {
+		static const TArray<WORD, EConsoleColor::Count> LookUpTable =
+		{
 			/* White		*/FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE,
 			/* Grey			*/0,
 			/* Red			*/FOREGROUND_RED,

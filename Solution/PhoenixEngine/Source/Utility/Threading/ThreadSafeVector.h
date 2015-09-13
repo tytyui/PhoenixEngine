@@ -11,7 +11,7 @@ namespace Phoenix
 	class TThreadSafeVector
 	{
 	public:
-		typedef std::vector<T> ContainerT;
+		typedef TVector<T> ContainerT;
 
 		TThreadSafeVector() = default;
 

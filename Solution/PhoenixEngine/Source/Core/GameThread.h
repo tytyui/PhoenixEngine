@@ -1,6 +1,8 @@
 #ifndef PHOENIX_GAME_THREAD_H
 #define PHOENIX_GAME_THREAD_H
 
+#include "Audio/AudioEngine.h"
+#include "Platform/Windowing/IWindow.h"
 #include "Utility/Misc/Function.h"
 #include "Utility/Threading/Atomic.h"
 #include "Utility/Threading/Thread.h"
@@ -15,6 +17,7 @@ namespace Phoenix
 
 		struct FInitParams
 		{
+			IWindow* Window{ nullptr };
 			TThreadSafeVector<UInt32>* OutgoingEvents{ nullptr };
 			TThreadSafeVector<UInt32>* IncomingEvents{ nullptr };
 			FUpdateCallback UpdateCallback;
@@ -45,6 +48,7 @@ namespace Phoenix
 		// However, we haven't discussed memory management and 
 		// ownership semantics yet, so they're raw pointers for now.
 		FInitParams InitData;
+		FAudioEngine AudioEngine;
 
 		TAtomic<bool> IsRunning{ false };
 
