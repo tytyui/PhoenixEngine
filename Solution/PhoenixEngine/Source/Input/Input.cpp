@@ -1,8 +1,13 @@
 #include "Input/Input.h"
-#include "Core/Platform/Windowing/Win32Window.h"
+
 #include "Utility/Debug/Assert.h"
+#include "Platform/Windowing/Win32Window.h"
 
 using namespace Phoenix;
+
+FInput::FInput()
+{
+}
 
 void FInput::Init(FWin32Window* Window)
 {
