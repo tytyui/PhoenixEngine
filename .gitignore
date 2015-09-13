@@ -19,6 +19,8 @@ Solution/TestGame/Release
 *.suo
 *.cmake
 *.tlog
+*.idb
+*.enc
 
 # Compiled Object files
 *.slo

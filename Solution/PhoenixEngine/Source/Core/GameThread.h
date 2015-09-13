@@ -5,6 +5,7 @@
 #include "Utility/Threading/Atomic.h"
 #include "Utility/Threading/Thread.h"
 #include "Utility/Threading/ThreadSafeVector.h"
+#include "Audio/AudioEngine.h"
 #include "Core/Platform/Windowing/IWindow.h"
 
 namespace Phoenix
@@ -47,6 +48,7 @@ namespace Phoenix
 		// However, we haven't discussed memory management and 
 		// ownership semantics yet, so they're raw pointers for now.
 		FInitParams InitData;
+		FAudioEngine AudioEngine;
 
 		TAtomic<bool> IsRunning{ false };
 
