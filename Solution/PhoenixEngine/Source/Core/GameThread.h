@@ -2,11 +2,12 @@
 #define PHOENIX_GAME_THREAD_H
 
 #include "Audio/AudioEngine.h"
-#include "Core/Platform/Windowing/IWindow.h"
+#include "Platform/Windowing/IWindow.h"
 #include "Utility/Misc/Function.h"
 #include "Utility/Threading/Atomic.h"
 #include "Utility/Threading/Thread.h"
 #include "Utility/Threading/ThreadSafeVector.h"
+
 namespace Phoenix
 {
 	class FGameThread
