@@ -104,7 +104,7 @@ namespace Phoenix
 		const SizeT DataValueModAlignment = PtrValues.DataValue % Alignment;
 		SizeT UserPtrOffset = Alignment - DataValueModAlignment;
 
-		static_assert(sizeof(void*) == 4, "This if ( ) snippet requires 64 bit testing before it's ready for use.");
+		// #FIXME: Verify this in 64 bit mode.
 		if (UserPtrOffset < PointerSize)
 		{
 			UserPtrOffset += Alignment;
