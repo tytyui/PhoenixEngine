@@ -15,10 +15,13 @@ namespace Phoenix
 	{
 	public:
 		FInput() = default;
+
 		FInput(const FInput&) = delete;
-		FInput& operator = (const FInput&) = delete;
+		FInput& operator=(const FInput&) = delete;
+
 		FInput(FInput&&) = default;
-		FInput& operator = (FInput&&) = default;
+		FInput& operator=(FInput&&) = default;
+
 		~FInput() = default;
 
 		typedef std::function<void(const FKeyboardEvent&)> FKeyPressCallback;

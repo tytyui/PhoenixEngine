@@ -270,6 +270,7 @@ namespace Phoenix
 
 // #FIXME: Move this to a config file when appropriate.
 #define PHOENIX_DEBUG_GL 1
+#define PHOENIX_DEBUG_GL_MAX_ERROR_MSGS 10
 
 #ifndef PHOENIX_DEBUG_GL
 #	define PHOENIX_DEBUG_GL 1
@@ -277,29 +278,33 @@ namespace Phoenix
 
 #if PHOENIX_DEBUG_GL
 
-#	define F_GLDisplayErrors()													\
-		for (;;) {																\
-			const EError::Type GLError = glGetError();							\
-																				\
-			if (GLError == EError::None) {										\
-				break;															\
-			}																	\
-																				\
-			const FChar* const ErrorStr = EError::ToString(Error);				\
-			const FChar* const Description = EError::ToDescription(Error);		\
-																				\
-			F_Assert(ErrorStr, "ErrorStr is null.");							\
-			F_Assert(Description, "Description is null.");						\
-			F_LogError("GL Error: " << ErrorStr << " - " << Description);		\
+#	define F_GLDisplayErrors()														\
+		for (UInt32 I = 0; I < PHOENIX_DEBUG_GL_MAX_ERROR_MSGS; ++I)				\
+		{																			\
+			const GL::EError::Type GLError = glGetError();							\
+																					\
+			if (GLError == GL::EError::None)										\
+			{																		\
+				break;																\
+			}																		\
+																					\
+			const FChar* const ErrorStr = GL::EError::ToString(GLError);			\
+			const FChar* const Description = GL::EError::ToDescription(GLError);	\
+																					\
+			F_Assert(ErrorStr, "ErrorStr is null.");								\
+			F_Assert(Description, "Description is null.");							\
+			F_LogError("GL Error: " << ErrorStr << " - " << Description);			\
 		}
 
-#	define F_GLIgnoreErrors()													\
-		for (;;) {																\
-			const EError::Type GLError = glGetError();							\
-																				\
-			if (GLError == EError::None) {										\
-				break;															\
-			}																	\
+#	define F_GLIgnoreErrors()											\
+		for (UInt32 I = 0; I < PHOENIX_DEBUG_GL_MAX_ERROR_MSGS; ++I)	\
+		{																\
+			const GL::EError::Type GLError = glGetError();				\
+																		\
+			if (GLError == GL::EError::None)							\
+			{															\
+				break;													\
+			}															\
 		}
 
 #	define F_GL(GLCall)			\

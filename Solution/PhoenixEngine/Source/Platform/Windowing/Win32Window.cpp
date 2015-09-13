@@ -20,6 +20,10 @@ FWin32Window::~FWin32Window()
 
 void FWin32Window::Init()
 {
+	bIsHidden = false;
+	bIsMinimized = false;
+	bIsFullScreen = false;
+	
 	glfwInit();
 
 	// Also working out a better way for this, but one thing at a time...
@@ -27,14 +31,14 @@ void FWin32Window::Init()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+	glfwWindowHint(GLFW_VISIBLE, GL_FALSE);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); 
 
 	// This creation stuff will need to be adjusted both design and otherwise 
 	// when we think about fullscreen and multi-monitor issues
 	Window = glfwCreateWindow(static_cast<int>(Dimensions.x), static_cast<int>(Dimensions.y), WindowTitleText.c_str(), nullptr, nullptr);
 
-	glfwMakeContextCurrent(Window);
-
+	bIsHidden = glfwGetWindowAttrib(Window, GLFW_VISIBLE) == GL_FALSE;
 
 	//Input
 	{
@@ -49,14 +53,6 @@ void FWin32Window::Init()
 			static_cast<FWin32Window*>(glfwGetWindowUserPointer(Window))->OnKeyPressCallback(Window, Key, ScanCode, Action, Mods);
 		};
 		glfwSetKeyCallback(Window, KeyPressCallback);
-	}
-
-	// This should very soon also be handled by a GLEW layer
-	glewExperimental = true;
-	int GLEWInitStatus = glewInit();
-	if (!GLEWInitStatus)
-	{
-		// 99 Problems, successful init ain't one
 	}
 }
 
@@ -204,7 +200,7 @@ const FIcon& FWin32Window::GetTitlebarIcon() const
 	return TitlebarIcon;
 }
 
-void Phoenix::FWin32Window::SetGraphicsContextCurrent()
+void FWin32Window::SetGraphicsContextCurrent()
 {
 	glfwMakeContextCurrent(Window);
 }

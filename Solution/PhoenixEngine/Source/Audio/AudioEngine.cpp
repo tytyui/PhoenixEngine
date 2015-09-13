@@ -21,6 +21,7 @@ void FAudioEngine::Init()
 	if (!SoundEngine)
 	{
 		F_LogError("Failed to create IrrKlang device.");
+		DeInit();
 		return;
 	}
 

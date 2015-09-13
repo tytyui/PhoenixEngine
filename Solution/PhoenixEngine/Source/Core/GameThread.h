@@ -2,8 +2,10 @@
 #define PHOENIX_GAME_THREAD_H
 
 #include "Audio/AudioEngine.h"
+#include "Rendering/RenderEngine.h"
 #include "Platform/Windowing/IWindow.h"
 #include "Utility/Misc/Function.h"
+#include "Utility/Misc/Primitives.h"
 #include "Utility/Threading/Atomic.h"
 #include "Utility/Threading/Thread.h"
 #include "Utility/Threading/ThreadSafeVector.h"
@@ -13,10 +15,13 @@ namespace Phoenix
 	class FGameThread
 	{
 	public:
-		typedef TFunction<void(float)> FUpdateCallback;
+		typedef TFunction<void(Float32)> FUpdateCallback;
 
 		struct FInitParams
 		{
+			// #FIXME: These should probably be shared pointers instead.
+			// However, we haven't discussed memory management and 
+			// ownership semantics yet, so they're raw pointers for now.
 			IWindow* Window{ nullptr };
 			TThreadSafeVector<UInt32>* OutgoingEvents{ nullptr };
 			TThreadSafeVector<UInt32>* IncomingEvents{ nullptr };
@@ -44,11 +49,9 @@ namespace Phoenix
 	protected:
 	private:
 		FThreadRAII Thread;
-		// #FIXME: These should probably be shared pointers instead.
-		// However, we haven't discussed memory management and 
-		// ownership semantics yet, so they're raw pointers for now.
 		FInitParams InitData;
 		FAudioEngine AudioEngine;
+		FRenderEngine RenderEngine;
 
 		TAtomic<bool> IsRunning{ false };
 

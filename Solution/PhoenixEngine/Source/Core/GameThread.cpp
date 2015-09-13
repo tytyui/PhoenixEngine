@@ -112,7 +112,7 @@ void FGameThread::ThreadRun()
 			}
 		}
 
-		// #FIXME: Render
+		RenderEngine.Render();
 	}
 
 	ThreadDeInit();
@@ -129,8 +129,12 @@ void FGameThread::ThreadInit()
 
 	}
 
-	{	// #FIXME: Init Graphics
+	{
+		FRenderEngine::FInitParams RenderInitParams;
+		RenderInitParams.Window = InitData.Window;
 
+		RenderEngine.Init(RenderInitParams);
+		F_Assert(RenderEngine.IsValid(), "Render Engine failed to initialize.");
 	}
 
 	F_LogTrace("GameThread::ThreadInit()\n");
@@ -141,8 +145,8 @@ void FGameThread::ThreadDeInit()
 	F_LogTrace("GameThread::ThreadDeInit()");
 	InitData = FInitParams();
 
-	{	// #FIXME: DeInit Graphics
-
+	{
+		RenderEngine.DeInit();
 	}
 
 	{	// #FIXME: DeInit Physics
@@ -153,48 +157,3 @@ void FGameThread::ThreadDeInit()
 		AudioEngine.DeInit();
 	}
 }
-
-// #FIXME: Remove this when it is no longer needed.
-// Main Thread
-//while (true)
-//{
-	// Poll events
-	// Dispatch events to game thread
-
-	// If game thread sent events to main thread
-		// Retrieve events
-		// Process events
-//}
-
-
-// #FIXME: Remove this when it is no longer needed.
-// Game Thread
-/*
-	while running
-
-		update game timer
-		get delta time
-		add to accumulated time
-
-		while accumulated time >= max delta time
-			reduce accumulated time
-			get current time
-
-			if main thread sent events to game thread
-				retrieve events
-				process events
-
-			dispatch events to main thread
-
-			update audio
-			update physics
-			update c++ scripts
-
-			if multiple updates occured this frame
-				display a warning
-				potentially reduce target frame rate
-
-		draw graphics
-
-	end while loop
-*/
