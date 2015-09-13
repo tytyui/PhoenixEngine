@@ -1,5 +1,5 @@
 #include "Input/Input.h"
-#include "Core/Platform/Windowing/Win32Window.h"
+#include "Platform/Windowing/Win32Window.h"
 #include "Utility/Debug/Assert.h"
 
 using namespace Phoenix;
