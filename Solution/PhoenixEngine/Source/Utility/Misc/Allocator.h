@@ -128,8 +128,6 @@ namespace Phoenix
 	inline void FRawAlignedAlloc::Delete(void* const Data)
 	{
 		F_Assert(Data, "Data is null.");
-		const SizeT PointerSize = sizeof(UInt8*);
-
 		SizeT* InternalDataSizeTPtr = static_cast<SizeT*>(Data);
 		--InternalDataSizeTPtr;
 
@@ -139,7 +137,7 @@ namespace Phoenix
 
 		F_Assert(PtrValues.DataPtr, "Data is invalid.  Check your allocator usage.");
 		F_Assert(PtrValues.DataPtr < Data, "Data is invalid.  Check your allocator usage.");
-		F_Assert((PtrValues.DataPtr + PointerSize) <= Data, "Data is invalid.  Check your allocator usage.");
+		F_Assert((PtrValues.DataPtr + sizeof(UInt8*)) <= Data, "Data is invalid.  Check your allocator usage.");
 
 		FRawAlloc::Delete(PtrValues.DataPtr);
 	}

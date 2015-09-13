@@ -112,7 +112,7 @@ void FGameThread::ThreadRun()
 
 			for (const auto& ReceivedEvent : ReceivedEvents)
 			{
-				F_LogTrace("GameThread::ThreadRun() - Received event: " << ReceivedEvent);
+				F_LogTrace("GameThread::ThreadRun() - Received event: " << ReceivedEvent << " @" << CurrentTime << " s.");
 			}
 
 			ReceivedEvents.clear();
