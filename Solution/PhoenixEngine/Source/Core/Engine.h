@@ -3,7 +3,6 @@
 
 #include "Utility/Threading/ThreadSafeVector.h"
 #include "Core/GameThread.h"
-
 #include "Core/Platform/Windowing/Win32Window.h"
 
 namespace Phoenix
@@ -26,8 +25,7 @@ namespace Phoenix
 		void Run();
 
 	private:
-
-		FWin32Window* MainWindow;
+		FWin32Window* MainWindow{ nullptr };
 
 		FGameThread GameThread;
 		// #FIXME: Change UInt32 to the Event structure.

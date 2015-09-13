@@ -5,6 +5,7 @@
 #include "Utility/Threading/Atomic.h"
 #include "Utility/Threading/Thread.h"
 #include "Utility/Threading/ThreadSafeVector.h"
+#include "Core/Platform/Windowing/IWindow.h"
 
 namespace Phoenix
 {
@@ -15,6 +16,7 @@ namespace Phoenix
 
 		struct FInitParams
 		{
+			IWindow* Window{ nullptr };
 			TThreadSafeVector<UInt32>* OutgoingEvents{ nullptr };
 			TThreadSafeVector<UInt32>* IncomingEvents{ nullptr };
 			FUpdateCallback UpdateCallback;

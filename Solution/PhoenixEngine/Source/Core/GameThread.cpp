@@ -2,17 +2,20 @@
 
 #include "Utility/Debug/Assert.h"
 #include "Utility/Debug/Debug.h"
+#include "Utility/Misc/Allocator.h"
 #include "Utility/Misc/Timer.h"
 
 using namespace Phoenix;
 
 bool FGameThread::FInitParams::IsValid() const
 {
+	const bool IsWindowValid = Window != nullptr;
 	const bool AreOutgoingEventsValid = OutgoingEvents != nullptr;
 	const bool AreIncomingEventsValid = IncomingEvents != nullptr;
 	const bool IsUpdateCallbackValid = UpdateCallback != nullptr;
 
 	const bool Result =
+		IsWindowValid &&
 		AreOutgoingEventsValid &&
 		AreIncomingEventsValid &&
 		IsUpdateCallbackValid;
@@ -33,6 +36,11 @@ FGameThread::~FGameThread()
 	Thread.Join();
 }
 
+struct FBigDataTest
+{
+	UInt32 Data[26214400];
+};
+
 void FGameThread::Init(const FInitParams& InitParams)
 {
 	F_Assert(InitParams.IsValid(), "Initialization parameters must be valid.");
@@ -40,6 +48,18 @@ void FGameThread::Init(const FInitParams& InitParams)
 	F_LogTrace("GameThread::Init()");
 
 	InitData = InitParams;
+		
+	{	// #FIXME: Init Audio
+
+	}
+
+	{	// #FIXME: Init Physics
+
+	}
+
+	{	// #FIXME: Init Graphics
+
+	}
 
 	IsRunning = true;
 
@@ -63,7 +83,8 @@ void FGameThread::ThreadRun()
 	ThreadInit();
 	F_LogTrace("GameThread::ThreadRun()");
 
-	const Float32 FramesPerSec = .125f; // #FIXME: This low value is simply for demonstration purposes.
+	// #FIXME: This low value is simply for demonstration purposes.
+	const Float32 FramesPerSec = .125f;
 	const Float32 MaxDeltaTime = 1.f / FramesPerSec;
 
 	TThreadSafeVector<UInt32>::ContainerT ReceivedEvents;
@@ -119,6 +140,18 @@ void FGameThread::ThreadRun()
 
 void FGameThread::ThreadInit()
 {
+	{	// #FIXME: DeInit Graphics
+
+	}
+
+	{	// #FIXME: DeInit Physics
+
+	}
+
+	{	// #FIXME: DeInit Audio
+
+	}
+
 	F_LogTrace("GameThread::ThreadInit()\n");
 }
 

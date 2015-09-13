@@ -109,19 +109,23 @@ namespace Phoenix
 		}
 
 #	if PHOENIX_DEBUG_LEVEL >= PHOENIX_DEBUG_LEVEL_1
-#		define F_LogError(Msg)		PHOENIX_DEBUG_INTERNAL(EConsoleColor::Red, "..", Msg)
+#		define F_LogError(Msg)				PHOENIX_DEBUG_INTERNAL(EConsoleColor::Red, "..", Msg)
+#		define F_LogErrorIf(Expr, Msg)		if (Expr) { F_LogError(Msg); }
 #	endif
 
 #	if PHOENIX_DEBUG_LEVEL >= PHOENIX_DEBUG_LEVEL_2
-#		define F_LogWarning(Msg)	PHOENIX_DEBUG_INTERNAL(EConsoleColor::Yellow, "..", Msg)
+#		define F_LogWarning(Msg)			PHOENIX_DEBUG_INTERNAL(EConsoleColor::Yellow, "..", Msg)
+#		define F_LogWarningIf(Expr, Msg)	if (Expr) { F_LogWarning(Msg); }
 #	endif
 
 #	if PHOENIX_DEBUG_LEVEL >= PHOENIX_DEBUG_LEVEL_3
-#		define F_LogTrace(Msg)		PHOENIX_DEBUG_INTERNAL(EConsoleColor::White, "..", Msg)
+#		define F_LogTrace(Msg)				PHOENIX_DEBUG_INTERNAL(EConsoleColor::White, "..", Msg)
+#		define F_LogTraceIf(Expr, Msg)		if (Expr) { F_LogTrace(Msg); }
 #	endif
 
 #	if PHOENIX_DEBUG_LEVEL >= PHOENIX_DEBUG_LEVEL_3
-#		define F_Log(Msg)			PHOENIX_DEBUG_INTERNAL(EConsoleColor::Grey, "..", Msg)
+#		define F_Log(Msg)					PHOENIX_DEBUG_INTERNAL(EConsoleColor::Grey, "..", Msg)
+#		define F_LogIf(Expr, Msg)			if (Expr) { F_Log(Msg); }
 #	endif
 
 #else
@@ -164,19 +168,23 @@ namespace Phoenix
 		}
 
 #	if PHOENIX_DEBUG_LEVEL >= PHOENIX_DEBUG_LEVEL_1
-#		define F_LogError(Msg)		PHOENIX_DEBUG_INTERNAL("Error: ..", Msg)
+#		define F_LogError(Msg)				PHOENIX_DEBUG_INTERNAL("Error: ..", Msg)
+#		define F_LogErrorIf(Expr, Msg)		if (Expr) { F_LogError(Msg); }
 #	endif
 
 #	if PHOENIX_DEBUG_LEVEL >= PHOENIX_DEBUG_LEVEL_2
-#		define F_LogWarning(Msg)	PHOENIX_DEBUG_INTERNAL("Warning: ..", Msg)
+#		define F_LogWarning(Msg)			PHOENIX_DEBUG_INTERNAL("Warning: ..", Msg)
+#		define F_LogWarningIf(Expr, Msg)	if (Expr) { F_LogWarning(Msg); }
 #	endif
 
 #	if PHOENIX_DEBUG_LEVEL >= PHOENIX_DEBUG_LEVEL_3
-#		define F_LogTrace(Msg)		PHOENIX_DEBUG_INTERNAL("Trace: ..", Msg)
+#		define F_LogTrace(Msg)				PHOENIX_DEBUG_INTERNAL("Trace: ..", Msg)
+#		define F_LogTraceIf(Expr, Msg)		if (Expr) { F_LogTrace(Msg); }
 #	endif
 
 #	if PHOENIX_DEBUG_LEVEL >= PHOENIX_DEBUG_LEVEL_3
-#		define F_Log(Msg)			PHOENIX_DEBUG_INTERNAL("Misc: ..", Msg)
+#		define F_Log(Msg)					PHOENIX_DEBUG_INTERNAL("Misc: ..", Msg)
+#		define F_LogIf(Expr, Msg)			if (Expr) { F_Log(Msg); }
 #	endif
 
 #endif
@@ -191,18 +199,22 @@ namespace Phoenix
 
 #ifndef F_LogError
 #	define F_LogError(Msg)
+#	define F_LogErrorIf(Expr, Msg)
 #endif
 
 #ifndef F_LogWarning
 #	define F_LogWarning(Msg)
+#	define F_LogWarningIf(Expr, Msg)
 #endif
 
 #ifndef F_LogTrace
 #	define F_LogTrace(Msg)
+#	define F_LogTraceIf(Expr, Msg)
 #endif
 
 #ifndef F_Log
 #	define F_Log(Msg)
+#	define F_LogIf(Expr, Msg)
 #endif
 
 #endif
