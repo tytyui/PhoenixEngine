@@ -55,7 +55,7 @@ namespace Phoenix
 		typedef TFunction<void(Float64 XPos, Float64 YPos)> FWindowMouseMoveCallback;
 
 		virtual void SetKeyPressCallback(const FWindowKeyPressCallback& KeyPressCallback);
-		virtual void SetMouseButtonCallback(const FWindowMouseClickCallback& MouseClickCallback);
+		virtual void SetMouseClickCallback(const FWindowMouseClickCallback& MouseClickCallback);
 		virtual void SetMouseMoveCallback(const FWindowMouseMoveCallback& MouseMoveCallback);
 
 	protected:
@@ -69,8 +69,10 @@ namespace Phoenix
 		FWindowMouseClickCallback MouseClickCallback;
 		FWindowMouseMoveCallback MouseMoveCallback;
 
-		//GLFW interface
-		void OnKeyPressCallback(FGLWindow* Window, Int32 Key, Int32 ScanCode, Int32 Action, Int32 Mods);
+		//GLFW Input Interface
+		void OnKeyPress(FGLWindow* Window, Int32 Key, Int32 ScanCode, Int32 Action, Int32 Mods) const;
+		void OnMouseClick(FGLWindow* Window, Int32 Button, Int32 Action, Int32 Mods) const;
+		void OnMouseMove(FGLWindow* Window, Float64 XPos, Float64 YPos) const;
 
 	};
 }

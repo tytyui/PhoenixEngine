@@ -29,12 +29,15 @@ namespace Phoenix
 		const TUniquePtr<FInput>& GetInput() const;
 
 		void Run();
+		void ShutDown();
 
 	private:
 		
 		//Engine SubSystems
 		FWin32Window* MainWindow{ nullptr };
 		FGameThread GameThread;
+
+		//#FIXME Determine which thread this should be on
 		TUniquePtr<FInput> Input;
 
 		// #FIXME: Change UInt32 to the Event structure.

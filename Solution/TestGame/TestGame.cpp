@@ -11,6 +11,11 @@ void FTestGame::Init()
 	{
 		OnKeyPress(KeyEvent);
 	});
+
+	GetInput()->RegisterMouseClickCallback([this](const FMouseClickEvent& MouseClickEvent)
+	{
+		OnMouseClick(MouseClickEvent);
+	});
 }
 
 void FTestGame::Update(float dt)
@@ -19,6 +24,15 @@ void FTestGame::Update(float dt)
 }
 
 void FTestGame::OnKeyPress(const FKeyboardEvent& KeyEvent)
+{
+	F_Log(__FUNCTION__);
+	if (KeyEvent.KeyCode == EKeyCode::Esc)
+	{
+		ShutDown();
+	}
+}
+
+void FTestGame::OnMouseClick(const FMouseClickEvent& MouseClickEvent)
 {
 	F_Log(__FUNCTION__);
 }

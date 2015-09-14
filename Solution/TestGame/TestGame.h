@@ -6,6 +6,7 @@
 namespace Phoenix
 {
 	struct FKeyboardEvent;
+	struct FMouseClickEvent;
 }
 
 class FTestGame : public Phoenix::FGame
@@ -19,7 +20,9 @@ protected:
 	virtual void Update(float DT) override;
 
 private:
-	void FTestGame::OnKeyPress(const Phoenix::FKeyboardEvent& KeyEvent);
+
+	void OnKeyPress(const Phoenix::FKeyboardEvent& KeyEvent);
+	void OnMouseClick(const Phoenix::FMouseClickEvent& MouseClickEvent);
 };
 
 #endif

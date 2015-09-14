@@ -16,6 +16,7 @@ namespace Phoenix
 		Button7 = 6,
 		Button8 = 7,
 		Button9 = 8,
+
 		Unknown = -1
 	};
 }

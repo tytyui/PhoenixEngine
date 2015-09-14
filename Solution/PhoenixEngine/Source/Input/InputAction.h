@@ -10,6 +10,7 @@ namespace Phoenix
 		Release = 0,
 		Press = 1,
 		Hold = 2,
+
 		Unknown = -1
 	};
 }

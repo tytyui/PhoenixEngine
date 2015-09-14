@@ -22,6 +22,7 @@ namespace Phoenix
 		virtual ~FGame();
 
 		void StartGame();
+		void ShutDown();
 
 	protected:
 		const TUniquePtr<FInput>& GetInput() const;

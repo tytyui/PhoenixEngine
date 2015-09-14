@@ -93,9 +93,18 @@ void FEngine::Run()
 		// #FIXME: Calculate an appropriate time to 
 		// sleep in order to prevent a busy wait.
 	}
+
+	DeInit();
 }
 
-const TUniquePtr<FInput>& Phoenix::FEngine::GetInput() const
+void FEngine::ShutDown()
+{
+	//#FIXME Establish proper shutdown protocol
+	F_Log("Engine::ShutDown()");
+	IsRunning = false;
+}
+
+const TUniquePtr<FInput>& FEngine::GetInput() const
 {
 	return Input;
 }

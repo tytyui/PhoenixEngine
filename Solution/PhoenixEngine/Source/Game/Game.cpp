@@ -36,6 +36,13 @@ void FGame::InternalUpdate(float DT)
 	Update(DT);
 }
 
+void FGame::ShutDown()
+{
+	//#FIXME Establish proper shutdown protocol
+	F_Log("Game::Shutdown()");
+	Engine->ShutDown();
+}
+
 const TUniquePtr<FInput>& Phoenix::FGame::GetInput() const
 {
 	return Engine->GetInput();

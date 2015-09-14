@@ -6,27 +6,47 @@ using namespace Phoenix;
 
 void FInput::Init(FWin32Window* Window)
 {
-	F_Assert_NotNull(Window, "Window is Null");
+	F_AssertNotNull(Window, "Window is Null");
 
 	Window->SetKeyPressCallback
 		([this](Int32 Key, Int32 ScanCode, Int32 Action, Int32 Mods) 
 		{
 			OnWindowKeyboardEvent(Key, ScanCode, Action, Mods);
 		});
+
+	Window->SetMouseClickCallback
+		([this](Int32 Button, Int32 Action, Int32 Mods)
+		{
+			OnWindowMouseClickEvent(Button, Action, Mods);
+		});
 }
 
+//API
 void FInput::RegisterKeyPressCallback(const FKeyPressCallback& KeyPressCallback)
 {
-	F_Assert_NotNull(KeyPressCallback, "KeyPressCallback is null");
+	F_AssertNotNull(KeyPressCallback, "KeyPressCallback is null");
 	this->KeyPressCallback = KeyPressCallback;
 }
 
-void FInput::OnWindowKeyboardEvent(Int32 Key, Int32 ScanCode, Int32 Action, Int32 Mods)
+void FInput::RegisterMouseClickCallback(const FMouseClickCallback& MouseClickCallback)
+{
+	F_AssertNotNull(MouseClickCallback, "MouseClickCallback is null");
+	this->MouseClickCallback = MouseClickCallback;
+}
+
+//Window Callbacks
+void FInput::OnWindowKeyboardEvent(Int32 Key, Int32 ScanCode, Int32 Action, Int32 Mods) const
 {
 	BroadcastKeyboardEvent(CreateKeyboardEvent(Key, Action, Mods));
 }
 
-void FInput::BroadcastKeyboardEvent(const FKeyboardEvent& KeyboardEvent)
+void FInput::OnWindowMouseClickEvent(Int32 Button, Int32 Action, Int32 Mods) const
+{
+	BroadcastMouseClickEvent(CreateMouseClickEvent(Button, Action, Mods));
+}
+
+//Broadcast
+void FInput::BroadcastKeyboardEvent(const FKeyboardEvent& KeyboardEvent) const
 {
 	if (KeyPressCallback)
 	{
@@ -34,7 +54,15 @@ void FInput::BroadcastKeyboardEvent(const FKeyboardEvent& KeyboardEvent)
 	}
 }
 
-FKeyboardEvent FInput::CreateKeyboardEvent(Int32 Key, Int32 Action, Int32 Mods)
+void FInput::BroadcastMouseClickEvent(const FMouseClickEvent& MouseClickEvent) const
+{
+	if (MouseClickCallback)
+	{
+		MouseClickCallback(MouseClickEvent);
+	}
+}
+
+FKeyboardEvent FInput::CreateKeyboardEvent(Int32 Key, Int32 Action, Int32 Mods) const
 {
 	const EKeyCode KeyCode = static_cast<EKeyCode>(Key);
 	F_Assert(ValidateKeyCode(KeyCode), "Invalid KeyCode");
@@ -46,6 +74,20 @@ FKeyboardEvent FInput::CreateKeyboardEvent(Int32 Key, Int32 Action, Int32 Mods)
 	F_Assert(ValidateKeyModifiers(KeyMods), "Invalid Key Mods");
 
 	return FKeyboardEvent(KeyCode, InputAction, KeyMods);
+}
+
+FMouseClickEvent FInput::CreateMouseClickEvent(Int32 Button, Int32 Action, Int32 Mods) const
+{
+	const EMouseButton MouseButton = static_cast<EMouseButton>(Button);
+	F_Assert(ValidateMouseButton(MouseButton), "Invalid Mouse Button");
+
+	const EInputAction InputAction = static_cast<EInputAction>(Action);
+	F_Assert(ValidateInputAction(InputAction), "Invalid Input Action");
+
+	const EKeyModifier KeyMods = static_cast<EKeyModifier>(Mods);
+	F_Assert(ValidateKeyModifiers(KeyMods), "Invalid Key Mods");
+
+	return FMouseClickEvent(MouseButton, InputAction, KeyMods);
 }
 
 bool FInput::ValidateKeyCode(EKeyCode KeyCode) const
@@ -105,4 +147,5 @@ bool FInput::ValidateMouseButton(EMouseButton MouseButton) const
 
 	return ValidMouseButton;
 }
+
 

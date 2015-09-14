@@ -45,21 +45,39 @@ void FWin32Window::Init()
 		//Hacky way of getting GLFW to accept member functions as callbacks (other options are to make it static, or to use a singleton)
 
 		glfwSetWindowUserPointer(Window, this);
+		F_AssertNotNull(glfwGetWindowUserPointer(Window), "GLFW User Ptr Null");
 
 		//Key Press
 		auto KeyPressCallback = [](GLFWwindow* Window, Int32 Key, Int32 ScanCode, Int32 Action, Int32 Mods)
 		{
-			F_Assert_NotNull(glfwGetWindowUserPointer(Window), "GLFW User Ptr Null");
-			static_cast<FWin32Window*>(glfwGetWindowUserPointer(Window))->OnKeyPressCallback(Window, Key, ScanCode, Action, Mods);
+			static_cast<FWin32Window*>(glfwGetWindowUserPointer(Window))->OnKeyPress(Window, Key, ScanCode, Action, Mods);
 		};
 		glfwSetKeyCallback(Window, KeyPressCallback);
+
+		auto MouseClickCallback = [](GLFWwindow* Window, Int32 Button, Int32 Action, Int32 Mods)
+		{
+			static_cast<FWin32Window*>(glfwGetWindowUserPointer(Window))->OnMouseClick(Window, Button, Action, Mods);
+		};
+		glfwSetMouseButtonCallback(Window, MouseClickCallback);
 	}
 }
 
-void FWin32Window::OnKeyPressCallback(FGLWindow * Window, Int32 Key, Int32 ScanCode, Int32 Action, Int32 Mods)
+void FWin32Window::OnKeyPress(FGLWindow * Window, Int32 Key, Int32 ScanCode, Int32 Action, Int32 Mods) const
 {
-	F_Assert_NotNull(KeyPressCallback, "Key press callback not set");
+	F_AssertNotNull(KeyPressCallback, "Key press Callback not set");
 	KeyPressCallback(Key, ScanCode, Action, Mods);
+}
+
+void Phoenix::FWin32Window::OnMouseClick(FGLWindow* Window, Int32 Button, Int32 Action, Int32 Mods) const
+{
+	F_AssertNotNull(MouseClickCallback, "Mouse Click Callback not set");
+	MouseClickCallback(Button, Action, Mods);
+}
+
+void Phoenix::FWin32Window::OnMouseMove(FGLWindow* Window, Float64 XPos, Float64 YPos) const
+{
+	F_AssertNotNull(MouseMoveCallback, "Mouse Move Callback not set");
+	MouseMoveCallback(XPos, YPos);
 }
 
 void FWin32Window::Hide()
@@ -104,19 +122,19 @@ void Phoenix::FWin32Window::Restore()
 
 void FWin32Window::SetKeyPressCallback(const FWindowKeyPressCallback& KeyPressCallback)
 {
-	F_Assert_NotNull(KeyPressCallback, "Key Press Callback is Null");
+	F_AssertNotNull(KeyPressCallback, "Key Press Callback is Null");
 	this->KeyPressCallback = KeyPressCallback;
 }
 
-void FWin32Window::SetMouseButtonCallback(const FWindowMouseClickCallback& MouseClickCallback)
+void FWin32Window::SetMouseClickCallback(const FWindowMouseClickCallback& MouseClickCallback)
 {
-	F_Assert_NotNull(MouseClickCallback, "Mouse Click Callback is Null");
+	F_AssertNotNull(MouseClickCallback, "Mouse Click Callback is Null");
 	this->MouseClickCallback = MouseClickCallback;
 }
 
 void FWin32Window::SetMouseMoveCallback(const FWindowMouseMoveCallback& MouseMoveCallback)
 {
-	F_Assert_NotNull(MouseMoveCallback, "Mouse Move Callback is Null");
+	F_AssertNotNull(MouseMoveCallback, "Mouse Move Callback is Null");
 	this->MouseMoveCallback = MouseMoveCallback;
 }
 
