@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2CA3B482F3D08E00AF56536FB73C50003B62EC56F5DFF600 /* Main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FD59C89B2C7C800691BDA86AC2DC400F56219DB9FC92000 /* Main.cpp */; };
 		7422466896DBD400B0DB4DEC64FF2800A7D1A8AFEC0D7800 /* TestGame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F39A237FB1CB70032B368F9565E0A0017EA184629B85600 /* TestGame.cpp */; };
+		8C2B67B97D835800219560A215D03E00E9CF65BD44174000 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ED72E7B8AA82800C67FB296CEF6C800806821F2111E0800 /* OpenGL.framework */; };
 		D342F11E74376000CE86AAACAC6BE0004A5AC4D842133400 /* libPhoenixEngine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E3395C3E8317200F1974138653A4800D3F71D0901C14000 /* libPhoenixEngine.a */; };
 /* End PBXBuildFile section */
 
@@ -33,6 +34,7 @@
 		1F39A237FB1CB70032B368F9565E0A0017EA184629B85600 /* TestGame.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = TestGame.cpp; path = TestGame.cpp; sourceTree = "<group>"; };
 		43C6D5A6FE72200081E9EB47032FF0006B97ABA237E95000 /* libPhoenixEngine.a */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "PhoenixEngine.xcodeproj"; path = ../PhoenixEngine/PhoenixEngine.xcodeproj; sourceTree = SOURCE_ROOT; };
 		6A84491BAEEB8000D882C6230578E80091D1C7B4DDF20000 /* TestGame.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TestGame.h; path = TestGame.h; sourceTree = "<group>"; };
+		7ED72E7B8AA82800C67FB296CEF6C800806821F2111E0800 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		8A1DB64FF6FBE000A0371D0A0E0E8000A4774D80FE2A7800 /* TestGame */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = TestGame; path = TestGame; sourceTree = BUILT_PRODUCTS_DIR; };
 		8FD59C89B2C7C800691BDA86AC2DC400F56219DB9FC92000 /* Main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Main.cpp; path = Main.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -42,6 +44,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8C2B67B97D835800219560A215D03E00E9CF65BD44174000 /* OpenGL.framework in Frameworks */,
 				D342F11E74376000CE86AAACAC6BE0004A5AC4D842133400 /* libPhoenixEngine.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -49,6 +52,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		62192F00424BE00024A8267C94D20C00CA30685367167000 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7ED72E7B8AA82800C67FB296CEF6C800806821F2111E0800 /* OpenGL.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		6C281CFC581EEC0018E1F4C790D9B100A4ABC73C2070E800 /* Projects */ = {
 			isa = PBXGroup;
 			children = (
@@ -63,6 +74,7 @@
 				8FD59C89B2C7C800691BDA86AC2DC400F56219DB9FC92000 /* Main.cpp */,
 				1F39A237FB1CB70032B368F9565E0A0017EA184629B85600 /* TestGame.cpp */,
 				6A84491BAEEB8000D882C6230578E80091D1C7B4DDF20000 /* TestGame.h */,
+				62192F00424BE00024A8267C94D20C00CA30685367167000 /* Frameworks */,
 				F778F1C5EA8E2800A432C9912348F0002FFC9C05B2E02800 /* Products */,
 				6C281CFC581EEC0018E1F4C790D9B100A4ABC73C2070E800 /* Projects */,
 			);
@@ -205,18 +217,20 @@
 					../Libraries/Lib/Debug/GLEW,
 					../Libraries/Lib/Debug/GLFW,
 					../Libraries/Lib/Debug/IrrKlang,
-					../Build/Debug,
 					/usr/local/lib,
 				);
 				OBJROOT = obj/Debug;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
+					"-F ./Libraries/Lib/Debug/IrrKlang -L ./Libraries/Lib/Debug/IrrKlang",
 					"-std=c++1y",
 					"-stdlib=libc++",
 				);
 				OTHER_LDFLAGS = (
 					"-lglfw3",
 					"-lglew",
+					"-lirrklang",
+					"-F ./Libraries/Lib/Debug/IrrKlang -L ./Libraries/Lib/Debug/IrrKlang",
 					"-std=c++1y",
 					"-stdlib=libc++",
 				);
@@ -258,18 +272,20 @@
 					../Libraries/Lib/Release/GLEW,
 					../Libraries/Lib/Release/GLFW,
 					../Libraries/Lib/Release/IrrKlang,
-					../Build/Release,
 					/usr/local/lib,
 				);
 				OBJROOT = obj/Release;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = (
+					"-F ./Libraries/Lib/Release/IrrKlang -L ./Libraries/Lib/Release/IrrKlang",
 					"-std=c++1y",
 					"-stdlib=libc++",
 				);
 				OTHER_LDFLAGS = (
 					"-lglfw3",
 					"-lglew",
+					"-lirrklang",
+					"-F ./Libraries/Lib/Release/IrrKlang -L ./Libraries/Lib/Release/IrrKlang",
 					"-std=c++1y",
 					"-stdlib=libc++",
 				);

@@ -1,22 +1,32 @@
 workspace "PhoenixEngine"
 	configurations { "Debug", "Release" }
 	includedirs { "PhoenixEngine/Source", "Libraries/Include" }
-	libdirs { "Libraries/Lib/%{cfg.buildcfg}/GLEW/",
+	libdirs {
+		"Libraries/Lib/%{cfg.buildcfg}/GLEW/",
 		"Libraries/Lib/%{cfg.buildcfg}/GLFW/",
 		"Libraries/Lib/%{cfg.buildcfg}/IrrKlang/",
 		"/usr/local/lib",
-		"Build/%{cfg.buildcfg}",
 		os.findlib("glfw3"),
 		os.findlib("glew")
 	}
+	links { "glfw3" }
+	
+	configuration "vs2015"
+		links { "glew32s", "opengl32" }
+	
+	configuration "gmake"
+		links { "glew", "opengl" }
+	
+	configuration "xcode4"
+		links { "glew", "OpenGL.framework", "irrklang"}
+		buildoptions { "-F ./Libraries/Lib/%{cfg.buildcfg}/IrrKlang -L ./Libraries/Lib/%{cfg.buildcfg}/IrrKlang" }
+		linkoptions { "-F ./Libraries/Lib/%{cfg.buildcfg}/IrrKlang -L ./Libraries/Lib/%{cfg.buildcfg}/IrrKlang"  }
 	
 project "PhoenixEngine"
 	kind "StaticLib"
 	language "C++"
 	location "PhoenixEngine"
 	targetdir "Build/%{cfg.buildcfg}"
-
-	links { "glew", "glfw3", "IrrKlang", "ikpMP3", "ikpFLAC" }
 	
 	files { "PhoenixEngine/Source/**.h", "PhoenixEngine/Source/**.cpp", "PhoenixEngine/Source/**.txt" }
 	
@@ -63,4 +73,3 @@ project "TestGame"
 	configuration "xcode4"
 		linkoptions  { "-std=c++1y", "-stdlib=libc++" }
 		buildoptions { "-std=c++1y", "-stdlib=libc++" }
-		links { "glfw3", "glew" } 
