@@ -1,3 +1,21 @@
+env:
+  global:
+    secure: NRNLWp4bCm8NTfRYE6kjoUP71l9fB4bUu8aKCA9kGoCLEND1KzU7FmcdQBrE12mcejyQXVFzD7GRbQkkHFMmXilq35Z4wSqHZhQ/PfxUzVTRhHRVYHhluE0GEc8kaaRM9Ei3JyGBhyaFVQN96OcL5JesA2Rh+PIIxGvXawi3KjDzXx31DFf1w624lW28MNU4l02Si6KQkP53cf7iw2UEyDxViRH4fZ0+zIvVCYiGlSW2/HhP7UnrMahJ+hOTgNQlQKQp0LPFSUlrLjgZ4IaEm/MXQkSdKuAkG4mMyimx+r2E3QleABtLnVienPk0v3FzSqlrzpEiF2p3264MGG42T8+VxuaHeD4cXyY6JRFWS5jiyUrxDrXFEabZjY9LA756lSbME7B5NyQGD9GK3rWygxukadpVxbGF3Oxu9W55aiM8JTArn/wNqOu81GnqrO0ZBOUhyOYwyjVezNMgGof80FpAZ2oVapfZkQE9HfIXSGtSrh+5WTDFQN/TFHao3M0zhhyn2rR7s+zpBw946C1fuTF7PZBUcbXP8GzvMVvEI6OnMDZ4rgHrB++1N1+dJujMVL67oqHzltu6B7RBfBsoDnGJob6UfZYn/opQD/fh2w6CccUaBHO7XY2LHdONuHMrsrLNIuXm63oiPnRb8cMPhA4GNOeXHlsWUW/eSc5mafw=
+
+addons:
+  coverity_scan:
+
+    project:
+      name: PhoenixOrg/PhoenixEngine
+      version: 1.0
+      description: PhoenixEngine
+
+    notification_email: mitchdandrews@gmail.com
+
+    build_command_prepend: brew install glfw3 glew
+
+    build_command: xcodebuild -workspace Solution/PhoenixEngine.xcworkspace -scheme TestGame -sdk macosx ONLY_ACTIVE_ARCH=NO
+
 language: objective-c
 
 compiler:
@@ -20,21 +38,3 @@ script: xcodebuild -workspace Solution/PhoenixEngine.xcworkspace -scheme TestGam
 
 os:
 - linux
-
-env:
-  global:
-    secure: NRNLWp4bCm8NTfRYE6kjoUP71l9fB4bUu8aKCA9kGoCLEND1KzU7FmcdQBrE12mcejyQXVFzD7GRbQkkHFMmXilq35Z4wSqHZhQ/PfxUzVTRhHRVYHhluE0GEc8kaaRM9Ei3JyGBhyaFVQN96OcL5JesA2Rh+PIIxGvXawi3KjDzXx31DFf1w624lW28MNU4l02Si6KQkP53cf7iw2UEyDxViRH4fZ0+zIvVCYiGlSW2/HhP7UnrMahJ+hOTgNQlQKQp0LPFSUlrLjgZ4IaEm/MXQkSdKuAkG4mMyimx+r2E3QleABtLnVienPk0v3FzSqlrzpEiF2p3264MGG42T8+VxuaHeD4cXyY6JRFWS5jiyUrxDrXFEabZjY9LA756lSbME7B5NyQGD9GK3rWygxukadpVxbGF3Oxu9W55aiM8JTArn/wNqOu81GnqrO0ZBOUhyOYwyjVezNMgGof80FpAZ2oVapfZkQE9HfIXSGtSrh+5WTDFQN/TFHao3M0zhhyn2rR7s+zpBw946C1fuTF7PZBUcbXP8GzvMVvEI6OnMDZ4rgHrB++1N1+dJujMVL67oqHzltu6B7RBfBsoDnGJob6UfZYn/opQD/fh2w6CccUaBHO7XY2LHdONuHMrsrLNIuXm63oiPnRb8cMPhA4GNOeXHlsWUW/eSc5mafw=
-
-addons:
-  coverity_scan:
-
-    project:
-      name: PhoenixOrg/PhoenixEngine
-      version: 1.0
-      description: PhoenixEngine
-
-    notification_email: mitchdandrews@gmail.com
-
-    build_command_prepend: brew install glfw3 glew
-
-    build_command: xcodebuild -workspace Solution/PhoenixEngine.xcworkspace -scheme TestGame -sdk macosx ONLY_ACTIVE_ARCH=NO
