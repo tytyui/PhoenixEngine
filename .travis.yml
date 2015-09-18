@@ -38,5 +38,3 @@ addons:
     build_command_prepend: brew install glfw3 glew
 
     build_command: xcodebuild -workspace Solution/PhoenixEngine.xcworkspace -scheme TestGame -sdk macosx ONLY_ACTIVE_ARCH=NO
-
-    branch_pattern: coverity_scan
