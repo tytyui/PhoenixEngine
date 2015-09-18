@@ -1,5 +1,5 @@
 # PhoenixEngine
-[![Build Status](https://travis-ci.org/PhoenixOrg/PhoenixEngine.svg?branch=master)](https://travis-ci.org/PhoenixOrg/PhoenixEngine) | [![Static Code Analysis Status](https://scan.coverity.com/projects/6391/badge.svg)](https://scan.coverity.com/projects/phoenix-engine)
+[![Build Status](https://travis-ci.org/PhoenixOrg/PhoenixEngine.svg?branch=master)](https://travis-ci.org/PhoenixOrg/PhoenixEngine)  [![Static Code Analysis Status](https://scan.coverity.com/projects/6391/badge.svg)](https://scan.coverity.com/projects/phoenix-engine)
 
 Main Features
 -------------
