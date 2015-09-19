@@ -3,13 +3,14 @@ workspace "PhoenixEngine"
 	includedirs { "PhoenixEngine/Source", "Libraries/Include" }
 	libdirs {
 		"Libraries/Lib/%{cfg.buildcfg}/GLEW/",
+		"Libraries/Dll/",
 		"Libraries/Lib/%{cfg.buildcfg}/GLFW/",
 		"Libraries/Lib/%{cfg.buildcfg}/IrrKlang/",
 		"/usr/local/lib",
 		os.findlib("glfw3"),
 		os.findlib("glew")
 	}
-	links { "glfw3" }
+	links { "glfw3", "irrklang" }
 	
 	configuration "vs2015"
 		links { "glew32s", "opengl32" }
@@ -18,7 +19,7 @@ workspace "PhoenixEngine"
 		links { "glew", "opengl" }
 	
 	configuration "xcode4"
-		links { "glew", "OpenGL.framework", "irrklang"}
+		links { "glew", "OpenGL.framework"}
 		buildoptions { "-F ./Libraries/Lib/%{cfg.buildcfg}/IrrKlang -L ./Libraries/Lib/%{cfg.buildcfg}/IrrKlang" }
 		linkoptions { "-F ./Libraries/Lib/%{cfg.buildcfg}/IrrKlang -L ./Libraries/Lib/%{cfg.buildcfg}/IrrKlang"  }
 	
