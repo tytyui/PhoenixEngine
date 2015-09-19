@@ -101,6 +101,7 @@ void FEngine::ShutDown()
 {
 	//#FIXME Establish proper shutdown protocol
 	F_Log("Engine::ShutDown()");
+	GameThread.ForceShutDown();
 	IsRunning = false;
 }
 
