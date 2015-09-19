@@ -5,8 +5,8 @@
 
 namespace Phoenix
 {
-	template <class T>
-	using TQueue = std::queue<T>;
+	template <class T, class Container>
+	using TQueue = std::queue<T, Container>;
 }
 
 #endif

@@ -6,6 +6,11 @@ Solution/PhoenixEngine/Release
 Solution/TestGame/Debug
 Solution/TestGame/Release
 
+#Libs
+Solution/x64/Debug/PhoenixEngine.lib
+Solution/Libraries/Lib/Debug/FBX/libfbxsdk-md.lib
+Solution/Libraries/Lib/Release/FBX/libfbxsdk-md.lib
+
 **/Build
 **/obj/Debug
 **/obj/Release

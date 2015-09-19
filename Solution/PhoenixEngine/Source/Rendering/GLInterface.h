@@ -39,7 +39,7 @@ namespace Phoenix
 				StackOverflow = GL_STACK_OVERFLOW,
 			};
 
-			FChar* ToString(const EError::Type GLError)
+			const FChar* const ToString(const EError::Type GLError)
 			{
 				switch (GLError)
 				{
@@ -94,7 +94,7 @@ namespace Phoenix
 				return nullptr;
 			}
 
-			FChar* ToDescription(const EError::Type GLError)
+			const FChar* const ToDescription(const EError::Type GLError)
 			{
 				switch (GLError)
 				{

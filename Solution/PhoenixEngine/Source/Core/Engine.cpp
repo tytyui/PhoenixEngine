@@ -49,7 +49,6 @@ void FEngine::DeInit()
 	F_LogClose();
 }
 
-
 void FEngine::Run()
 {
 	F_LogTrace("Engine::Run()\n");

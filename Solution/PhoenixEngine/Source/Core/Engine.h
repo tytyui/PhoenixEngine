@@ -32,7 +32,6 @@ namespace Phoenix
 		void ShutDown();
 
 	private:
-		
 		//Engine SubSystems
 		FWin32Window* MainWindow{ nullptr };
 		FGameThread GameThread;
