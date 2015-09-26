@@ -13,15 +13,15 @@ bool EMaterialType::IsValid(const EMaterialType::Type MaterialType)
 FVector2D FMaterialBase::ColourRange = FVector2D(0.f, 1.f);
 
 FMaterialBase FMaterialBase::Create(
-	const EMaterialType::Value Type,
+	const EMaterialType::Value MaterialType,
 	const FVector4D& Colour)
 {
-	F_Assert(EMaterialType::IsValid(Type), "Material type is invalid.");
+	F_Assert(EMaterialType::IsValid(MaterialType), "Material type is invalid.");
 	// #FIXME: Validate colour
 
 	FMaterialBase MaterialBase;
 
-	MaterialBase.Type = Type;
+	MaterialBase.MaterialType = MaterialType;
 	MaterialBase.Colour = Colour;
 
 	return MaterialBase;

@@ -10,7 +10,7 @@ namespace Phoenix
 {
 	namespace EMaterialType
 	{
-		using Type = UInt8;
+		typedef UInt8 Type;
 
 		enum Value : Type
 		{
@@ -29,11 +29,11 @@ namespace Phoenix
 	{
 		static FVector2D ColourRange;
 
-		EMaterialType::Value Type;
+		EMaterialType::Value MaterialType;
 		FVector4D Colour;
 
 		static FMaterialBase Create(
-			const EMaterialType::Value Type,
+			const EMaterialType::Value MaterialType,
 			const FVector4D& Colour);
 	};
 

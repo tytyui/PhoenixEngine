@@ -2,6 +2,8 @@
 
 #include "Math/Vector2D.h"
 #include "Rendering/GLInterface.h"
+#include "Rendering/Model.h"
+#include "Rendering/ModelProcessor.h"
 
 using namespace Phoenix;
 
@@ -18,6 +20,19 @@ void FRenderEngine::Init(const FInitParams& InInitParams)
 	InitParams = InInitParams;
 
 	InitParams.Window->SetGraphicsContextCurrent();
+
+	{	// #FIXME: Remove this later.
+		FModelProcessor::FLoadParams LoadParams;
+
+		LoadParams.File = "Test.fbx";
+		LoadParams.ModelDataHints = 
+			EModelData::Positions |
+			EModelData::Normals |
+			EModelData::UVCoords;
+
+		FModelProcessor ModelProcessor;
+		ModelProcessor.Load(LoadParams);
+	}	// #END_FIXME
 
 	{
 		glewExperimental = true;
