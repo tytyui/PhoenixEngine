@@ -256,7 +256,7 @@ namespace Phoenix
 		const SizeT AllocSize = sizeof(T) * ArrayLength;
 		T* TPtr = static_cast<T*>(FRawAlignedAlloc::New(AllocSize, Alignment));
 
-		F_Assert(VoidPtr, "Failed to allocate memory.");
+		F_Assert(TPtr, "Failed to allocate memory.");
 
 		{
 			// #FIXME: Maybe use &(TPtr[I]) instead of tracking the current index if it's possible?
