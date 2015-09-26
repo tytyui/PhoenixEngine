@@ -19,7 +19,6 @@
 		A09807AC71D928D9F0D2ADEC /* Win32Window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0B840B54B802FDE19F08A994 /* Win32Window.cpp */; };
 		A9C0A49A2DFD2047EFDB6ADA /* Game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 08A7A662F6BE236F3C6864A2 /* Game.cpp */; };
 		ABF0D56E586FC7FB3F7573AE /* AudioListener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B07E2F765A76E763EA75C5B6 /* AudioListener.cpp */; };
-		B24DEAE17A53B4AE39731921 /* PhysicsEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BADE3DC9C5E4A4F651146409 /* PhysicsEngine.cpp */; };
 		CFDA2339DAE08A6666104979 /* GameThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 38A734016734AC8E6D375241 /* GameThread.cpp */; };
 /* End PBXBuildFile section */
 
@@ -80,7 +79,6 @@
 		B07E2F765A76E763EA75C5B6 /* AudioListener.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = AudioListener.cpp; path = Source/Audio/AudioListener.cpp; sourceTree = "<group>"; };
 		B3C4FA9836AD7885B7D810D8 /* Sound.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Sound.cpp; path = Source/Audio/Sound.cpp; sourceTree = "<group>"; };
 		B45771578AF25FA4A6953F97 /* ClassTypeId.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ClassTypeId.h; path = Source/Utility/Misc/ClassTypeId.h; sourceTree = "<group>"; };
-		BADE3DC9C5E4A4F651146409 /* PhysicsEngine.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PhysicsEngine.cpp; path = Source/Physics/PhysicsEngine.cpp; sourceTree = "<group>"; };
 		BF0427034A1B1250E04C3543 /* UnorderedMap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = UnorderedMap.h; path = Source/Utility/Containers/UnorderedMap.h; sourceTree = "<group>"; };
 		C0EC753ECBF2DC6B57229B7E /* RenderEngine.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = RenderEngine.cpp; path = Source/Rendering/RenderEngine.cpp; sourceTree = "<group>"; };
 		C5990AA7C5D594D48C2CF0E7 /* Thread.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Thread.h; path = Source/Utility/Threading/Thread.h; sourceTree = "<group>"; };
@@ -92,7 +90,6 @@
 		D1E2DCE33DB629B02EDDCB23 /* ConsoleWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ConsoleWindow.h; path = Source/Utility/Misc/ConsoleWindow.h; sourceTree = "<group>"; };
 		D3414073BC50F6004C2B9EB3 /* StringStream.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = StringStream.h; path = Source/Utility/Misc/StringStream.h; sourceTree = "<group>"; };
 		D5E15B91D61DE5BE9C7541D1 /* Atomic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Atomic.h; path = Source/Utility/Threading/Atomic.h; sourceTree = "<group>"; };
-		D5E6F2935886CB40F483F8D3 /* PhysicsEngine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PhysicsEngine.h; path = Source/Physics/PhysicsEngine.h; sourceTree = "<group>"; };
 		DD6020CB2EF55AD84C1B1F0B /* GameThread.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GameThread.h; path = Source/Core/GameThread.h; sourceTree = "<group>"; };
 		E018A78F31ADE19C4ED3A5CF /* Set.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Set.h; path = Source/Utility/Containers/Set.h; sourceTree = "<group>"; };
 		E0336076C67046E3DC8C16B6 /* BulletIncludes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BulletIncludes.h; path = Source/ExternalLib/BulletIncludes.h; sourceTree = "<group>"; };
@@ -354,8 +351,6 @@
 		F760295CB69520A901FF379C /* Physics */ = {
 			isa = PBXGroup;
 			children = (
-				BADE3DC9C5E4A4F651146409 /* PhysicsEngine.cpp */,
-				D5E6F2935886CB40F483F8D3 /* PhysicsEngine.h */,
 				024F923D8538102A0662A87D /* Temp.txt */,
 			);
 			name = Physics;
@@ -420,7 +415,6 @@
 				CFDA2339DAE08A6666104979 /* GameThread.cpp in Sources */,
 				A9C0A49A2DFD2047EFDB6ADA /* Game.cpp in Sources */,
 				465A8EDC74E807697AEAAD1C /* Input.cpp in Sources */,
-				B24DEAE17A53B4AE39731921 /* PhysicsEngine.cpp in Sources */,
 				A09807AC71D928D9F0D2ADEC /* Win32Window.cpp in Sources */,
 				2C5BB728982F03F58956A568 /* Material.cpp in Sources */,
 				4A5C8DF6126257C3D181BC36 /* RenderEngine.cpp in Sources */,
