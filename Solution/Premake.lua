@@ -13,7 +13,7 @@ workspace "PhoenixEngine"
 	links { "glfw3", "irrklang" }
 	
 	configuration "vs2015"
-		links { "glew32s", "opengl32", "libfbxsdk-md" }
+		links { "glew32s", "opengl32", "libfbxsdk-md", "assimp_MD" }
 	
 	configuration "gmake"
 		links { "glew", "opengl" }
