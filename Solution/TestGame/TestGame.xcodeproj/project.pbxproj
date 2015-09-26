@@ -7,92 +7,92 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2CA3B482F3D08E00AF56536FB73C50003B62EC56F5DFF600 /* Main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FD59C89B2C7C800691BDA86AC2DC400F56219DB9FC92000 /* Main.cpp */; };
-		7422466896DBD400B0DB4DEC64FF2800A7D1A8AFEC0D7800 /* TestGame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F39A237FB1CB70032B368F9565E0A0017EA184629B85600 /* TestGame.cpp */; };
-		8C2B67B97D835800219560A215D03E00E9CF65BD44174000 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ED72E7B8AA82800C67FB296CEF6C800806821F2111E0800 /* OpenGL.framework */; };
-		D342F11E74376000CE86AAACAC6BE0004A5AC4D842133400 /* libPhoenixEngine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E3395C3E8317200F1974138653A4800D3F71D0901C14000 /* libPhoenixEngine.a */; };
+		7D83591D7DBFE34A44173F5D /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AA826256AA061B2111E0465 /* OpenGL.framework */; };
+		96DBD5B175DB82DEEC0D7BF1 /* TestGame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FB1CB7795B6CB60629B855B9 /* TestGame.cpp */; };
+		C71AA9E6BD6DDEB3A4679826 /* libPhoenixEngine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D39CF12EB994635B6642D76E /* libPhoenixEngine.a */; };
+		F3D08EE75E205F14F5DFF527 /* Main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2C7C44FC55C85DC9FC9228F /* Main.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		824CD1C9EAF168006570F4D280682400E7322E7FEF047800 /* PBXContainerItemProxy */ = {
+		D37A6AED5662E8DAD78D812D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 43C6D5A6FE72200081E9EB47032FF0006B97ABA237E95000 /* ../PhoenixEngine/PhoenixEngine.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = F0E3DEBA322BD00045DA57B8D6D22C0E99454C860C77000;
+			containerPortal = 5C8ACF6532F1ED1248FC15A5 /* ../PhoenixEngine/PhoenixEngine.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = CBB4DF9A3604AFC7CDC445DA;
 			remoteInfo = libPhoenixEngine.a;
 		};
-		A938F79D37A6B00EDB7B28268F128006F78EC2FD78D8000 /* PBXContainerItemProxy */ = {
+		EAF165266DD9E313EF047B66 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 43C6D5A6FE72200081E9EB47032FF0006B97ABA237E95000 /* ../PhoenixEngine/PhoenixEngine.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 90C6A980CBB4E0001379486D8F20A1009F85E154CDC44800;
+			containerPortal = 5C8ACF6532F1ED1248FC15A5 /* ../PhoenixEngine/PhoenixEngine.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 322BCF40927BCDCD60C76D80;
 			remoteInfo = libPhoenixEngine.a;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		1F39A237FB1CB70032B368F9565E0A0017EA184629B85600 /* TestGame.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = TestGame.cpp; path = TestGame.cpp; sourceTree = "<group>"; };
-		43C6D5A6FE72200081E9EB47032FF0006B97ABA237E95000 /* libPhoenixEngine.a */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "PhoenixEngine.xcodeproj"; path = ../PhoenixEngine/PhoenixEngine.xcodeproj; sourceTree = SOURCE_ROOT; };
-		6A84491BAEEB8000D882C6230578E80091D1C7B4DDF20000 /* TestGame.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TestGame.h; path = TestGame.h; sourceTree = "<group>"; };
-		7ED72E7B8AA82800C67FB296CEF6C800806821F2111E0800 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
-		8A1DB64FF6FBE000A0371D0A0E0E8000A4774D80FE2A7800 /* TestGame */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = TestGame; path = TestGame; sourceTree = BUILT_PRODUCTS_DIR; };
-		8FD59C89B2C7C800691BDA86AC2DC400F56219DB9FC92000 /* Main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Main.cpp; path = Main.cpp; sourceTree = "<group>"; };
+		5C8ACF6532F1ED1248FC15A5 /* libPhoenixEngine.a */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "PhoenixEngine.xcodeproj"; path = ../PhoenixEngine/PhoenixEngine.xcodeproj; sourceTree = SOURCE_ROOT; };
+		8AA826256AA061B2111E0465 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		AEEB7F8399F03F90DDF1FDC3 /* TestGame.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TestGame.h; path = TestGame.h; sourceTree = "<group>"; };
+		B2C7C44FC55C85DC9FC9228F /* Main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Main.cpp; path = Main.cpp; sourceTree = "<group>"; };
+		F6FBE39DE808278AFE2A79DD /* TestGame */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = TestGame; path = TestGame; sourceTree = BUILT_PRODUCTS_DIR; };
+		FB1CB7795B6CB60629B855B9 /* TestGame.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = TestGame.cpp; path = TestGame.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		E677EA0F03501800BDF96F0606C0E800ACECC176882D8800 /* Frameworks */ = {
+		0350158D98056AFA882D8BCD /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8C2B67B97D835800219560A215D03E00E9CF65BD44174000 /* OpenGL.framework in Frameworks */,
-				D342F11E74376000CE86AAACAC6BE0004A5AC4D842133400 /* libPhoenixEngine.a in Frameworks */,
+				7D83591D7DBFE34A44173F5D /* OpenGL.framework in Frameworks */,
+				C71AA9E6BD6DDEB3A4679826 /* libPhoenixEngine.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		62192F00424BE00024A8267C94D20C00CA30685367167000 /* Frameworks */ = {
+		424BE1FCFF9DDF496716703C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				7ED72E7B8AA82800C67FB296CEF6C800806821F2111E0800 /* OpenGL.framework */,
+				8AA826256AA061B2111E0465 /* OpenGL.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		6C281CFC581EEC0018E1F4C790D9B100A4ABC73C2070E800 /* Projects */ = {
+		554CC135E77507421D9EBF75 /* TestGame */ = {
 			isa = PBXGroup;
 			children = (
-				43C6D5A6FE72200081E9EB47032FF0006B97ABA237E95000 /* PhoenixEngine.xcodeproj */,
-			);
-			name = Projects;
-			sourceTree = "<group>";
-		};
-		B552D7AA554CC000620CAF758E078800EDD681EA1D9EC000 /* TestGame */ = {
-			isa = PBXGroup;
-			children = (
-				8FD59C89B2C7C800691BDA86AC2DC400F56219DB9FC92000 /* Main.cpp */,
-				1F39A237FB1CB70032B368F9565E0A0017EA184629B85600 /* TestGame.cpp */,
-				6A84491BAEEB8000D882C6230578E80091D1C7B4DDF20000 /* TestGame.h */,
-				62192F00424BE00024A8267C94D20C00CA30685367167000 /* Frameworks */,
-				F778F1C5EA8E2800A432C9912348F0002FFC9C05B2E02800 /* Products */,
-				6C281CFC581EEC0018E1F4C790D9B100A4ABC73C2070E800 /* Projects */,
+				B2C7C44FC55C85DC9FC9228F /* Main.cpp */,
+				FB1CB7795B6CB60629B855B9 /* TestGame.cpp */,
+				AEEB7F8399F03F90DDF1FDC3 /* TestGame.h */,
+				424BE1FCFF9DDF496716703C /* Frameworks */,
+				EA8E290F7CB66F1CB2E0274F /* Products */,
+				581EEAC5EA4730D22070E905 /* Projects */,
 			);
 			name = TestGame;
 			sourceTree = "<group>";
 		};
-		BBF240A9CCC4D8007540EC643DE77C0014564B3AF3AE2800 /* Products */ = {
+		581EEAC5EA4730D22070E905 /* Projects */ = {
 			isa = PBXGroup;
 			children = (
-				2E3395C3E8317200F1974138653A4800D3F71D0901C14000 /* libPhoenixEngine.a */,
+				5C8ACF6532F1ED1248FC15A5 /* PhoenixEngine.xcodeproj */,
+			);
+			name = Projects;
+			sourceTree = "<group>";
+		};
+		CCC4D9CD9A6ECE1AF3AE280D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D39CF12EB994635B6642D76E /* libPhoenixEngine.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		F778F1C5EA8E2800A432C9912348F0002FFC9C05B2E02800 /* Products */ = {
+		EA8E290F7CB66F1CB2E0274F /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8A1DB64FF6FBE000A0371D0A0E0E8000A4774D80FE2A7800 /* TestGame */,
+				F6FBE39DE808278AFE2A79DD /* TestGame */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -100,23 +100,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		D96A62FE88D0E0005634DA788983DC00F17C9DE0FD65B000 /* TestGame */ = {
+		88D0DEE30C3DD930FD65AD23 /* TestGame */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E3F94EDBDF727000BB7AD3D2E2E34000AA6E2643644FE800 /* Build configuration list for PBXNativeTarget "TestGame" */;
+			buildConfigurationList = DF72714C7427C6B9644FE78C /* Build configuration list for PBXNativeTarget "TestGame" */;
 			buildPhases = (
-				EE7C6C938520F800C5FDF18A8891D000B4F143FB09FE7000 /* Resources */,
-				EF72EE051ED68000C6F472FC22475800B5E7C56CA3B3F800 /* Sources */,
-				E677EA0F03501800BDF96F0606C0E800ACECC176882D8800 /* Frameworks */,
+				8520FA2D19D64F9A09FE706D /* Resources */,
+				1ED681E4B38BD751A3B3F824 /* Sources */,
+				0350158D98056AFA882D8BCD /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				411291006D29A400FA613CBADE4C480099769B919412F000 /* PBXTargetDependency */,
+				6D29A4763AD398C39412F2B6 /* PBXTargetDependency */,
 			);
 			name = TestGame;
 			productInstallPath = "$(HOME)/bin";
 			productName = TestGame;
-			productReference = 8A1DB64FF6FBE000A0371D0A0E0E8000A4774D80FE2A7800 /* TestGame */;
+			productReference = F6FBE39DE808278AFE2A79DD /* TestGame */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -127,33 +127,33 @@
 			buildConfigurationList = 1DEB928908733DD80010E9CD /* Build configuration list for PBXProject "TestGame" */;
 			compatibilityVersion = "Xcode 3.2";
 			hasScannedForEncodings = 1;
-			mainGroup = B552D7AA554CC000620CAF758E078800EDD681EA1D9EC000 /* TestGame */;
+			mainGroup = 554CC135E77507421D9EBF75 /* TestGame */;
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = BBF240A9CCC4D8007540EC643DE77C0014564B3AF3AE2800 /* Products */;
-					ProjectRef = 43C6D5A6FE72200081E9EB47032FF0006B97ABA237E95000 /* PhoenixEngine.xcodeproj */;
+					ProductGroup = CCC4D9CD9A6ECE1AF3AE280D /* Products */;
+					ProjectRef = 5C8ACF6532F1ED1248FC15A5 /* PhoenixEngine.xcodeproj */;
 				},
 			);
 			projectRoot = "";
 			targets = (
-				D96A62FE88D0E0005634DA788983DC00F17C9DE0FD65B000 /* TestGame */,
+				88D0DEE30C3DD930FD65AD23 /* TestGame */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		2E3395C3E8317200F1974138653A4800D3F71D0901C14000 /* libPhoenixEngine.a */ = {
+		D39CF12EB994635B6642D76E /* libPhoenixEngine.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libPhoenixEngine.a;
-			remoteRef = A938F79D37A6B00EDB7B28268F128006F78EC2FD78D8000 /* PBXContainerItemProxy */;
+			remoteRef = D37A6AED5662E8DAD78D812D /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
-		EE7C6C938520F800C5FDF18A8891D000B4F143FB09FE7000 /* Resources */ = {
+		8520FA2D19D64F9A09FE706D /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -163,22 +163,22 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		EF72EE051ED68000C6F472FC22475800B5E7C56CA3B3F800 /* Sources */ = {
+		1ED681E4B38BD751A3B3F824 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2CA3B482F3D08E00AF56536FB73C50003B62EC56F5DFF600 /* Main.cpp in Sources */,
-				7422466896DBD400B0DB4DEC64FF2800A7D1A8AFEC0D7800 /* TestGame.cpp in Sources */,
+				F3D08EE75E205F14F5DFF527 /* Main.cpp in Sources */,
+				96DBD5B175DB82DEEC0D7BF1 /* TestGame.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		411291006D29A400FA613CBADE4C480099769B919412F000 /* PBXTargetDependency */ = {
+		6D29A4763AD398C39412F2B6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = libPhoenixEngine.a;
-			targetProxy = 824CD1C9EAF168006570F4D280682400E7322E7FEF047800 /* PBXContainerItemProxy */;
+			targetProxy = EAF165266DD9E313EF047B66 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -186,7 +186,7 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		1948232921BC0500F31586464387B0005EE0E0EB803CDC00 /* Debug */ = {
+		21BC0553C78FE640803CDB93 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -197,10 +197,61 @@
 			};
 			name = Debug;
 		};
-		2F861845B659B000ED7CB70B5947D800668E67A1E86DB800 /* Debug */ = {
+		21E8C49D12F5088A29175ADD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				CONFIGURATION_BUILD_DIR = "$(SYMROOT)";
+				CONFIGURATION_TEMP_DIR = "$(OBJROOT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					NDEBUG,
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LIBRARY_SEARCH_PATHS = (
+					../Libraries/Lib/Release.x64/Assimp,
+					../Libraries/Lib/Release.x64/IrrKlang,
+				);
+				OBJROOT = obj/x64/Release;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CFLAGS = (
+					"-F ./Libraries/Lib/Release.x64/IrrKlang -L ./Libraries/Lib/Release.x64/IrrKlang",
+					"-std=c++1y",
+					"-stdlib=libc++",
+				);
+				OTHER_LDFLAGS = (
+					"-lglfw3",
+					"-lirrklang",
+					"-lglew",
+					"-F ./Libraries/Lib/Release.x64/IrrKlang -L ./Libraries/Lib/Release.x64/IrrKlang",
+					"-std=c++1y",
+					"-stdlib=libc++",
+				);
+				SYMROOT = ../Build/Release;
+				USER_HEADER_SEARCH_PATHS = (
+					../PhoenixEngine/Source,
+					../Libraries/Include,
+				);
+			};
+			name = Release;
+		};
+		AF8FCA8D19DF9ABAB19F30CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CONFIGURATION_BUILD_DIR = ../Build/Release;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_DYNAMIC_NO_PIC = NO;
+				INSTALL_PATH = /usr/local/bin;
+				PRODUCT_NAME = TestGame;
+			};
+			name = Release;
+		};
+		B659AFE34DBA1490E86DB623 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
 				CONFIGURATION_BUILD_DIR = "$(SYMROOT)";
 				CONFIGURATION_TEMP_DIR = "$(OBJROOT)";
 				COPY_PHASE_STRIP = NO;
@@ -214,23 +265,21 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				LIBRARY_SEARCH_PATHS = (
-					../Libraries/Lib/Debug/GLEW,
-					../Libraries/Lib/Debug/GLFW,
-					../Libraries/Lib/Debug/IrrKlang,
-					/usr/local/lib,
+					../Libraries/Lib/Debug.x64/Assimp,
+					../Libraries/Lib/Debug.x64/IrrKlang,
 				);
-				OBJROOT = obj/Debug;
+				OBJROOT = obj/x64/Debug;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
-					"-F ./Libraries/Lib/Debug/IrrKlang -L ./Libraries/Lib/Debug/IrrKlang",
+					"-F ./Libraries/Lib/Debug.x64/IrrKlang -L ./Libraries/Lib/Debug.x64/IrrKlang",
 					"-std=c++1y",
 					"-stdlib=libc++",
 				);
 				OTHER_LDFLAGS = (
 					"-lglfw3",
-					"-lglew",
 					"-lirrklang",
-					"-F ./Libraries/Lib/Debug/IrrKlang -L ./Libraries/Lib/Debug/IrrKlang",
+					"-lglew",
+					"-F ./Libraries/Lib/Debug.x64/IrrKlang -L ./Libraries/Lib/Debug.x64/IrrKlang",
 					"-std=c++1y",
 					"-stdlib=libc++",
 				);
@@ -242,78 +291,27 @@
 			};
 			name = Debug;
 		};
-		7CF870B2AF8FCC00FFAB0F9F72FB90008BB7A886B19F3000 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CONFIGURATION_BUILD_DIR = ../Build/Release;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_DYNAMIC_NO_PIC = NO;
-				INSTALL_PATH = /usr/local/bin;
-				PRODUCT_NAME = TestGame;
-			};
-			name = Release;
-		};
-		B262663C21E8C800C87BCCF638FB6000CCBBFD6D29175800 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
-				CONFIGURATION_BUILD_DIR = "$(SYMROOT)";
-				CONFIGURATION_TEMP_DIR = "$(OBJROOT)";
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_OPTIMIZATION_LEVEL = 3;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					NDEBUG,
-				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				LIBRARY_SEARCH_PATHS = (
-					../Libraries/Lib/Release/GLEW,
-					../Libraries/Lib/Release/GLFW,
-					../Libraries/Lib/Release/IrrKlang,
-					/usr/local/lib,
-				);
-				OBJROOT = obj/Release;
-				ONLY_ACTIVE_ARCH = NO;
-				OTHER_CFLAGS = (
-					"-F ./Libraries/Lib/Release/IrrKlang -L ./Libraries/Lib/Release/IrrKlang",
-					"-std=c++1y",
-					"-stdlib=libc++",
-				);
-				OTHER_LDFLAGS = (
-					"-lglfw3",
-					"-lglew",
-					"-lirrklang",
-					"-F ./Libraries/Lib/Release/IrrKlang -L ./Libraries/Lib/Release/IrrKlang",
-					"-std=c++1y",
-					"-stdlib=libc++",
-				);
-				SYMROOT = ../Build/Release;
-				USER_HEADER_SEARCH_PATHS = (
-					../PhoenixEngine/Source,
-					../Libraries/Include,
-				);
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
 		1DEB928908733DD80010E9CD /* Build configuration list for PBXProject "TestGame" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				2F861845B659B000ED7CB70B5947D800668E67A1E86DB800 /* Debug */,
-				B262663C21E8C800C87BCCF638FB6000CCBBFD6D29175800 /* Release */,
+				B659AFE34DBA1490E86DB623 /* Debug */,
+				B659AFE34DBA1490E86DB623 /* Debug */,
+				21E8C49D12F5088A29175ADD /* Release */,
+				21E8C49D12F5088A29175ADD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		E3F94EDBDF727000BB7AD3D2E2E34000AA6E2643644FE800 /* Build configuration list for PBXNativeTarget "TestGame" */ = {
+		DF72714C7427C6B9644FE78C /* Build configuration list for PBXNativeTarget "TestGame" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1948232921BC0500F31586464387B0005EE0E0EB803CDC00 /* Debug */,
-				7CF870B2AF8FCC00FFAB0F9F72FB90008BB7A886B19F3000 /* Release */,
+				21BC0553C78FE640803CDB93 /* Debug */,
+				21BC0553C78FE640803CDB93 /* Debug */,
+				AF8FCA8D19DF9ABAB19F30CD /* Release */,
+				AF8FCA8D19DF9ABAB19F30CD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
