@@ -3,7 +3,12 @@ workspace "PhoenixEngine"
 	platforms{ "x32", "x64" }
 	
 	includedirs { "PhoenixEngine/Source", "Libraries/Include" }
-	libdirs { "Libraries/Lib/%{cfg.buildcfg}.%{cfg.platform}/**" }
+	libdirs {
+		"Libraries/Lib/%{cfg.buildcfg}.%{cfg.platform}/**",		
+		"/usr/local/lib",		
+		os.findlib("glfw3"),		
+		os.findlib("glew")
+	}
 	
 	links { "glfw3", "irrklang" }
 	
