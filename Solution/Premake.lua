@@ -15,8 +15,8 @@ workspace "PhoenixEngine"
 	
 	configuration "xcode4"
 		links { "glew", "OpenGL.framework"}
-		buildoptions { "-F ./Libraries/Lib/%{cfg.buildcfg}/IrrKlang -L ./Libraries/Lib/%{cfg.buildcfg}/IrrKlang" }
-		linkoptions { "-F ./Libraries/Lib/%{cfg.buildcfg}/IrrKlang -L ./Libraries/Lib/%{cfg.buildcfg}/IrrKlang"  }
+		buildoptions { "-F ./Libraries/Lib/%{cfg.buildcfg}.%{cfg.platform}/IrrKlang -L ./Libraries/Lib/%{cfg.buildcfg}.%{cfg.platform}/IrrKlang" }
+		linkoptions { "-F ./Libraries/Lib/%{cfg.buildcfg}.%{cfg.platform}/IrrKlang -L ./Libraries/Lib/%{cfg.buildcfg}.%{cfg.platform}/IrrKlang"  }
 	
 	configuration { "x32" }
 		debugdir "Libraries/Dll/x32/"
