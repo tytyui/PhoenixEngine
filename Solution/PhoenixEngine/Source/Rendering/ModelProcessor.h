@@ -10,6 +10,7 @@ namespace Phoenix
 {
 	class FModelProcessor
 	{
+		friend struct FModelProcessorHelper;
 	public:
 		struct FLoadParams
 		{
@@ -22,6 +23,16 @@ namespace Phoenix
 			FString File;
 		};
 
+		struct FDataEntry
+		{
+			EModelData::Type ModelData{ EModelData::None };
+			TVector<Float32> Positions;
+			TVector<Float32> Normals;
+			TVector<Float32> UVCoords;
+		};
+
+		typedef TVector<FDataEntry> FDataEntries;
+
 		FModelProcessor() = default;
 
 		FModelProcessor(const FModelProcessor&) = default;
@@ -32,29 +43,10 @@ namespace Phoenix
 
 		void Load(const FLoadParams& LoadParams);
 
-		void Save(const FSaveParams& SaveParams);
-
-		void ClearData();
-
-		void ClearMemoryUsage();
-
-		const TVector<Float32>& GetPositions() const;
-
-		const TVector<Float32>& GetNormals() const;
-
-		const TVector<Float32>& GetUVCoords() const;
-
-		bool HasPositions() const;
-
-		bool HasNormals() const;
-
-		bool HasUVCoords() const;
+		FDataEntries& GetDataEntries();
 
 	private:
-		EModelData::BitMask ModelData{ EModelData::None };
-		TVector<Float32> Positions;
-		TVector<Float32> Normals;
-		TVector<Float32> UVCoords;
+		FDataEntries DataEntries;
 
 		void LoadFBX(const FLoadParams& LoadParams);
 

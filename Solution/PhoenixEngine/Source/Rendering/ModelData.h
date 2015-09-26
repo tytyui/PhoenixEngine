@@ -18,7 +18,8 @@ namespace Phoenix
 			DiffuseMap = 1 << 3,
 			NormalMap = 1 << 4,
 			SpecularMap = 1 << 5,
-			Material = 1 << 6
+			Material = 1 << 6,
+			All = Positions | Normals | UVCoords | DiffuseMap | NormalMap | SpecularMap | Material
 		};
 	}
 }
