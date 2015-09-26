@@ -1,15 +1,10 @@
 workspace "PhoenixEngine"
 	configurations { "Debug", "Release" }
+	platforms{ "x32", "x64" }
+	
 	includedirs { "PhoenixEngine/Source", "Libraries/Include" }
-	libdirs {
-		"Libraries/Lib/%{cfg.buildcfg}/GLEW/",
-		"Libraries/Dll/",
-		"Libraries/Lib/%{cfg.buildcfg}/GLFW/",
-		"Libraries/Lib/%{cfg.buildcfg}/IrrKlang/",
-		"/usr/local/lib",
-		os.findlib("glfw3"),
-		os.findlib("glew")
-	}
+	libdirs { "Libraries/Lib/%{cfg.buildcfg}.%{cfg.platform}/**" }
+	
 	links { "glfw3", "irrklang" }
 	
 	configuration "vs2015"
@@ -23,6 +18,12 @@ workspace "PhoenixEngine"
 		buildoptions { "-F ./Libraries/Lib/%{cfg.buildcfg}/IrrKlang -L ./Libraries/Lib/%{cfg.buildcfg}/IrrKlang" }
 		linkoptions { "-F ./Libraries/Lib/%{cfg.buildcfg}/IrrKlang -L ./Libraries/Lib/%{cfg.buildcfg}/IrrKlang"  }
 	
+	configuration { "x32" }
+		debugdir "Libraries/Dll/x32/"
+	
+	configuration { "x64" }
+		debugdir "Libraries/Dll/x64/"
+
 project "PhoenixEngine"
 	kind "StaticLib"
 	language "C++"
@@ -36,7 +37,7 @@ project "PhoenixEngine"
 	filter "configurations:Debug"
 		defines { "DEBUG" }
 		flags { "Symbols" }
-		
+
 	filter "configurations:Release"
 		defines { "NDEBUG" }
 		optimize "On"
@@ -54,23 +55,22 @@ project "TestGame"
 	language "C++"
 	location "TestGame"
 	targetdir "Build/%{cfg.buildcfg}"
-
 	links { "PhoenixEngine" }
 
 	files { "TestGame/**.h", "TestGame/**.cpp", "TestGame/**.txt" }
-	
+
 	filter "configurations:Debug"
 		defines { "DEBUG" }
 		flags { "Symbols" }
-		
+
 	filter "configurations:Release"
 		defines { "NDEBUG" }
 		optimize "On"
-	
+
 	configuration "gmake"
 		linkoptions  { "-std=c++1y" }
 		buildoptions { "-std=c++1y" }
-		
+
 	configuration "xcode4"
 		linkoptions  { "-std=c++1y", "-stdlib=libc++" }
 		buildoptions { "-std=c++1y", "-stdlib=libc++" }
