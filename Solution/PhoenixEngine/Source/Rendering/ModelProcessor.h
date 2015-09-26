@@ -24,16 +24,20 @@ namespace Phoenix
 
 		FModelProcessor() = default;
 
-		FModelProcessor(const FModelProcessor&) = delete;
-		FModelProcessor& operator=(const FModelProcessor&) = delete;
+		FModelProcessor(const FModelProcessor&) = default;
+		FModelProcessor& operator=(const FModelProcessor&) = default;
 
-		FModelProcessor(FModelProcessor&&) = delete;
-		FModelProcessor& operator=(FModelProcessor&&) = delete;
+		FModelProcessor(FModelProcessor&&) = default;
+		FModelProcessor& operator=(FModelProcessor&&) = default;
 
 		void Load(const FLoadParams& LoadParams);
 
 		void Save(const FSaveParams& SaveParams);
-		
+
+		void ClearData();
+
+		void ClearMemoryUsage();
+
 		const TVector<Float32>& GetPositions() const;
 
 		const TVector<Float32>& GetNormals() const;

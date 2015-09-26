@@ -13,6 +13,8 @@ void FModelProcessor::Load(const FLoadParams& LoadParams)
 	F_Assert(LoadParams.File.size(), "No file was specified.");
 	F_Assert(LoadParams.ModelDataHints, "No hints were specified.");
 
+	ClearData();
+
 	if (IsFileFBX(LoadParams.File))
 	{
 		LoadFBX(LoadParams);
@@ -33,6 +35,19 @@ void FModelProcessor::Save(const FSaveParams& SaveParams)
 	F_Assert(SaveParams.File.size(), "No file was specified.");
 
 	// #FIXME
+}
+
+void FModelProcessor::ClearData()
+{
+	ModelData = EModelData::None;
+	Positions.clear();
+	Normals.clear();
+	UVCoords.clear();
+}
+
+void FModelProcessor::ClearMemoryUsage()
+{
+	*this = FModelProcessor();
 }
 
 const TVector<Float32>& FModelProcessor::GetPositions() const
