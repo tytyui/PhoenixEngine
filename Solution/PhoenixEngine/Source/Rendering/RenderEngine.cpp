@@ -24,7 +24,7 @@ void FRenderEngine::Init(const FInitParams& InInitParams)
 	{	// #FIXME: Remove this later.
 		FModelProcessor::FLoadParams LoadParams;
 
-		LoadParams.File = "Test.fbx";
+		LoadParams.File = "Test.obj";
 		LoadParams.ModelDataHints = 
 			EModelData::Positions |
 			EModelData::Normals |

@@ -9,6 +9,12 @@
 //
 //#pragma comment (lib, "glfw3.lib")
 //#pragma comment (lib, "opengl32.lib")
-#pragma comment (lib, "irrklang.lib")
+//#pragma comment (lib, "irrklang.lib")
+
+#ifdef _DEBUG
+#	pragma comment (lib, "assimp_MDd.lib")
+#else
+#	pragma comment (lib, "assimp_MD.lib")
+#endif
 
 #endif

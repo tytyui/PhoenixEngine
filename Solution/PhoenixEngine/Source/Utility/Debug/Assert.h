@@ -2,13 +2,27 @@
 #define PHOENIX_ASSERT_H
 
 #include <cassert>
+#include "Utility/Misc/String.h"
+#include "Utility/Misc/StringStream.h"
 
-namespace Phoenix
-{
+// #FIXME: Move to appropriate config file.
+#define PHOENIX_ENABLE_ASSERT 1
 
-}
-
-#define F_Assert(Expr, Msg) assert(Msg && Expr)
+#if PHOENIX_ENABLE_ASSERT
+#	define F_Assert(Expr, Msg)					\
+	{											\
+		if (Expr)								\
+		{										\
+			FStringStream SS;					\
+			SS << Msg;							\
+			const FString StrMsg = SS.str();	\
+												\
+			assert(StrMsg.c_str() && (Expr));	\
+		}										\
+	}
+#else
+#	define F_Assert(Expr, Msg)
+#endif
 
 #define F_AssertEqual(Lhs, Rhs, Msg) F_Assert((Lhs == Rhs), Msg)
 #define F_AssertNotEqual(Lhs, Rhs, Msg) F_Assert((Lhs != Rhs), Msg)
