@@ -29,6 +29,8 @@ namespace Phoenix
 			TVector<Float32> Positions;
 			TVector<Float32> Normals;
 			TVector<Float32> UVCoords;
+			TVector<UInt8> Indices;
+			UInt8 IndexTSize{ 0 };
 		};
 
 		typedef TVector<FDataEntry> FDataEntries;

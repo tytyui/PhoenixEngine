@@ -1,10 +1,18 @@
 #include "Rendering/ModelProcessor.h"
 
+#include <limits>  // #FIXME: Wrap this.
+
 #include "ExternalLib/AssimpIncludes.h"
 #include "ExternalLib/FBXIncludes.h"
 #include "Utility/Containers/Vector.h"
 #include "Utility/Debug/Assert.h"
 #include "Utility/Debug/Debug.h"
+
+// #FIXME: If the ::max() functions are wrapped,
+// then this can be removed.
+// Note: This is required because some prorammer 
+// decided that defining max(a, b) was a good idea.
+#undef max
 
 using namespace Phoenix;
 
@@ -16,6 +24,12 @@ namespace Phoenix
 			FModelProcessor::FDataEntry& DataEntry,
 			const aiScene& AIScene, 
 			const aiMesh& AIMesh);
+
+		template <class IndexT>
+		static void ProcessMeshFaces(
+			FModelProcessor::FDataEntry& DataEntry,
+			const aiScene& AIScene,
+			const aiMesh& AIMesh);
 	};
 }
 
@@ -24,6 +38,9 @@ void FModelProcessor::Load(const FLoadParams& LoadParams)
 	F_Assert(LoadParams.File.size(), "No file was specified.");
 	F_Assert(LoadParams.ModelDataHints, "No hints were specified.");
 	
+	// #FIXME: At some point (if necessary), the amount of 
+	// allocations this class performs can be significantly
+	// reduced in order to maximize performance.
 	*this = FModelProcessor();
 	
 	if (IsFileFBX(LoadParams.File))
@@ -130,7 +147,7 @@ void FModelProcessor::LoadMisc(const FLoadParams& LoadParams)
 		}
 	}
 
-	// #FIXME
+	F_Log("Processed " << LoadParams.File);
 }
 
 bool FModelProcessor::IsFileFBX(const FString& File)
@@ -168,6 +185,7 @@ void FModelProcessorHelper::ProcessMesh(
 
 	const bool PositionHintIsSet = (DataEntry.ModelData & EModelData::Positions) != 0;
 	const bool NormalsHintIsSet = (DataEntry.ModelData & EModelData::Normals) != 0;
+	const bool IndicesHintIsSet = (DataEntry.ModelData & EModelData::Indices) != 0;
 	const bool UVCoordsHintIsSet = (DataEntry.ModelData & EModelData::UVCoords) != 0;
 
 	const bool HasVertexData = AIMesh.mNumVertices > 0;
@@ -181,7 +199,13 @@ void FModelProcessorHelper::ProcessMesh(
 		return;
 	}
 
-	if (!HasUVCoords)
+	if (IndicesHintIsSet && !HasIndexData)
+	{
+		F_LogWarning("Indices were specified but this mesh does not have any.");
+		DataEntry.ModelData &= ~EModelData::Indices;
+	}
+
+	if (UVCoordsHintIsSet && !HasUVCoords)
 	{
 		F_LogWarning("UVCoords were specified but this mesh does not have any.");
 		DataEntry.ModelData &= ~EModelData::UVCoords;
@@ -236,7 +260,52 @@ void FModelProcessorHelper::ProcessMesh(
 		}
 	}
 
-	// #FIXME: Process indices.
-
+	if (IndicesHintIsSet && HasIndexData)
+	{
+		if (AIMesh.mNumVertices <= std::numeric_limits<UInt8>::max()) // #FIXME: Wrap ::max.
+		{
+			ProcessMeshFaces<UInt8>(DataEntry, AIScene, AIMesh);
+		}
+		else if (AIMesh.mNumVertices <= std::numeric_limits<UInt16>::max()) // #FIXME: Wrap ::max.
+		{
+			ProcessMeshFaces<UInt16>(DataEntry, AIScene, AIMesh);
+		}
+		else
+		{
+			ProcessMeshFaces<UInt32>(DataEntry, AIScene, AIMesh);
+		}
+	}
+	
 	// #FIXME: Process materials/textures.
+}
+
+template <class IndexT>
+void FModelProcessorHelper::ProcessMeshFaces(
+	FModelProcessor::FDataEntry& DataEntry,
+	const aiScene& AIScene,
+	const aiMesh& AIMesh)
+{
+	static_assert(!std::numeric_limits<IndexT>::is_signed, "IndexT must be unsigned.");
+	static_assert(sizeof(IndexT) >= 1 && sizeof(IndexT) <= 4, "IndexT must be 1, 2, or 4 bytes.");
+
+	static const UInt8 IndicesPerFace = 3;
+
+	const SizeT IndicesSize = AIMesh.mNumFaces * IndicesPerFace * sizeof(IndexT);
+
+	DataEntry.Indices.resize(IndicesSize);
+	DataEntry.IndexTSize = sizeof(IndexT);
+
+	for (UInt32 I = 0; I < AIMesh.mNumFaces; I++)
+	{
+		const aiFace& AIFace = AIMesh.mFaces[I];
+
+		for (UInt8 J = 0; J < IndicesPerFace; ++J)
+		{
+			F_Assert(AIFace.mIndices[J] <= std::numeric_limits<IndexT>::max(), "Index is out of bounds.");
+			const SizeT IndicesI = I * IndicesPerFace + sizeof(IndexT) * J;
+
+			IndexT* const IndexTPtr = reinterpret_cast<IndexT*>(&(DataEntry.Indices[IndicesI]));
+			*IndexTPtr = static_cast<IndexT>(AIFace.mIndices[J]);
+		}
+	}
 }

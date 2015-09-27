@@ -14,12 +14,13 @@ namespace Phoenix
 			None = 0,
 			Positions = 1 << 0,
 			Normals = 1 << 1,
-			UVCoords = 1 << 2,
-			DiffuseMap = 1 << 3,
-			NormalMap = 1 << 4,
-			SpecularMap = 1 << 5,
-			Material = 1 << 6,
-			All = Positions | Normals | UVCoords | DiffuseMap | NormalMap | SpecularMap | Material
+			Indices = 1 << 2,
+			UVCoords = 1 << 3,
+			DiffuseMap = 1 << 4,
+			NormalMap = 1 << 5,
+			SpecularMap = 1 << 6,
+			Material = 1 << 7,
+			All = Positions | Normals | Indices | UVCoords | DiffuseMap | NormalMap | SpecularMap | Material
 		};
 	}
 }
