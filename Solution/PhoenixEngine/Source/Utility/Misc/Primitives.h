@@ -2,6 +2,7 @@
 #define PHOENIX_PRIMITIVES_H
 
 #include <cstddef>
+#include <limits>
 
 namespace Phoenix
 {
@@ -27,6 +28,9 @@ namespace Phoenix
 	{
 		Null
 	};
+
+	template <class T>
+	using TNumericLimits = std::numeric_limits<T>;
 }
 
 #endif

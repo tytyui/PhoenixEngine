@@ -43,7 +43,7 @@ void FGame::ShutDown()
 	Engine->ShutDown();
 }
 
-const TUniquePtr<FInput>& Phoenix::FGame::GetInput() const
+const TUniquePtr<FInput>& FGame::GetInput() const
 {
 	return Engine->GetInput();
 }

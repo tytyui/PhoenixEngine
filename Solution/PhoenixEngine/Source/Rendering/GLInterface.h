@@ -9,6 +9,43 @@ namespace Phoenix
 {
 	namespace GL
 	{
+		namespace EBool
+		{
+			typedef GLenum Type;
+
+			enum Value : Type
+			{
+				False = GL_FALSE,
+				True = GL_TRUE
+			};
+		}
+
+		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glBindBuffer.xml */
+		namespace EBuffer
+		{
+			typedef GLenum Type;
+
+			enum Value : Type
+			{
+				Array = GL_ARRAY_BUFFER,
+				AtomicCounter = GL_ATOMIC_COUNTER_BUFFER,
+				CopyRead = GL_COPY_READ_BUFFER,
+				CopyWrite = GL_COPY_WRITE_BUFFER,
+				DispatchIndirect = GL_DISPATCH_INDIRECT_BUFFER,
+
+				DrawIndirect = GL_DRAW_INDIRECT_BUFFER,
+				ElementArray = GL_ELEMENT_ARRAY_BUFFER,
+				PixelPack = GL_PIXEL_PACK_BUFFER,
+				PixelUnpack = GL_PIXEL_UNPACK_BUFFER,
+				Query = GL_QUERY_BUFFER,
+
+				ShaderStorage = GL_SHADER_STORAGE_BUFFER,
+				Texture = GL_TEXTURE_BUFFER,
+				TransformFeedback = GL_TRANSFORM_FEEDBACK_BUFFER,
+				Uniform = GL_UNIFORM_BUFFER
+			};
+		}
+
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glClear.xml */
 		namespace EClearBit
 		{
@@ -19,6 +56,27 @@ namespace Phoenix
 				Color = GL_COLOR_BUFFER_BIT,
 				Depth = GL_DEPTH_BUFFER_BIT,
 				Stencil = GL_STENCIL_BUFFER_BIT,
+			};
+		}
+
+		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glBufferData.xml */
+		namespace EUsage
+		{
+			typedef GLenum Type;
+
+			enum Value : Type
+			{
+				StreamDraw = GL_STREAM_DRAW,
+				StreamRead = GL_STREAM_READ,
+				StreamCopy = GL_STREAM_COPY,
+
+				StaticDraw = GL_STATIC_DRAW,
+				StaticRead = GL_STATIC_READ,
+				StaticCopy = GL_STATIC_COPY,
+
+				DynamicDraw = GL_DYNAMIC_DRAW,
+				DynamicRead = GL_DYNAMIC_READ,
+				DynamicCopy = GL_DYNAMIC_COPY
 			};
 		}
 
@@ -39,7 +97,7 @@ namespace Phoenix
 				StackOverflow = GL_STACK_OVERFLOW,
 			};
 
-			const FChar* const ToString(const EError::Type GLError)
+			static inline const FChar* const ToString(const EError::Type GLError)
 			{
 				switch (GLError)
 				{
@@ -94,7 +152,7 @@ namespace Phoenix
 				return nullptr;
 			}
 
-			const FChar* const ToDescription(const EError::Type GLError)
+			static inline const FChar* const ToDescription(const EError::Type GLError)
 			{
 				switch (GLError)
 				{
@@ -181,10 +239,68 @@ namespace Phoenix
 			};
 		}
 
+		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glVertexAttribPointer.xml */
+		namespace EType
+		{
+			typedef GLenum Type;
+
+			enum Value
+			{
+				Byte = GL_BYTE,
+				UByte = GL_UNSIGNED_BYTE,
+
+				Short = GL_SHORT,
+				UShort = GL_UNSIGNED_SHORT,
+
+				Int = GL_INT,
+				UInt = GL_UNSIGNED_INT,
+
+				HalfFloat = GL_HALF_FLOAT,
+				Float = GL_FLOAT,
+				Double = GL_DOUBLE,
+
+				Int2_10_10_10_Rev = GL_INT_2_10_10_10_REV,
+				UInt2_10_10_10_Rev = GL_UNSIGNED_INT_2_10_10_10_REV,
+				UInt10F_11F_11F_Rev = GL_UNSIGNED_INT_10F_11F_11F_REV,
+			};
+		}
+
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glAttachShader.xml */
 		static inline void AttachShader(const GLuint Program, const GLuint Shader)
 		{
 			glAttachShader(Program, Shader);
+		}
+
+		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glBindBuffer.xml */
+		static inline void BindBuffer(const EBuffer::Value Target, const GLuint Buffer)
+		{
+			glBindBuffer(Target, Buffer);
+		}
+
+		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glBindVertexArray.xml */
+		static inline void BindVertexArray(const GLuint Array)
+		{
+			glBindVertexArray(Array);
+		}
+
+		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glBufferData.xml */
+		static inline void BufferData(
+			const EBuffer::Value Target, 
+			const GLsizeiptr Size, 
+			const GLvoid* Data, 
+			const EUsage::Value Usage)
+		{
+			glBufferData(Target, Size, Data, Usage);
+		}
+
+		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glBufferSubData.xml */
+		static inline void BufferSubData(
+			const EBuffer::Value Target, 
+			const GLintptr Offset, 
+			const GLsizeiptr Size, 
+			const GLvoid* const Data)
+		{
+			glBufferSubData(Target, Offset, Size, Data);
 		}
 
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glClear.xml */
@@ -219,6 +335,12 @@ namespace Phoenix
 			return Shader;
 		}
 
+		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glDeleteBuffers.xml */
+		static inline void DeleteBuffers(const GLsizei N, const GLuint* const Buffers)
+		{
+			glDeleteBuffers(N, Buffers);
+		}
+
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glDeleteProgram.xml */
 		static inline void DeleteProgram(const GLuint Program)
 		{
@@ -229,6 +351,30 @@ namespace Phoenix
 		static inline void DeleteShader(const GLuint Shader)
 		{
 			glDeleteShader(Shader);
+		}
+
+		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glDeleteVertexArrays.xml */
+		static inline void DeleteVertexArrays(const GLsizei N, const GLuint* const Arrays)
+		{
+			glDeleteVertexArrays(N, Arrays);
+		}
+
+		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glEnableVertexAttribArray.xml */
+		static inline void EnableVertexAttribArray(const GLuint Index)
+		{
+			glEnableVertexAttribArray(Index);
+		}
+
+		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glGenBuffers.xml */
+		static inline void GenBuffers(const GLsizei BufferCount, GLuint* const Buffers)
+		{
+			glGenBuffers(BufferCount, Buffers);
+		}
+
+		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glGenVertexArrays.xml */
+		static inline void GenVertexArrays(const GLsizei N, GLuint* const Arrays)
+		{
+			glGenVertexArrays(N, Arrays);
 		}
 
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glGetShaderInfoLog.xml */
@@ -260,6 +406,40 @@ namespace Phoenix
 			glUseProgram(Program);
 		}
 
+		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glVertexAttribPointer.xml */
+		static inline void VertexAttribPointer(
+			const GLuint Index,
+			const GLint Size,
+			const EType::Value Type,
+			const EBool::Value Normalized,
+			const GLsizei Stride,
+			const GLvoid* const Pointer)
+		{
+			glVertexAttribPointer(Index, Size, Type, Normalized, Stride, Pointer);
+		}
+
+		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glVertexAttribPointer.xml */
+		static inline void VertexAttribIPointer(
+			const GLuint Index,
+			const GLint Size,
+			const EType::Value Type,
+			const GLsizei Stride,
+			const GLvoid* const Pointer)
+		{
+			glVertexAttribIPointer(Index, Size, Type, Stride, Pointer);
+		}
+
+		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glVertexAttribPointer.xml */
+		static inline void VertexAttribLPointer(
+			const GLuint Index,
+			const GLint Size,
+			const EType::Value Type,
+			const GLsizei Stride,
+			const GLvoid* const Pointer)
+		{
+			glVertexAttribLPointer(Index, Size, Type, Stride, Pointer);
+		}
+
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glViewport.xml */
 		static inline void Viewport(const GLint X, const GLint Y, const GLsizei Width, const GLsizei Height)
 		{
@@ -270,16 +450,20 @@ namespace Phoenix
 
 // #FIXME: Move this to a config file when appropriate.
 #define PHOENIX_DEBUG_GL 1
-#define PHOENIX_DEBUG_GL_MAX_ERROR_MSGS 10
+#define PHOENIX_DEBUG_GL_MAX_ERROR_MSGS_PER_CALL 10
 
 #ifndef PHOENIX_DEBUG_GL
-#	define PHOENIX_DEBUG_GL 1
+#	if _DEBUG
+#		define PHOENIX_DEBUG_GL 1
+#	else
+#		define PHOENIX_DEBUG_GL 0
+#	endif
 #endif
 
 #if PHOENIX_DEBUG_GL
 
 #	define F_GLDisplayErrors()														\
-		for (UInt32 I = 0; I < PHOENIX_DEBUG_GL_MAX_ERROR_MSGS; ++I)				\
+		for (UInt32 I = 0; I < PHOENIX_DEBUG_GL_MAX_ERROR_MSGS_PER_CALL; ++I)		\
 		{																			\
 			const GL::EError::Type GLError = glGetError();							\
 																					\
@@ -296,15 +480,15 @@ namespace Phoenix
 			F_LogError("GL Error: " << ErrorStr << " - " << Description);			\
 		}
 
-#	define F_GLIgnoreErrors()											\
-		for (UInt32 I = 0; I < PHOENIX_DEBUG_GL_MAX_ERROR_MSGS; ++I)	\
-		{																\
-			const GL::EError::Type GLError = glGetError();				\
-																		\
-			if (GLError == GL::EError::None)							\
-			{															\
-				break;													\
-			}															\
+#	define F_GLIgnoreErrors()													\
+		for (UInt32 I = 0; I < PHOENIX_DEBUG_GL_MAX_ERROR_MSGS_PER_CALL; ++I)	\
+		{																		\
+			const GL::EError::Type GLError = glGetError();						\
+																				\
+			if (GLError == GL::EError::None)									\
+			{																	\
+				break;															\
+			}																	\
 		}
 
 #	define F_GL(GLCall)			\

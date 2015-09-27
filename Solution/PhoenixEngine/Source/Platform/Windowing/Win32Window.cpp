@@ -68,13 +68,13 @@ void FWin32Window::OnKeyPress(FGLWindow * Window, Int32 Key, Int32 ScanCode, Int
 	KeyPressCallback(Key, ScanCode, Action, Mods);
 }
 
-void Phoenix::FWin32Window::OnMouseClick(FGLWindow* Window, Int32 Button, Int32 Action, Int32 Mods) const
+void FWin32Window::OnMouseClick(FGLWindow* Window, Int32 Button, Int32 Action, Int32 Mods) const
 {
 	F_AssertNotNull(MouseClickCallback, "Mouse Click Callback not set");
 	MouseClickCallback(Button, Action, Mods);
 }
 
-void Phoenix::FWin32Window::OnMouseMove(FGLWindow* Window, Float64 XPos, Float64 YPos) const
+void FWin32Window::OnMouseMove(FGLWindow* Window, Float64 XPos, Float64 YPos) const
 {
 	F_AssertNotNull(MouseMoveCallback, "Mouse Move Callback not set");
 	MouseMoveCallback(XPos, YPos);
@@ -98,7 +98,7 @@ void FWin32Window::Show()
 	}
 }
 
-void Phoenix::FWin32Window::Minimize()
+void FWin32Window::Minimize()
 {
 	if (!bIsMinimized)
 	{
@@ -109,7 +109,7 @@ void Phoenix::FWin32Window::Minimize()
 	}
 }
 
-void Phoenix::FWin32Window::Restore()
+void FWin32Window::Restore()
 {
 	if (bIsMinimized)
 	{
@@ -138,7 +138,7 @@ void FWin32Window::SetMouseMoveCallback(const FWindowMouseMoveCallback& MouseMov
 	this->MouseMoveCallback = MouseMoveCallback;
 }
 
-void Phoenix::FWin32Window::BufferSwap()
+void FWin32Window::BufferSwap()
 {
 	glfwSwapBuffers(Window);
 }

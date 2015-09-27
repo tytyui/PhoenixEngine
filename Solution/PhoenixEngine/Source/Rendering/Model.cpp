@@ -2,6 +2,11 @@
 
 using namespace Phoenix;
 
+void FModel::Init(const FMeshData::FEntries& MeshDataEntries)
+{
+	// #FIXME
+}
+
 void FModel::Init(const FString& File)
 {
 	// #FIXME
@@ -14,6 +19,11 @@ bool FModel::IsValid() const
 }
 
 void FModel::DeInit()
+{
+	// #FIXME
+}
+
+void FModel::Save(const FString& File)
 {
 	// #FIXME
 }

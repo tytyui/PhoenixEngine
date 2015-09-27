@@ -6,6 +6,7 @@
 #include "Rendering/ModelProcessor.h"
 
 using namespace Phoenix;
+using namespace Phoenix::GL;
 
 bool FRenderEngine::FInitParams::IsValid() const
 {
@@ -52,9 +53,9 @@ void FRenderEngine::Init(const FInitParams& InInitParams)
 	const GLsizei Height = static_cast<GLsizei>(Dimensions.y);
 
 	F_GLIgnoreErrors();
-	F_GL(GL::Viewport(0, 0, Width, Height));
-	F_GL(GL::ClearColor(0.f, 0.f, 0.f, 1.f));
-	F_GL(GL::Clear(GL::EClearBit::Color));
+	F_GL(Viewport(0, 0, Width, Height));
+	F_GL(ClearColor(0.f, 0.f, 0.f, 1.f));
+	F_GL(Clear(EClearBit::Color));
 
 	InitParams.Window->BufferSwap();
 
@@ -78,7 +79,7 @@ void FRenderEngine::Render()
 	F_Assert(IsValid(), "This class is in an invalid state.");
 
 	F_GLDisplayErrors();
-	F_GL(GL::Clear(GL::EClearBit::Color));
+	F_GL(Clear(EClearBit::Color));
 
 	// #FIXME: Add tons of stuff here.
 

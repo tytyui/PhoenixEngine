@@ -4,6 +4,7 @@
 #include "Utility/Containers/Vector.h"
 #include "Utility/Misc/Primitives.h"
 #include "Utility/Misc/String.h"
+#include "Rendering/MeshData.h"
 #include "Rendering/ModelData.h"
 
 namespace Phoenix
@@ -23,18 +24,6 @@ namespace Phoenix
 			FString File;
 		};
 
-		struct FDataEntry
-		{
-			EModelData::Type ModelData{ EModelData::None };
-			TVector<Float32> Positions;
-			TVector<Float32> Normals;
-			TVector<Float32> UVCoords;
-			TVector<UInt8> Indices;
-			UInt8 IndexTSize{ 0 };
-		};
-
-		typedef TVector<FDataEntry> FDataEntries;
-
 		FModelProcessor() = default;
 
 		FModelProcessor(const FModelProcessor&) = default;
@@ -45,10 +34,10 @@ namespace Phoenix
 
 		void Load(const FLoadParams& LoadParams);
 
-		FDataEntries& GetDataEntries();
+		const FMeshData::FEntries& GetMeshDataEntries() const;
 
 	private:
-		FDataEntries DataEntries;
+		FMeshData::FEntries MeshEntries;
 
 		void LoadFBX(const FLoadParams& LoadParams);
 
