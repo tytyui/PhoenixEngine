@@ -14,8 +14,8 @@ namespace Phoenix
 		FMesh(const FMesh&) = delete;
 		FMesh& operator=(const FMesh&) = delete;
 
-		FMesh(FMesh&&) = delete;
-		FMesh& operator=(FMesh&&) = delete;
+		FMesh(FMesh&& RHS);
+		FMesh& operator=(FMesh&& RHS);
 
 		~FMesh();
 
@@ -23,7 +23,13 @@ namespace Phoenix
 
 		bool IsValid() const;
 
-		void DeInit();		
+		void DeInit();
+
+		GLuint GetVertexArray() const;
+
+		GLsizei GetIndexCount() const;
+
+		UInt8 GetIndexTypeSize() const;
 
 	private:
 		GLuint VertexArray{ 0 };
@@ -31,6 +37,8 @@ namespace Phoenix
 		GLuint ElementBuffer{ 0 };
 		GLsizei IndexCount{ 0 };
 		UInt8 IndexTSize{ 0 };
+
+		void PostMoveReset();
 	};
 }
 

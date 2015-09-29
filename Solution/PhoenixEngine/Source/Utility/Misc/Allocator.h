@@ -243,7 +243,7 @@ namespace Phoenix
 		F_Assert(VoidPtr, "Failed to allocate memory.");
 		T* TPtr = new (VoidPtr) T();
 
-		F_Assert(VoidPtr == TPtr, "Placement new caused additional memory overhead.  Rework this.");
+		F_Assert(VoidPtr == TPtr, "Placement new required additional memory overhead.  Rework this.");
 		return TPtr;
 	}
 

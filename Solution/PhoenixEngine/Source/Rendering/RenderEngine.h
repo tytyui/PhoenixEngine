@@ -1,10 +1,21 @@
 #ifndef PHOENIX_RENDER_ENGINE_H
 #define PHOENIX_RENDER_ENGINE_H
 
+#include "Utility/Misc/Primitives.h"
 #include "Platform/Windowing/IWindow.h"
 
 namespace Phoenix
 {
+	namespace ERenderEngineInternals
+	{
+		typedef UInt32 Type;
+
+		enum Value : Type
+		{
+			Size = 64
+		};
+	}
+
 	class FRenderEngine
 	{
 	public:
@@ -15,13 +26,15 @@ namespace Phoenix
 			bool IsValid() const;
 		};
 
-		FRenderEngine() = default;
+		FRenderEngine();
 		
 		FRenderEngine(const FRenderEngine&) = delete;
 		FRenderEngine& operator=(const FRenderEngine&) = delete;
 
 		FRenderEngine(FRenderEngine&&) = delete;
 		FRenderEngine& operator=(FRenderEngine&&) = delete;
+
+		~FRenderEngine();
 
 		void Init(const FInitParams& InInitParams);
 
@@ -31,12 +44,12 @@ namespace Phoenix
 
 		void Render();
 
-		// #FIXME
-
-	protected:
 	private:
-		FInitParams InitParams;
-		bool IsRunning{ false };
+		UInt8 PImplData[ERenderEngineInternals::Size];
+
+		struct FRenderEngineInternals& Get();
+
+		const struct FRenderEngineInternals& Get() const;
 	};
 }
 

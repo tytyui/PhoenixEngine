@@ -2,6 +2,7 @@
 #define PHOENIX_ASSERT_H
 
 #include <cassert>
+
 #include "Utility/Misc/String.h"
 #include "Utility/Misc/StringStream.h"
 
@@ -11,7 +12,7 @@
 #if PHOENIX_ENABLE_ASSERT
 #	define F_Assert(Expr, Msg)					\
 	{											\
-		if (Expr)								\
+		if (!(Expr))							\
 		{										\
 			FStringStream SS;					\
 			SS << Msg;							\

@@ -1,10 +1,36 @@
 #include "Rendering/Mesh.h"
 
+#include "Utility/Debug/Assert.h"
 #include "Rendering/GLInterface.h"
 #include "Rendering/MeshData.h"
 
 using namespace Phoenix;
 using namespace Phoenix::GL;
+
+FMesh::FMesh(FMesh&& RHS)
+	: VertexArray(RHS.VertexArray)
+	, VertexBuffer(RHS.VertexBuffer)
+	, ElementBuffer(RHS.ElementBuffer)
+	, IndexCount(RHS.IndexCount)
+	, IndexTSize(RHS.IndexTSize)
+{
+	RHS.PostMoveReset();
+}
+
+FMesh& FMesh::operator=(FMesh&& RHS)
+{
+	F_Assert(this != &RHS, "Self move assign is illegal.");
+	DeInit();
+
+	VertexArray = RHS.VertexArray;
+	VertexBuffer = RHS.VertexBuffer;
+	ElementBuffer = RHS.ElementBuffer;
+	IndexCount = RHS.IndexCount;
+	IndexTSize = RHS.IndexTSize;
+
+	RHS.PostMoveReset();
+	return *this;
+}
 
 FMesh::~FMesh()
 {
@@ -13,12 +39,14 @@ FMesh::~FMesh()
 
 void FMesh::Init(const FMeshData& MeshData)
 {
-	// #FIXME: This function could be a more
+	// #FIXME: This function could be more
 	// maintainable than it currently is.
 	F_Assert(MeshData.Positions.size(), "Position data is missing.");
 	F_Assert(MeshData.Normals.size(), "Position data is missing.");
 	F_Assert(MeshData.UVCoords.size(), "Position data is missing.");
 	F_Assert(MeshData.Indices.size(), "Index data is missing.");
+
+	F_GLDisplayErrors();
 
 	DeInit();
 
@@ -43,7 +71,7 @@ void FMesh::Init(const FMeshData& MeshData)
 
 		F_GL(BindBuffer(EBuffer::Array, VertexArray));
 		F_GL(BufferData(EBuffer::Array, TotalSize, nullptr, EUsage::StaticDraw));
-		
+
 		F_GL(BufferSubData(EBuffer::Array, 0, PositionsSize, &MeshData.Positions[0]));
 		F_GL(BufferSubData(EBuffer::Array, NormalsStart, NormalsSize, &MeshData.Normals[0]));
 		F_GL(BufferSubData(EBuffer::Array, UVCoordsStart, UVCoordsSize, &MeshData.UVCoords[0]));
@@ -74,6 +102,7 @@ bool FMesh::IsValid() const
 
 void FMesh::DeInit()
 {
+	F_GLDisplayErrors();
 	if (VertexArray)
 	{
 		F_GL(DeleteVertexArrays(1, &VertexArray));
@@ -92,6 +121,30 @@ void FMesh::DeInit()
 		ElementBuffer = 0;
 	}
 
+	IndexCount = 0;
+	IndexTSize = 0;
+}
+
+GLuint FMesh::GetVertexArray() const
+{
+	return VertexArray;
+}
+
+GLsizei FMesh::GetIndexCount() const
+{
+	return IndexCount;
+}
+
+UInt8 FMesh::GetIndexTypeSize() const
+{
+	return IndexTSize;
+}
+
+void FMesh::PostMoveReset()
+{
+	VertexArray = 0;
+	VertexBuffer = 0;
+	ElementBuffer = 0;
 	IndexCount = 0;
 	IndexTSize = 0;
 }

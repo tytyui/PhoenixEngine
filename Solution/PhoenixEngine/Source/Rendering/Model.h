@@ -4,12 +4,15 @@
 #include "Utility/Containers/Vector.h"
 #include "Utility/Misc/String.h"
 #include "Rendering/MeshData.h"
+#include "Rendering/Mesh.h"
 
 namespace Phoenix
 {
 	class FModel
 	{
 	public:
+		typedef TVector<FMesh> FMeshes;
+
 		FModel() = default;
 
 		FModel(const FModel&) = delete;
@@ -26,12 +29,12 @@ namespace Phoenix
 
 		void DeInit();
 
-		void Save(const FString& File);
+		void Save(const FMeshData::FEntries& MeshDataEntries, const FString& File);
 
-		// #FIXME
+		const FMeshes& GetMeshes() const;
 
 	private:
-		// #FIXME
+		FMeshes Meshes;
 	};
 }
 
