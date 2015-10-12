@@ -153,8 +153,8 @@ bool FModelProcessor::IsFileFBX(const FString& File) {
 	F_Assert(File.size(), "Invalid file name.");
 
 	// #FIXME: Use a "HasExtension" method instead.
-	FString Extension = FStr::ExtractExtension(File);
-	FStr::ToLower(Extension);
+	FString Extension = NString::ExtractExtension(File);
+	NString::ToLower(Extension);
 
 	const bool IsFBX = Extension == "fbx";
 	return IsFBX;

@@ -19,9 +19,6 @@ namespace Phoenix
 
 		struct FInitParams
 		{
-			// #FIXME: These should probably be shared pointers instead.
-			// However, we haven't discussed memory management and 
-			// ownership semantics yet, so they're raw pointers for now.
 			IWindow* Window{ nullptr };
 			TThreadSafeVector<UInt32>* OutgoingEvents{ nullptr };
 			TThreadSafeVector<UInt32>* IncomingEvents{ nullptr };
@@ -48,7 +45,7 @@ namespace Phoenix
 
 	protected:
 	private:
-		FThreadRAII Thread;
+		FSafeThread Thread;
 		FInitParams InitData;
 		FAudioEngine AudioEngine;
 		FRenderEngine RenderEngine;

@@ -95,7 +95,7 @@ namespace Phoenix
 		{												\
 			FStringStream SS;							\
 			SS	<< PreMsg 								\
-				<< FStr::ExtractFileName(__FILE__)		\
+				<< NString::ExtractFileName(__FILE__)	\
 				<< " @ "								\
 				<< __LINE__								\
 				<< ": "									\
@@ -155,7 +155,7 @@ namespace Phoenix
 		{												\
 			FStringStream SS;							\
 			SS	<< PreMsg 								\
-				<< FStr::ExtractFileName(__FILE__)		\
+				<< NString::ExtractFileName(__FILE__)	\
 				<< " @ "								\
 				<< __LINE__								\
 				<< ": "									\

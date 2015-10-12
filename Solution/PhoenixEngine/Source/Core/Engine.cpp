@@ -53,8 +53,7 @@ void FEngine::Run()
 {
 	F_LogTrace("Engine::Run()\n");
 
-	// #FIXME: This low value is simply for demonstration purposes.
-	const Float32 FramesPerSec = 0.25f;
+	const Float32 FramesPerSec = 60.f;
 	const Float32 MaxDeltaTime = 1.f / FramesPerSec;
 
 	TThreadSafeVector<UInt32>::ContainerT ReceivedEvents;
@@ -72,10 +71,11 @@ void FEngine::Run()
 		if (AccumulatedTime >= MaxDeltaTime)
 		{
 			AccumulatedTime = FMathf::Modulo(AccumulatedTime, MaxDeltaTime);
+			MainWindow->ProcessEvents();
 			
 			// #FIXME: Dispatch events here.
 
-			OutgoingEvents.AddEntry(0);
+			//OutgoingEvents.AddEntry(0);
 			IncomingEvents.GetDataAndClear(ReceivedEvents);
 
 			for (const auto& ReceivedEvent : ReceivedEvents)
@@ -85,12 +85,8 @@ void FEngine::Run()
 
 			ReceivedEvents.clear();
 		}
-
-		// #FIXME Probably will be moved. But we need window control for now.
-		MainWindow->ProcessEvents();
-
-		// #FIXME: Calculate an appropriate time to 
-		// sleep in order to prevent a busy wait.
+		
+		NThread::SleepThread(0);
 	}
 
 	DeInit();

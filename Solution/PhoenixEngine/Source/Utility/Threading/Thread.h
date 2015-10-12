@@ -10,7 +10,7 @@ namespace Phoenix
 {
 	typedef std::thread FThread;
 
-	namespace FThr // #FIXME: Come up with a solid naming convention.
+	namespace NThread
 	{
 		//	--------------------------------------------------------------------------------
 		/*! \brief Puts the thread to sleep for an approximate duration. */
@@ -21,21 +21,20 @@ namespace Phoenix
 		}
 	}
 
-	//#FIXME Find a good name for this
-	class FThreadRAII
+	class FSafeThread
 	{
 	public:
-		FThreadRAII() = default;
+		FSafeThread() = default;
 		//Intentionally non explicit - so it can be constructed directly from an FThread
-		FThreadRAII(FThread&& Thread);
+		FSafeThread(FThread&& Thread);
 
-		FThreadRAII(const FThreadRAII&) = delete;
-		FThreadRAII& operator=(const FThreadRAII&) = delete;
+		FSafeThread(const FSafeThread&) = delete;
+		FSafeThread& operator=(const FSafeThread&) = delete;
 
-		FThreadRAII(FThreadRAII&&) = default;
-		FThreadRAII& operator=(FThreadRAII&&) = default;
+		FSafeThread(FSafeThread&&) = default;
+		FSafeThread& operator=(FSafeThread&&) = default;
 
-		~FThreadRAII();
+		~FSafeThread();
 
 		//Can be removed if we wrap *everthing* in std::thread
 		FThread& Get();

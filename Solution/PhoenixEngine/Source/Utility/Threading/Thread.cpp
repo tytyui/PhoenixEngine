@@ -4,12 +4,12 @@
 
 using namespace Phoenix;
 
-FThreadRAII::FThreadRAII(FThread&& Thread)
+FSafeThread::FSafeThread(FThread&& Thread)
 	: Thread(std::move(Thread))
 {
 }
 
-FThreadRAII::~FThreadRAII()
+FSafeThread::~FSafeThread()
 {
 	F_Assert(!Thread.joinable(), "Thread should have been joined before destruction");
 	if (Thread.joinable())
@@ -18,12 +18,12 @@ FThreadRAII::~FThreadRAII()
 	}
 }
 
-FThread& FThreadRAII::Get()
+FThread& FSafeThread::Get()
 {
 	return Thread;
 }
 
-void Phoenix::FThreadRAII::Join()
+void Phoenix::FSafeThread::Join()
 {
 	F_Assert(Thread.joinable(), "Thread is not joinable");
 	Thread.join();

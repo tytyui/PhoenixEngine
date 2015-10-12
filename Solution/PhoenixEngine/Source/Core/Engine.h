@@ -36,7 +36,7 @@ namespace Phoenix
 		FWin32Window* MainWindow{ nullptr };
 		FGameThread GameThread;
 
-		//#FIXME Determine which thread this should be on
+		//#FIXME This should be on the GameThread
 		TUniquePtr<FInput> Input;
 
 		// #FIXME: Change UInt32 to the Event structure.

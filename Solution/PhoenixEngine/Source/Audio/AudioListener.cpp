@@ -46,7 +46,7 @@ void FAudioListener::Set(
 	const FVector3D& InVelocityPerSec,
 	const FVector3D& InUpVector)
 {
-	// #FIXME: Assert that the up vector is normalized.
+	// #FIXME: Some data verification is required here.
 
 	Position = InPosition;
 	LookDirection = InLookDirection;

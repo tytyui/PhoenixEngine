@@ -221,14 +221,12 @@ namespace Phoenix
 		template <class T>
 		static void Delete(T* Data);
 
-		// #FIXME: The array length should probably be stored and hidden from the user.
 		template <class T>
 		static void DeleteArray(T* Data, const SizeT ArrayLength);
 
 		template <class T>
 		static void SafeDelete(T*& Data);
 
-		// #FIXME: The array length should probably be stored and hidden from the user.
 		template <class T>
 		static void SafeDeleteArray(T*& Data, const SizeT ArrayLength);
 	};

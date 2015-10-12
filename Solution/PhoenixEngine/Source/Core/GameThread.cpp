@@ -102,7 +102,7 @@ void FGameThread::ThreadRun()
 			InitData.UpdateCallback(MaxDeltaTime);
 
 			// #FIXME: Dispatch any messages to Engine.cpp here.
-			InitData.OutgoingEvents->AddEntry(1);
+			//InitData.OutgoingEvents->AddEntry(1);
 
 			++UpdateCount;
 			static const UInt32 MinFramesBeforeWarning = 2;

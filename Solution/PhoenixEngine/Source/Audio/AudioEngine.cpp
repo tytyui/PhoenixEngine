@@ -28,12 +28,6 @@ void FAudioEngine::Init()
 	AudioListener.Init(SoundEngine);
 
 	F_Log("AudioEngine initialized.");
-
-	// #FIXME: For testing/demonstration only.
-	FSound Sound;
-	Sound.Init(SoundEngine, "Assets/Audio/TestWav.wav");
-	Sound.Play2DInstanced(FAudioEngine::MaxVolume / 10);
-	// #END_FIXME
 }
 
 bool FAudioEngine::IsValid() const

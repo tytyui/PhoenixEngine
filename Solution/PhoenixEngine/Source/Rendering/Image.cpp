@@ -6,33 +6,35 @@
 using namespace Phoenix;
 using namespace Phoenix::GL;
 
-struct FImageHelper {
-	static inline ETexGLFormat::Value ToGLTexFormat(const EPixelFormat::Value PixelFormat) {
-		static_assert(EPixelFormat::Count == 5, "This table requires updating.");
-		static const TArray<ETexGLFormat::Value, EPixelFormat::Count> LookUpTable = {
-			/* Unknown			*/ETexGLFormat::Red,
-			/* Luminous			*/ETexGLFormat::Red, // #FIXME: This requires correctness verification.
-			/* LuminousAlpha	*/ETexGLFormat::RG, // #FIXME: This requires correctness verification.
-			/* RGB				*/ETexGLFormat::RGB,
-			/* RGBA				*/ETexGLFormat::RGBA
-		};
+namespace Phoenix {
+	struct FImageHelper {
+		static inline ETexGLFormat::Value ToGLTexFormat(const EPixelFormat::Value PixelFormat) {
+			static_assert(EPixelFormat::Count == 5, "This table requires updating.");
+			static const TArray<ETexGLFormat::Value, EPixelFormat::Count> LookUpTable = {
+				/* Unknown			*/ETexGLFormat::Red,
+				/* Luminous			*/ETexGLFormat::Red, // #FIXME: This requires correctness verification.
+				/* LuminousAlpha	*/ETexGLFormat::RG, // #FIXME: This requires correctness verification.
+				/* RGB				*/ETexGLFormat::RGB,
+				/* RGBA				*/ETexGLFormat::RGBA
+			};
 
-		return LookUpTable[PixelFormat];
-	}
+			return LookUpTable[PixelFormat];
+		}
 
-	static inline ETexFormat::Value ToTexFormat(const EPixelFormat::Value PixelFormat) {
-		static_assert(EPixelFormat::Count == 5, "This table requires updating.");
-		static const TArray<ETexFormat::Value, EPixelFormat::Count> LookUpTable = {
-			/* Unknown			*/ETexFormat::Red,
-			/* Luminous			*/ETexFormat::Red, // #FIXME: This requires correctness verification.
-			/* LuminousAlpha	*/ETexFormat::RG, // #FIXME: This requires correctness verification.
-			/* RGB				*/ETexFormat::RGB,
-			/* RGBA				*/ETexFormat::RGBA
-		};
+		static inline ETexFormat::Value ToTexFormat(const EPixelFormat::Value PixelFormat) {
+			static_assert(EPixelFormat::Count == 5, "This table requires updating.");
+			static const TArray<ETexFormat::Value, EPixelFormat::Count> LookUpTable = {
+				/* Unknown			*/ETexFormat::Red,
+				/* Luminous			*/ETexFormat::Red, // #FIXME: This requires correctness verification.
+				/* LuminousAlpha	*/ETexFormat::RG, // #FIXME: This requires correctness verification.
+				/* RGB				*/ETexFormat::RGB,
+				/* RGBA				*/ETexFormat::RGBA
+			};
 
-		return LookUpTable[PixelFormat];
-	}
-};
+			return LookUpTable[PixelFormat];
+		}
+	};
+}
 
 FImage::FImage(FImage&& RHS) 
 	: ID(RHS.ID)
@@ -59,8 +61,8 @@ void FImage::Init(const FInitParams& InitParams) {
 	DeInit();
 
 	const FImageData& ImageData = *InitParams.ImageData;
-	F_Assert(ImageData.Pixels, "Pixel data is null."); // #FIXME
 	// #FIXME: This function could use more validation functions.
+	F_Assert(ImageData.Pixels, "Pixel data is null.");
 
 	F_GL(GL::GenTextures(1, &ID));
 	F_GL(GL::BindTexture(ETexTarget::T2D, ID));
