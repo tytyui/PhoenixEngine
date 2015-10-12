@@ -1,33 +1,27 @@
 #ifndef PHOENIX_RENDER_ENGINE_H
 #define PHOENIX_RENDER_ENGINE_H
 
+#include "Utility/Misc/Memory.h"
 #include "Utility/Misc/Primitives.h"
-#include "Platform/Windowing/IWindow.h"
 
-namespace Phoenix
-{
-	namespace ERenderEngineInternals
-	{
+namespace Phoenix {
+	namespace ERenderEngineInternals {
 		typedef UInt32 Type;
 
-		enum Value : Type
-		{
-			Size = 64
+		enum Value : Type {
+			Size = 512
 		};
 	}
 
-	class FRenderEngine
-	{
+	class FRenderEngine {
+		friend struct FRenderEngineInternals;
 	public:
-		struct FInitParams
-		{
-			IWindow* Window{ nullptr };
+		struct FInitParams {
 
-			bool IsValid() const;
 		};
 
 		FRenderEngine();
-		
+
 		FRenderEngine(const FRenderEngine&) = delete;
 		FRenderEngine& operator=(const FRenderEngine&) = delete;
 
@@ -36,20 +30,31 @@ namespace Phoenix
 
 		~FRenderEngine();
 
-		void Init(const FInitParams& InInitParams);
+		void Init(class IWindow& Window);
 
 		bool IsValid() const;
 
 		void DeInit();
 
-		void Render();
+		void Draw();
 
+	protected:
 	private:
+		typedef void(FRenderEngine::*DrawFunction)();
+
 		UInt8 PImplData[ERenderEngineInternals::Size];
 
 		struct FRenderEngineInternals& Get();
 
 		const struct FRenderEngineInternals& Get() const;
+
+		void DrawInternal();
+		
+		void EmptyFunction();
+
+		void DebugInitializeTestCode();
+
+		void DebugRenderTestCode();
 	};
 }
 

@@ -112,7 +112,7 @@ void FGameThread::ThreadRun()
 			}
 		}
 
-		RenderEngine.Render();
+		RenderEngine.Draw();
 	}
 
 	ThreadDeInit();
@@ -130,10 +130,8 @@ void FGameThread::ThreadInit()
 	}
 
 	{
-		FRenderEngine::FInitParams RenderInitParams;
-		RenderInitParams.Window = InitData.Window;
-
-		RenderEngine.Init(RenderInitParams);
+		F_Assert(InitData.Window, "Window is null.");
+		RenderEngine.Init(*InitData.Window);
 		F_Assert(RenderEngine.IsValid(), "Render Engine failed to initialize.");
 	}
 

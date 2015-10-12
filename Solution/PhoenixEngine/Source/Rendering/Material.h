@@ -6,14 +6,11 @@
 #include "Math/Vector2D.h"
 #include "Math/Vector4D.h"
 
-namespace Phoenix
-{
-	namespace EMaterialType
-	{
+namespace Phoenix {
+	namespace EMaterialType {
 		typedef UInt8 Type;
 
-		enum Value : Type
-		{
+		enum Value : Type {
 			Blinn,
 			Cook,
 			Strauss,
@@ -24,9 +21,8 @@ namespace Phoenix
 
 		static bool IsValid(const EMaterialType::Type MaterialType);
 	}
-		
-	struct FMaterialBase
-	{
+
+	struct FMaterialBase {
 		static FVector2D ColourRange;
 
 		EMaterialType::Value MaterialType;
@@ -37,8 +33,7 @@ namespace Phoenix
 			const FVector4D& Colour);
 	};
 
-	struct FAshikMaterial
-	{
+	struct FAshikMaterial {
 		static const FVector2D AnisotropicRange;
 
 		Float32 AnisotropicU;
@@ -49,8 +44,7 @@ namespace Phoenix
 			const Float32 AnisotropicV);
 	};
 
-	struct FBlinnMaterial
-	{
+	struct FBlinnMaterial {
 		static const FVector2D SpecularExpRange;
 
 		Float32 SpecularExp;
@@ -59,8 +53,7 @@ namespace Phoenix
 			const Float32 SpecularExp);
 	};
 
-	struct FCookMaterial
-	{
+	struct FCookMaterial {
 		static const FVector2D RoughnessRange;
 		static const FVector2D RefANIRange;
 
@@ -72,8 +65,7 @@ namespace Phoenix
 			const Float32 RefANI);
 	};
 
-	struct FStraussMaterial
-	{
+	struct FStraussMaterial {
 		static const FVector2D SmoothnessRange;
 		static const FVector2D MetalnessRange;
 		static const FVector2D TransparencyRange;
@@ -83,13 +75,12 @@ namespace Phoenix
 		Float32 Transparency;
 
 		static FStraussMaterial Create(
-			const Float32 Smoothness, 
-			const Float32 Metalness, 
+			const Float32 Smoothness,
+			const Float32 Metalness,
 			const Float32 Transparency);
 	};
 
-	struct FWardMaterial
-	{
+	struct FWardMaterial {
 		static const FVector2D RoughnessRange;
 
 		Float32 Roughness;
@@ -98,11 +89,9 @@ namespace Phoenix
 			const Float32 Roughness);
 	};
 
-	struct FMaterial
-	{
+	struct FMaterial {
 		FMaterialBase Base;
-		union
-		{
+		union {
 			FAshikMaterial Ashik;
 			FBlinnMaterial Blinn;
 			FCookMaterial Cook;
@@ -111,24 +100,24 @@ namespace Phoenix
 		};
 
 		static FMaterial CreateDefault(const FVector4D& Colour);
-		
+
 		static FMaterial CreateAshik(
-			const FVector4D& Colour, 
-			const Float32 AnisotropicU, 
+			const FVector4D& Colour,
+			const Float32 AnisotropicU,
 			const Float32 AnisotropicV);
-		
+
 		static FMaterial CreateBlinn(
-			const FVector4D& Colour, 
+			const FVector4D& Colour,
 			const Float32 SpecularExp);
-		
+
 		static FMaterial CreateCook(
-			const FVector4D& Colour, 
+			const FVector4D& Colour,
 			const Float32 Roughness,
 			const Float32 RefANI);
-		
+
 		static FMaterial CreateStrauss(
-			const FVector4D& Colour, 
-			const Float32 Smoothness, 
+			const FVector4D& Colour,
+			const Float32 Smoothness,
 			const Float32 Metalness,
 			const Float32 Transparency);
 
@@ -137,7 +126,5 @@ namespace Phoenix
 			const Float32 Roughness);
 	};
 }
-
-
 
 #endif

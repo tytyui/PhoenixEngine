@@ -6,10 +6,8 @@
 #include "Rendering/MeshData.h"
 #include "Rendering/Mesh.h"
 
-namespace Phoenix
-{
-	class FModel
-	{
+namespace Phoenix {
+	class FModel {
 	public:
 		typedef TVector<FMesh> FMeshes;
 
@@ -18,18 +16,14 @@ namespace Phoenix
 		FModel(const FModel&) = delete;
 		FModel& operator=(const FModel&) = delete;
 
-		FModel(FModel&&) = delete;
-		FModel& operator=(FModel&&) = delete;
+		FModel(FModel&&) = default;
+		FModel& operator=(FModel&&) = default;
 
 		void Init(const FMeshData::FEntries& MeshDataEntries);
-
-		void Init(const FString& File);
 
 		bool IsValid() const;
 
 		void DeInit();
-
-		void Save(const FMeshData::FEntries& MeshDataEntries, const FString& File);
 
 		const FMeshes& GetMeshes() const;
 

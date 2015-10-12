@@ -5,23 +5,18 @@
 #include "Utility/Misc/Primitives.h"
 #include "Utility/Misc/String.h"
 #include "Rendering/MeshData.h"
-#include "Rendering/ModelData.h"
 
-namespace Phoenix
-{
-	class FModelProcessor
-	{
+namespace Phoenix {
+	class FModelProcessor {
 		friend struct FModelProcessorHelper;
 	public:
-		struct FLoadParams
-		{
-			FString File;
-			EModelData::Type ModelDataHints{ EModelData::None };
+		struct FLoadParams {
+			const FChar* File{ nullptr };
+			EMeshAttribute::Type MeshAttributeHints{ EMeshAttribute::None };
 		};
 
-		struct FSaveParams
-		{
-			FString File;
+		struct FSaveParams {
+			const FChar* File{ nullptr };
 		};
 
 		FModelProcessor() = default;
@@ -33,6 +28,12 @@ namespace Phoenix
 		FModelProcessor& operator=(FModelProcessor&&) = default;
 
 		void Load(const FLoadParams& LoadParams);
+
+		void Save(const FSaveParams& SaveParams);
+
+		void Unload();
+
+		const bool HasMeshDataEntries() const;
 
 		const FMeshData::FEntries& GetMeshDataEntries() const;
 

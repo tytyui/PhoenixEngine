@@ -3,19 +3,18 @@
 
 #include "ExternalLib/GLIncludes.h"
 #include "Utility/Misc/Primitives.h"
+#include "Rendering/GLInterface.h"
 
-namespace Phoenix
-{
-	class FMesh
-	{
+namespace Phoenix {
+	class FMesh {
 	public:
 		FMesh() = default;
 
 		FMesh(const FMesh&) = delete;
 		FMesh& operator=(const FMesh&) = delete;
 
-		FMesh(FMesh&& RHS);
-		FMesh& operator=(FMesh&& RHS);
+		FMesh(FMesh&&);
+		FMesh& operator=(FMesh&&);
 
 		~FMesh();
 
@@ -30,6 +29,8 @@ namespace Phoenix
 		GLsizei GetIndexCount() const;
 
 		UInt8 GetIndexTypeSize() const;
+
+		GL::EType::Value GetIndexType() const;
 
 	private:
 		GLuint VertexArray{ 0 };

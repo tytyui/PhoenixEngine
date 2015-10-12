@@ -12,10 +12,8 @@
 
 using namespace Phoenix;
 
-namespace Phoenix
-{
-	struct FModelProcessorHelper
-	{
+namespace Phoenix {
+	struct FModelProcessorHelper {
 		static void ProcessMesh(
 			FMeshData& MeshData,
 			const aiScene& AIScene,
@@ -29,24 +27,21 @@ namespace Phoenix
 	};
 }
 
-void FModelProcessor::Load(const FLoadParams& LoadParams)
-{
-	F_Assert(LoadParams.File.size(), "No file was specified.");
-	F_Assert(LoadParams.ModelDataHints, "No hints were specified.");
+void FModelProcessor::Load(const FLoadParams& LoadParams) {
+	F_Assert(LoadParams.File, "No file was specified.");
+	F_Assert(LoadParams.MeshAttributeHints, "No hints were specified.");
 
 	// #FIXME: At some point (if necessary), the amount of 
 	// allocations this class performs can be significantly
 	// reduced in order to maximize performance.
-	*this = FModelProcessor();
+	Unload();
 
-	if (IsFileFBX(LoadParams.File))
-	{
+	if (IsFileFBX(LoadParams.File)) {
 		LoadFBX(LoadParams);
 		return;
 	}
 
-	if (IsFileMisc(LoadParams.File))
-	{
+	if (IsFileMisc(LoadParams.File)) {
 		LoadMisc(LoadParams);
 		return;
 	}
@@ -54,18 +49,29 @@ void FModelProcessor::Load(const FLoadParams& LoadParams)
 	F_Assert(false, "Invalid file type.");
 }
 
-const FMeshData::FEntries& FModelProcessor::GetMeshDataEntries() const
-{
-	return MeshEntries;
-}
-
-void FModelProcessor::LoadFBX(const FLoadParams& LoadParams)
-{
+void FModelProcessor::Save(const FSaveParams& SaveParams) {
+	F_Assert(false, "");
 	// #FIXME
 }
 
-void FModelProcessor::LoadMisc(const FLoadParams& LoadParams)
-{
+void FModelProcessor::Unload() {
+	MeshEntries.clear();
+}
+
+const bool FModelProcessor::HasMeshDataEntries() const {
+	const bool Result = MeshEntries.size() != 0;
+	return Result;
+}
+
+const FMeshData::FEntries& FModelProcessor::GetMeshDataEntries() const {
+	return MeshEntries;
+}
+
+void FModelProcessor::LoadFBX(const FLoadParams& LoadParams) {
+	// #FIXME
+}
+
+void FModelProcessor::LoadMisc(const FLoadParams& LoadParams) {
 	static const SizeT DefaultCapacity = 32;
 	static const SizeT DefaultDataEntryCapacity = 16;
 
@@ -85,8 +91,7 @@ void FModelProcessor::LoadMisc(const FLoadParams& LoadParams)
 
 	const bool SceneIsValid = AIScene != nullptr;
 
-	if (!SceneIsValid)
-	{
+	if (!SceneIsValid) {
 		F_LogError("Failed to load misc model.  Error log: " << ModelLoader.GetErrorString());
 		return;
 	}
@@ -101,10 +106,8 @@ void FModelProcessor::LoadMisc(const FLoadParams& LoadParams)
 	AINodes.reserve(DefaultCapacity);
 	AINodes.push_back(AISceneRef.mRootNode);
 
-	for (SizeT I = 0; I < AINodes.size(); ++I)
-	{
-		for (UInt32 ChildI = 0; ChildI < AINodes[I]->mNumChildren; ++ChildI)
-		{
+	for (SizeT I = 0; I < AINodes.size(); ++I) {
+		for (UInt32 ChildI = 0; ChildI < AINodes[I]->mNumChildren; ++ChildI) {
 			F_Assert(AINodes[I]->mChildren[ChildI],
 				"Node index " << I << " has null mesh at index " << ChildI << ".");
 
@@ -117,13 +120,11 @@ void FModelProcessor::LoadMisc(const FLoadParams& LoadParams)
 	MeshEntries.reserve(DefaultDataEntryCapacity);
 
 	const SizeT AINodesSize = AINodes.size();
-	for (SizeT I = 0; I < AINodesSize; ++I)
-	{
-		for (UInt32 MeshI = 0; MeshI < AINodes[I]->mNumMeshes; ++MeshI)
-		{
+	for (SizeT I = 0; I < AINodesSize; ++I) {
+		for (UInt32 MeshI = 0; MeshI < AINodes[I]->mNumMeshes; ++MeshI) {
 			{
 				FMeshData MeshData;
-				MeshData.ModelData = LoadParams.ModelDataHints;
+				MeshData.ModelData = LoadParams.MeshAttributeHints;
 
 				MeshEntries.push_back(std::move(MeshData));
 			}
@@ -138,19 +139,17 @@ void FModelProcessor::LoadMisc(const FLoadParams& LoadParams)
 			const aiMesh& AIMesh = *AISceneRef.mMeshes[Handle];
 			FModelProcessorHelper::ProcessMesh(MeshData, AISceneRef, AIMesh);
 
-			if (MeshData.ModelData == EModelData::None)
-			{
+			if (MeshData.ModelData == EMeshAttribute::None) {
 				F_LogError("Data entry initialization failed.");
 				MeshEntries.pop_back();
 			}
 		}
 	}
 
-	F_Log("Processed " << LoadParams.File);
+	F_LogTrace("Model created from " << LoadParams.File);
 }
 
-bool FModelProcessor::IsFileFBX(const FString& File)
-{
+bool FModelProcessor::IsFileFBX(const FString& File) {
 	F_Assert(File.size(), "Invalid file name.");
 
 	// #FIXME: Use a "HasExtension" method instead.
@@ -161,8 +160,7 @@ bool FModelProcessor::IsFileFBX(const FString& File)
 	return IsFBX;
 }
 
-bool FModelProcessor::IsFileMisc(const FString& File)
-{
+bool FModelProcessor::IsFileMisc(const FString& File) {
 	F_Assert(File.size(), "Invalid file name.");
 	// Note: Currently, if a file isn't an FBX 
 	// file, the misc loader should be used.
@@ -173,48 +171,42 @@ bool FModelProcessor::IsFileMisc(const FString& File)
 void FModelProcessorHelper::ProcessMesh(
 	FMeshData& MeshData,
 	const aiScene& AIScene,
-	const aiMesh& AIMesh)
-{
+	const aiMesh& AIMesh) {
 	F_Assert(MeshData.ModelData, "No model data hints were requested.");
 
 	static const UInt8 FloatsPerVertex = 3;
 	static const UInt8 FloatsPerUVCoord = 2;
 
-	const bool PositionHintIsSet = (MeshData.ModelData & EModelData::Positions) != 0;
-	const bool NormalsHintIsSet = (MeshData.ModelData & EModelData::Normals) != 0;
-	const bool IndicesHintIsSet = (MeshData.ModelData & EModelData::Indices) != 0;
-	const bool UVCoordsHintIsSet = (MeshData.ModelData & EModelData::UVCoords) != 0;
+	const bool PositionHintIsSet = (MeshData.ModelData & EMeshAttribute::Positions) != 0;
+	const bool NormalsHintIsSet = (MeshData.ModelData & EMeshAttribute::Normals) != 0;
+	const bool IndicesHintIsSet = (MeshData.ModelData & EMeshAttribute::Indices) != 0;
+	const bool UVCoordsHintIsSet = (MeshData.ModelData & EMeshAttribute::UVCoords) != 0;
 
 	const bool HasVertexData = AIMesh.mNumVertices > 0;
 	const bool HasIndexData = AIMesh.mNumFaces > 0;
 	const bool HasUVCoords = AIMesh.mTextureCoords[0] != nullptr;
 
-	if (!HasVertexData || !HasIndexData)
-	{
+	if (!HasVertexData || !HasIndexData) {
 		F_LogError("This mesh does not have any vertex and/or index data.");
-		MeshData.ModelData = EModelData::None;
+		MeshData.ModelData = EMeshAttribute::None;
 		return;
 	}
 
-	if (IndicesHintIsSet && !HasIndexData)
-	{
+	if (IndicesHintIsSet && !HasIndexData) {
 		F_LogWarning("Indices were specified but this mesh does not have any.");
-		MeshData.ModelData &= ~EModelData::Indices;
+		MeshData.ModelData &= ~EMeshAttribute::Indices;
 	}
 
-	if (UVCoordsHintIsSet && !HasUVCoords)
-	{
+	if (UVCoordsHintIsSet && !HasUVCoords) {
 		F_LogWarning("UVCoords were specified but this mesh does not have any.");
-		MeshData.ModelData &= ~EModelData::UVCoords;
+		MeshData.ModelData &= ~EMeshAttribute::UVCoords;
 	}
 
-	if (PositionHintIsSet && HasVertexData)
-	{
+	if (PositionHintIsSet && HasVertexData) {
 		const SizeT PositionCount = AIMesh.mNumVertices * FloatsPerVertex;
 		MeshData.Positions.resize(PositionCount);
 
-		for (UInt32 I = 0; I < AIMesh.mNumVertices; ++I)
-		{
+		for (UInt32 I = 0; I < AIMesh.mNumVertices; ++I) {
 			const SizeT X = I * FloatsPerVertex;
 			const SizeT Y = I * FloatsPerVertex + 1;
 			const SizeT Z = I * FloatsPerVertex + 2;
@@ -225,13 +217,11 @@ void FModelProcessorHelper::ProcessMesh(
 		}
 	}
 
-	if (NormalsHintIsSet && HasVertexData)
-	{
+	if (NormalsHintIsSet && HasVertexData) {
 		const SizeT NormalsCount = AIMesh.mNumVertices * FloatsPerVertex;
 		MeshData.Normals.resize(NormalsCount);
 
-		for (UInt32 I = 0; I < AIMesh.mNumVertices; ++I)
-		{
+		for (UInt32 I = 0; I < AIMesh.mNumVertices; ++I) {
 			const SizeT X = I * FloatsPerVertex;
 			const SizeT Y = I * FloatsPerVertex + 1;
 			const SizeT Z = I * FloatsPerVertex + 2;
@@ -242,13 +232,11 @@ void FModelProcessorHelper::ProcessMesh(
 		}
 	}
 
-	if (UVCoordsHintIsSet && HasUVCoords)
-	{
+	if (UVCoordsHintIsSet && HasUVCoords) {
 		const SizeT UVCoordsCount = AIMesh.mNumVertices * FloatsPerUVCoord;
 		MeshData.UVCoords.resize(UVCoordsCount);
 
-		for (UInt32 I = 0; I < AIMesh.mNumVertices; ++I)
-		{
+		for (UInt32 I = 0; I < AIMesh.mNumVertices; ++I) {
 			const SizeT X = I * FloatsPerUVCoord;
 			const SizeT Y = I * FloatsPerUVCoord + 1;
 
@@ -257,18 +245,14 @@ void FModelProcessorHelper::ProcessMesh(
 		}
 	}
 
-	if (IndicesHintIsSet && HasIndexData)
-	{
-		if (AIMesh.mNumVertices <= TNumericLimits<UInt8>::max())
-		{
+	if (IndicesHintIsSet && HasIndexData) {
+		if (AIMesh.mNumVertices <= TNumericLimits<UInt8>::max()) {
 			ProcessMeshFaces<UInt8>(MeshData, AIScene, AIMesh);
 		}
-		else if (AIMesh.mNumVertices <= TNumericLimits<UInt16>::max())
-		{
+		else if (AIMesh.mNumVertices <= TNumericLimits<UInt16>::max()) {
 			ProcessMeshFaces<UInt16>(MeshData, AIScene, AIMesh);
 		}
-		else
-		{
+		else {
 			ProcessMeshFaces<UInt32>(MeshData, AIScene, AIMesh);
 		}
 	}
@@ -280,8 +264,7 @@ template <class IndexT>
 void FModelProcessorHelper::ProcessMeshFaces(
 	FMeshData& MeshData,
 	const aiScene& AIScene,
-	const aiMesh& AIMesh)
-{
+	const aiMesh& AIMesh) {
 	static_assert(!TNumericLimits<IndexT>::is_signed, "IndexT must be unsigned.");
 	static_assert(sizeof(IndexT) >= 1, "sizeof(IndexT) must be >= 1 byte.");
 	static_assert(sizeof(IndexT) <= 4, "sizeof(IndexT) must be <= 4 bytes.");
@@ -293,14 +276,13 @@ void FModelProcessorHelper::ProcessMeshFaces(
 	MeshData.Indices.resize(IndicesSize);
 	MeshData.IndexTSize = sizeof(IndexT);
 
-	for (UInt32 I = 0; I < AIMesh.mNumFaces; I++)
-	{
+	for (UInt32 I = 0; I < AIMesh.mNumFaces; I++) {
 		const aiFace& AIFace = AIMesh.mFaces[I];
 
-		for (UInt8 J = 0; J < IndicesPerFace; ++J)
-		{
+		F_Assert(AIFace.mNumIndices == IndicesPerFace, "Face data was not triangulated.");
+		for (UInt8 J = 0; J < IndicesPerFace; ++J) {
 			F_Assert(AIFace.mIndices[J] <= TNumericLimits<IndexT>::max(), "Index is out of bounds.");
-			const SizeT IndicesI = I * IndicesPerFace + sizeof(IndexT) * J;
+			const SizeT IndicesI = I * IndicesPerFace * sizeof(IndexT) + J * sizeof(IndexT);
 
 			IndexT* const IndexTPtr = reinterpret_cast<IndexT*>(&(MeshData.Indices[IndicesI]));
 			*IndexTPtr = static_cast<IndexT>(AIFace.mIndices[J]);

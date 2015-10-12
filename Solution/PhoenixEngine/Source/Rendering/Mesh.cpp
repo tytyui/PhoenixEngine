@@ -5,20 +5,17 @@
 #include "Rendering/MeshData.h"
 
 using namespace Phoenix;
-using namespace Phoenix::GL;
 
 FMesh::FMesh(FMesh&& RHS)
 	: VertexArray(RHS.VertexArray)
 	, VertexBuffer(RHS.VertexBuffer)
 	, ElementBuffer(RHS.ElementBuffer)
 	, IndexCount(RHS.IndexCount)
-	, IndexTSize(RHS.IndexTSize)
-{
+	, IndexTSize(RHS.IndexTSize) {
 	RHS.PostMoveReset();
 }
 
-FMesh& FMesh::operator=(FMesh&& RHS)
-{
+FMesh& FMesh::operator=(FMesh&& RHS) {
 	F_Assert(this != &RHS, "Self move assign is illegal.");
 	DeInit();
 
@@ -32,34 +29,34 @@ FMesh& FMesh::operator=(FMesh&& RHS)
 	return *this;
 }
 
-FMesh::~FMesh()
-{
+FMesh::~FMesh() {
 	DeInit();
 }
 
-void FMesh::Init(const FMeshData& MeshData)
-{
+void FMesh::Init(const FMeshData& MeshData) {
 	// #FIXME: This function could be more
 	// maintainable than it currently is.
+	// Specifically: VertexAttribPointer and
+	// EnableVertexAttribArray.
 	F_Assert(MeshData.Positions.size(), "Position data is missing.");
-	F_Assert(MeshData.Normals.size(), "Position data is missing.");
-	F_Assert(MeshData.UVCoords.size(), "Position data is missing.");
+	F_Assert(MeshData.Normals.size(), "Normal data is missing.");
+	F_Assert(MeshData.UVCoords.size(), "UVCoords data is missing.");
 	F_Assert(MeshData.Indices.size(), "Index data is missing.");
 
 	F_GLDisplayErrors();
 
 	DeInit();
 
-	F_GL(GenVertexArrays(1, &VertexArray));
-	F_GL(GenBuffers(1, &VertexBuffer));
-	F_GL(GenBuffers(1, &ElementBuffer));
+	F_GL(GL::GenVertexArrays(1, &VertexArray));
+	F_GL(GL::GenBuffers(1, &VertexBuffer));
+	F_GL(GL::GenBuffers(1, &ElementBuffer));
 
-	F_GL(BindVertexArray(VertexArray));
+	F_GL(GL::BindVertexArray(VertexArray));
 
 	{
-		const GLsizeiptr PositionsSize = MeshData.Positions.size() * sizeof(Float32);
-		const GLsizeiptr NormalsSize = MeshData.Normals.size() * sizeof(Float32);
-		const GLsizeiptr UVCoordsSize = MeshData.UVCoords.size() * sizeof(Float32);
+		const GLsizeiptr PositionsSize = MeshData.Positions.size() * sizeof(FMeshData::PositionT);
+		const GLsizeiptr NormalsSize = MeshData.Normals.size() * sizeof(FMeshData::NormalT);
+		const GLsizeiptr UVCoordsSize = MeshData.UVCoords.size() * sizeof(FMeshData::UVCoordT);
 
 		const GLsizeiptr TotalSize = PositionsSize + NormalsSize + UVCoordsSize;
 
@@ -69,55 +66,54 @@ void FMesh::Init(const FMeshData& MeshData)
 		const GLvoid* const NormalsStartPtr = reinterpret_cast<GLvoid*>(NormalsStart);
 		const GLvoid* const UVCoordsStartPtr = reinterpret_cast<GLvoid*>(UVCoordsStart);
 
-		F_GL(BindBuffer(EBuffer::Array, VertexArray));
-		F_GL(BufferData(EBuffer::Array, TotalSize, nullptr, EUsage::StaticDraw));
+		F_GL(GL::BindBuffer(GL::EBuffer::Array, VertexArray));
+		F_GL(GL::BufferData(GL::EBuffer::Array, TotalSize, nullptr, GL::EUsage::StaticDraw));
 
-		F_GL(BufferSubData(EBuffer::Array, 0, PositionsSize, &MeshData.Positions[0]));
-		F_GL(BufferSubData(EBuffer::Array, NormalsStart, NormalsSize, &MeshData.Normals[0]));
-		F_GL(BufferSubData(EBuffer::Array, UVCoordsStart, UVCoordsSize, &MeshData.UVCoords[0]));
+		F_GL(GL::BufferSubData(GL::EBuffer::Array, 0, PositionsSize, &MeshData.Positions[0]));
+		F_GL(GL::BufferSubData(GL::EBuffer::Array, NormalsStart, NormalsSize, &MeshData.Normals[0]));
+		F_GL(GL::BufferSubData(GL::EBuffer::Array, UVCoordsStart, UVCoordsSize, &MeshData.UVCoords[0]));
 
-		F_GL(VertexAttribPointer(0, 3, EType::Float, EBool::False, 3 * sizeof(GLfloat), nullptr));
-		F_GL(VertexAttribPointer(1, 3, EType::Float, EBool::False, 3 * sizeof(GLfloat), NormalsStartPtr));
-		F_GL(VertexAttribPointer(2, 2, EType::Float, EBool::False, 2 * sizeof(GLfloat), UVCoordsStartPtr));
+		F_GL(GL::EnableVertexAttribArray(0));
+		F_GL(GL::EnableVertexAttribArray(1));
+		F_GL(GL::EnableVertexAttribArray(2));
+
+		F_GL(GL::VertexAttribPointer(0, 3, GL::EType::Float, GL::EBool::False, 3 * sizeof(GLfloat), nullptr));
+		F_GL(GL::VertexAttribPointer(1, 3, GL::EType::Float, GL::EBool::False, 3 * sizeof(GLfloat), NormalsStartPtr));
+		F_GL(GL::VertexAttribPointer(2, 2, GL::EType::Float, GL::EBool::False, 2 * sizeof(GLfloat), UVCoordsStartPtr));
 	}
 
 	{
-		const GLsizeiptr Size = MeshData.Indices.size() * sizeof(UInt8);
+		const GLsizeiptr Size = MeshData.Indices.size() * sizeof(FMeshData::IndexT);
 
-		F_GL(BindBuffer(EBuffer::ElementArray, ElementBuffer));
-		F_GL(BufferData(EBuffer::ElementArray, Size, &MeshData.Indices[0], EUsage::StaticDraw));
+		F_GL(GL::BindBuffer(GL::EBuffer::ElementArray, ElementBuffer));
+		F_GL(GL::BufferData(GL::EBuffer::ElementArray, Size, &MeshData.Indices[0], GL::EUsage::StaticDraw));
 
-		IndexCount = MeshData.Indices.size();
+		IndexCount = Size / MeshData.IndexTSize;
 		IndexTSize = MeshData.IndexTSize;
 	}
 
-	F_GL(BindVertexArray(0));
+	F_GL(GL::BindVertexArray(0));
 }
 
-bool FMesh::IsValid() const
-{
+bool FMesh::IsValid() const {
 	const bool Result = VertexArray != 0;
 	return Result;
 }
 
-void FMesh::DeInit()
-{
+void FMesh::DeInit() {
 	F_GLDisplayErrors();
-	if (VertexArray)
-	{
-		F_GL(DeleteVertexArrays(1, &VertexArray));
+	if (VertexArray) {
+		F_GL(GL::DeleteVertexArrays(1, &VertexArray));
 		VertexArray = 0;
 	}
 
-	if (VertexBuffer)
-	{
-		F_GL(DeleteBuffers(1, &VertexBuffer));
+	if (VertexBuffer) {
+		F_GL(GL::DeleteBuffers(1, &VertexBuffer));
 		VertexBuffer = 0;
 	}
 
-	if (ElementBuffer)
-	{
-		F_GL(DeleteBuffers(1, &ElementBuffer));
+	if (ElementBuffer) {
+		F_GL(GL::DeleteBuffers(1, &ElementBuffer));
 		ElementBuffer = 0;
 	}
 
@@ -125,23 +121,51 @@ void FMesh::DeInit()
 	IndexTSize = 0;
 }
 
-GLuint FMesh::GetVertexArray() const
-{
+GLuint FMesh::GetVertexArray() const {
 	return VertexArray;
 }
 
-GLsizei FMesh::GetIndexCount() const
-{
+GLsizei FMesh::GetIndexCount() const {
 	return IndexCount;
 }
 
-UInt8 FMesh::GetIndexTypeSize() const
-{
+UInt8 FMesh::GetIndexTypeSize() const {
 	return IndexTSize;
 }
 
-void FMesh::PostMoveReset()
-{
+GL::EType::Value FMesh::GetIndexType() const {
+	const UInt8 UInt8Size = sizeof(UInt8);
+	const UInt8 UInt16Size = sizeof(UInt16);
+	const UInt8 UInt32Size = sizeof(UInt32);
+
+	switch (IndexTSize) {
+		case UInt8Size:
+		{
+			return GL::EType::UByte;
+		}
+
+		case UInt16Size:
+		{
+			return GL::EType::UShort;
+		}
+
+		case UInt32Size:
+		{
+			return GL::EType::UInt;
+		}
+
+		default:
+		{
+			F_Assert(false, "Invalid size of " << IndexTSize);
+			break;
+		}
+	}
+
+	F_Assert(false, "Invalid size of " << IndexTSize);
+	return GL::EType::UByte;
+}
+
+void FMesh::PostMoveReset() {
 	VertexArray = 0;
 	VertexBuffer = 0;
 	ElementBuffer = 0;
