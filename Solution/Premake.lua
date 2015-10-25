@@ -35,9 +35,18 @@ project "PhoenixEngine"
 	location "PhoenixEngine"
 	targetdir "Build/%{cfg.buildcfg}"
 	
-	files { "PhoenixEngine/Source/**.h", "PhoenixEngine/Source/**.cpp", "PhoenixEngine/Source/**.txt" }
+	files { 
+		"PhoenixEngine/Source/**.h", 
+		"PhoenixEngine/Source/**.hpp",
+		"PhoenixEngine/Source/**.cpp", 
+		"PhoenixEngine/Source/**.txt"
+	}
 	
-	vpaths { ["Sources/*"] = { "PhoenixEngine/Source/**.h", "PhoenixEngine/Source/**.cpp", "PhoenixEngine/Source/**.txt" } }
+	vpaths { ["Sources/*"] = { 
+		"PhoenixEngine/Source/**.h", 
+		"PhoenixEngine/Source/**.hpp", 
+		"PhoenixEngine/Source/**.cpp", 
+		"PhoenixEngine/Source/**.txt" } }
 
 	filter "configurations:Debug"
 		defines { "DEBUG" }
@@ -55,14 +64,19 @@ project "PhoenixEngine"
 		linkoptions  { "-std=c++1y", "-stdlib=libc++" }
 		buildoptions { "-std=c++1y", "-stdlib=libc++" }	
 
-project "TestGame"
+project "Game"
 	kind "ConsoleApp"
 	language "C++"
-	location "TestGame"
+	location "Game"
 	targetdir "Build/%{cfg.buildcfg}"
 	links { "PhoenixEngine" }
 
-	files { "TestGame/**.h", "TestGame/**.cpp", "TestGame/**.txt" }
+	files { 
+		"Game/**.h", 
+		"Game/**.hpp", 
+		"Game/**.cpp", 
+		"Game/**.txt" 
+	}
 
 	filter "configurations:Debug"
 		defines { "DEBUG" }

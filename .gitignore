@@ -3,8 +3,8 @@ Solution/Debug
 Solution/Release
 Solution/PhoenixEngine/Debug
 Solution/PhoenixEngine/Release
-Solution/TestGame/Debug
-Solution/TestGame/Release
+Solution/Game/Debug
+Solution/Game/Release
 
 #Assets
 Solution/Libraries/Dll/x32/Assets/Audio
