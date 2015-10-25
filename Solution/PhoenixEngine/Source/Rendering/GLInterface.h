@@ -6,22 +6,35 @@
 #include "Utility/Debug/Debug.h"
 #include "Utility/Misc/Primitives.h"
 
-namespace Phoenix {
-	namespace GL {
-		namespace EBool {
+namespace Phoenix
+{
+	namespace GL
+	{
+		typedef GLuint ElementBufferT;
+		typedef GLuint ImageIDT;
+		typedef GLsizei IndexCountT;
+		typedef GLint MipmapLevelT;
+		typedef GLuint VertexArrayT;
+		typedef GLuint VertexBufferT;
+
+		namespace EBool
+		{
 			typedef GLenum Type;
 
-			enum Value : Type {
+			enum Value : Type
+			{
 				False = GL_FALSE,
 				True = GL_TRUE
 			};
 		}
 
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glBindBuffer.xml */
-		namespace EBuffer {
+		namespace EBuffer
+		{
 			typedef GLenum Type;
 
-			enum Value : Type {
+			enum Value : Type
+			{
 				Array = GL_ARRAY_BUFFER,
 				AtomicCounter = GL_ATOMIC_COUNTER_BUFFER,
 				CopyRead = GL_COPY_READ_BUFFER,
@@ -42,10 +55,12 @@ namespace Phoenix {
 		}
 
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glEnable.xml */
-		namespace ECapability {
+		namespace ECapability
+		{
 			typedef GLenum Type;
 
-			enum Value : Type {
+			enum Value : Type
+			{
 				Blend = GL_BLEND,
 				ClipDistance0 = GL_CLIP_DISTANCE0,
 				ClipDistance1 = GL_CLIP_DISTANCE1,
@@ -89,10 +104,12 @@ namespace Phoenix {
 		}
 
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glClear.xml */
-		namespace EClearBit {
+		namespace EClearBit
+		{
 			typedef GLbitfield Type;
 
-			enum Mask : Type {
+			enum Mask : Type
+			{
 				Color = GL_COLOR_BUFFER_BIT,
 				Depth = GL_DEPTH_BUFFER_BIT,
 				Stencil = GL_STENCIL_BUFFER_BIT,
@@ -100,10 +117,12 @@ namespace Phoenix {
 		}
 
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glGetError.xml */
-		namespace EError {
+		namespace EError
+		{
 			typedef GLenum Type;
 
-			enum Value : Type {
+			enum Value : Type
+			{
 				None = GL_NO_ERROR,
 				InvalidEnum = GL_INVALID_ENUM,
 				InvalidValue = GL_INVALID_VALUE,
@@ -114,8 +133,10 @@ namespace Phoenix {
 				StackOverflow = GL_STACK_OVERFLOW,
 			};
 
-			static inline const FChar* const ToString(const EError::Type GLError) {
-				switch (GLError) {
+			static inline const FChar* const ToString(const EError::Type GLError)
+			{
+				switch (GLError)
+				{
 					case EError::None:
 					{
 						return "GL_NO_ERROR";
@@ -167,8 +188,10 @@ namespace Phoenix {
 				return nullptr;
 			}
 
-			static inline const FChar* const ToDescription(const EError::Type GLError) {
-				switch (GLError) {
+			static inline const FChar* const ToDescription(const EError::Type GLError)
+			{
+				switch (GLError)
+				{
 					case EError::None:
 					{
 						return "No error has been recorded.";
@@ -222,10 +245,12 @@ namespace Phoenix {
 		}
 
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glGetProgram.xml */
-		namespace EGetProgram {
+		namespace EGetProgram
+		{
 			typedef GLenum Type;
 
-			enum Value : Type {
+			enum Value : Type
+			{
 				DeleteStatus = GL_DELETE_STATUS,
 				LinkStatus = GL_LINK_STATUS,
 				ValidateStatus = GL_VALIDATE_STATUS,
@@ -240,10 +265,12 @@ namespace Phoenix {
 		}
 
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glDrawElements.xml */
-		namespace EMode {
+		namespace EMode
+		{
 			typedef GLenum Type;
 
-			enum Value : Type {
+			enum Value : Type
+			{
 				Points = GL_POINTS,
 				LineStrip = GL_LINE_STRIP,
 				LineLoop = GL_LINE_LOOP,
@@ -262,10 +289,12 @@ namespace Phoenix {
 		}
 
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glCreateShader.xml */
-		namespace EShader {
+		namespace EShader
+		{
 			typedef GLenum Type;
 
-			enum Value : Type {
+			enum Value : Type
+			{
 				Compute = GL_COMPUTE_SHADER,
 				Vertex = GL_VERTEX_SHADER,
 				TessControl = GL_TESS_CONTROL_SHADER,
@@ -276,10 +305,12 @@ namespace Phoenix {
 		}
 
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glGetShader.xml */
-		namespace EShaderData {
+		namespace EShaderData
+		{
 			typedef GLenum Type;
 
-			enum Value : Type {
+			enum Value : Type
+			{
 				ShaderType = GL_SHADER_TYPE,
 				DeleteStatus = GL_DELETE_STATUS,
 				CompileStatus = GL_COMPILE_STATUS,
@@ -289,10 +320,12 @@ namespace Phoenix {
 		}
 
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glActiveTexture.xml */
-		namespace ETex {
+		namespace ETex
+		{
 			typedef GLenum Type;
 
-			enum Value : Type {
+			enum Value : Type
+			{
 				T0 = GL_TEXTURE0,
 				T1 = GL_TEXTURE1,
 				T2 = GL_TEXTURE2,
@@ -335,10 +368,12 @@ namespace Phoenix {
 		}
 
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glTexImage2D.xml */
-		namespace ETexFormat {
+		namespace ETexFormat
+		{
 			typedef GLenum Type;
 
-			enum Value : Type {
+			enum Value : Type
+			{
 				Red = GL_RED,
 				RG = GL_RG,
 				RGB = GL_RGB,
@@ -361,10 +396,12 @@ namespace Phoenix {
 
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glTexImage2D.xml
 		Note: Only Table 1 (Base Internal Formats) are represented here. */
-		namespace ETexGLFormat {
+		namespace ETexGLFormat
+		{
 			typedef GLenum Type;
 
-			enum Value : Type {
+			enum Value : Type
+			{
 				DepthComponent = GL_DEPTH_COMPONENT,
 				DepthStencil = GL_DEPTH_STENCIL,
 				Red = GL_RED,
@@ -375,20 +412,24 @@ namespace Phoenix {
 		}
 
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glTexParameter.xml */
-		namespace ETexMagFilter {
+		namespace ETexMagFilter
+		{
 			typedef GLint Type;
 
-			enum Value : Type {
+			enum Value : Type
+			{
 				Nearest = GL_NEAREST,
 				Linear = GL_LINEAR,
 			};
 		}
 
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glTexParameter.xml */
-		namespace ETexMinFilter {
+		namespace ETexMinFilter
+		{
 			typedef GLint Type;
 
-			enum Value : Type {
+			enum Value : Type
+			{
 				Nearest = GL_NEAREST,
 				Linear = GL_LINEAR,
 				NearestMipmapNearest = GL_NEAREST_MIPMAP_NEAREST,
@@ -399,10 +440,12 @@ namespace Phoenix {
 		}
 
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glTexParameter.xml */
-		namespace ETexParameter {
+		namespace ETexParameter
+		{
 			typedef GLenum Type;
 
-			enum Value : Type {
+			enum Value : Type
+			{
 				DepthStencilTextureMode = GL_DEPTH_STENCIL_TEXTURE_MODE,
 				TextureBaseLevel = GL_TEXTURE_BASE_LEVEL,
 				TextureCompareFunc = GL_TEXTURE_COMPARE_FUNC,
@@ -426,10 +469,12 @@ namespace Phoenix {
 		}
 
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glBindTexture.xml */
-		namespace ETexTarget {
+		namespace ETexTarget
+		{
 			typedef GLenum Type;
 
-			enum Value : Type {
+			enum Value : Type
+			{
 				T1D = GL_TEXTURE_1D,
 				T2D = GL_TEXTURE_2D,
 				T3D = GL_TEXTURE_3D,
@@ -447,10 +492,12 @@ namespace Phoenix {
 		}
 
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glTexParameter.xml */
-		namespace ETexWrap {
+		namespace ETexWrap
+		{
 			typedef GLint Type;
 
-			enum Value : Type {
+			enum Value : Type
+			{
 				ClampToEdge = GL_CLAMP_TO_EDGE,
 				ClampToBorder = GL_CLAMP_TO_BORDER,
 				MirroredRepeat = GL_MIRRORED_REPEAT,
@@ -460,10 +507,12 @@ namespace Phoenix {
 		}
 
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glVertexAttribPointer.xml */
-		namespace EType {
+		namespace EType
+		{
 			typedef GLenum Type;
 
-			enum Value {
+			enum Value
+			{
 				Byte = GL_BYTE,
 				UByte = GL_UNSIGNED_BYTE,
 
@@ -484,10 +533,12 @@ namespace Phoenix {
 		}
 
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glBufferData.xml */
-		namespace EUsage {
+		namespace EUsage
+		{
 			typedef GLenum Type;
 
-			enum Value : Type {
+			enum Value : Type
+			{
 				StreamDraw = GL_STREAM_DRAW,
 				StreamRead = GL_STREAM_READ,
 				StreamCopy = GL_STREAM_COPY,
@@ -503,27 +554,32 @@ namespace Phoenix {
 		}
 
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glActiveTexture.xml */
-		static inline void ActiveTexture(const ETex::Value Texture) {
+		static inline void ActiveTexture(const ETex::Value Texture)
+		{
 			glActiveTexture(Texture);
 		}
 
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glAttachShader.xml */
-		static inline void AttachShader(const GLuint Program, const GLuint Shader) {
+		static inline void AttachShader(const GLuint Program, const GLuint Shader)
+		{
 			glAttachShader(Program, Shader);
 		}
 
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glBindBuffer.xml */
-		static inline void BindBuffer(const EBuffer::Value Target, const GLuint Buffer) {
+		static inline void BindBuffer(const EBuffer::Value Target, const GLuint Buffer)
+		{
 			glBindBuffer(Target, Buffer);
 		}
 
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glBindTexture.xml */
-		static inline void BindTexture(const ETexTarget::Value Target, const GLuint Texture) {
+		static inline void BindTexture(const ETexTarget::Value Target, const GLuint Texture)
+		{
 			glBindTexture(Target, Texture);
 		}
 
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glBindVertexArray.xml */
-		static inline void BindVertexArray(const GLuint Array) {
+		static inline void BindVertexArray(const GLuint Array)
+		{
 			glBindVertexArray(Array);
 		}
 
@@ -532,7 +588,8 @@ namespace Phoenix {
 			const EBuffer::Value Target,
 			const GLsizeiptr Size,
 			const GLvoid* Data,
-			const EUsage::Value Usage) {
+			const EUsage::Value Usage)
+		{
 			glBufferData(Target, Size, Data, Usage);
 		}
 
@@ -541,65 +598,86 @@ namespace Phoenix {
 			const EBuffer::Value Target,
 			const GLintptr Offset,
 			const GLsizeiptr Size,
-			const GLvoid* const Data) {
+			const GLvoid* const Data)
+		{
 			glBufferSubData(Target, Offset, Size, Data);
 		}
 
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glClear.xml */
-		static inline void Clear(const EClearBit::Type ClearMask) {
+		static inline void Clear(const EClearBit::Type ClearMask)
+		{
 			glClear(ClearMask);
 		}
 
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glClearColor.xml */
-		static inline void ClearColor(const GLclampf Red, const GLclampf Green, const GLclampf Blue, const GLclampf Alpha) {
+		static inline void ClearColor(const GLclampf Red, const GLclampf Green, const GLclampf Blue, const GLclampf Alpha)
+		{
 			glClearColor(Red, Green, Blue, Alpha);
 		}
 
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glCompileShader.xml */
-		static inline void CompileShader(const GLuint Shader) {
+		static inline void CompileShader(const GLuint Shader)
+		{
 			glCompileShader(Shader);
 		}
 
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glCreateProgram.xml */
-		static inline GLuint CreateProgram() {
+		static inline GLuint CreateProgram()
+		{
 			const GLuint Program = glCreateProgram();
 			return Program;
 		}
 
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glCreateShader.xml */
-		static inline GLuint CreateShader(const EShader::Value ShaderType) {
+		static inline GLuint CreateShader(const EShader::Value ShaderType)
+		{
 			const GLuint Shader = glCreateShader(ShaderType);
 			return Shader;
 		}
 
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glDeleteBuffers.xml */
-		static inline void DeleteBuffers(const GLsizei N, const GLuint* const Buffers) {
+		static inline void DeleteBuffers(const GLsizei N, const GLuint* const Buffers)
+		{
 			glDeleteBuffers(N, Buffers);
 		}
 
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glDeleteProgram.xml */
-		static inline void DeleteProgram(const GLuint Program) {
+		static inline void DeleteProgram(const GLuint Program)
+		{
 			glDeleteProgram(Program);
 		}
 
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glDeleteShader.xml */
-		static inline void DeleteShader(const GLuint Shader) {
+		static inline void DeleteShader(const GLuint Shader)
+		{
 			glDeleteShader(Shader);
 		}
 
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glDeleteTextures.xml */
-		static inline void DeleteTextures(const GLsizei N, const GLuint* const Textures) {
+		static inline void DeleteTextures(const GLsizei N, const GLuint* const Textures)
+		{
 			glDeleteTextures(N, Textures);
 		}
 
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glDeleteVertexArrays.xml */
-		static inline void DeleteVertexArrays(const GLsizei N, const GLuint* const Arrays) {
+		static inline void DeleteVertexArrays(const GLsizei N, const GLuint* const Arrays)
+		{
 			glDeleteVertexArrays(N, Arrays);
 		}
 
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glEnable.xml */
-		static inline void Disable(const ECapability::Value Cap) {
+		static inline void Disable(const ECapability::Value Cap)
+		{
 			glDisable(Cap);
+		}
+
+		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glDrawArrays.xml */
+		static inline void DrawArrays(
+			const EMode::Value Mode,
+			const GLint First,
+			const GLsizei Count)
+		{
+			glDrawArrays(Mode, First, Count);
 		}
 
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glDrawElements.xml */
@@ -607,27 +685,32 @@ namespace Phoenix {
 			const EMode::Value Mode,
 			const GLsizei Count,
 			const EType::Value Type,
-			const GLvoid* const Indices) {
+			const GLvoid* const Indices)
+		{
 			glDrawElements(Mode, Count, Type, Indices);
 		}
 
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glEnable.xml */
-		static inline void Enable(const ECapability::Value Cap) {
+		static inline void Enable(const ECapability::Value Cap)
+		{
 			glEnable(Cap);
 		}
 
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glEnableVertexAttribArray.xml */
-		static inline void EnableVertexAttribArray(const GLuint Index) {
+		static inline void EnableVertexAttribArray(const GLuint Index)
+		{
 			glEnableVertexAttribArray(Index);
 		}
 
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glGenerateMipmap.xml */
-		static inline void GenerateMipmap(const ETexTarget::Value Target) {
+		static inline void GenerateMipmap(const ETexTarget::Value Target)
+		{
 			glGenerateMipmap(Target);
 		}
 
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glGenTextures.xml */
-		static inline void GenTextures(const GLsizei N, GLuint* const Textures) {
+		static inline void GenTextures(const GLsizei N, GLuint* const Textures)
+		{
 			glGenTextures(N, Textures);
 		}
 
@@ -636,22 +719,26 @@ namespace Phoenix {
 			const GLuint Program,
 			const GLsizei MaxLength,
 			GLsizei* const Length,
-			GLchar* const InfoLog) {
+			GLchar* const InfoLog)
+		{
 			glGetProgramInfoLog(Program, MaxLength, Length, InfoLog);
 		}
 
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glGenBuffers.xml */
-		static inline void GenBuffers(const GLsizei BufferCount, GLuint* const Buffers) {
+		static inline void GenBuffers(const GLsizei BufferCount, GLuint* const Buffers)
+		{
 			glGenBuffers(BufferCount, Buffers);
 		}
 
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glGenVertexArrays.xml */
-		static inline void GenVertexArrays(const GLsizei N, GLuint* const Arrays) {
+		static inline void GenVertexArrays(const GLsizei N, GLuint* const Arrays)
+		{
 			glGenVertexArrays(N, Arrays);
 		}
 
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glGetProgram.xml */
-		static inline void GetProgramiv(const GLuint Program, const EGetProgram::Value PName, GLint& Params) {
+		static inline void GetProgramiv(const GLuint Program, const EGetProgram::Value PName, GLint& Params)
+		{
 			glGetProgramiv(Program, PName, &Params);
 		}
 
@@ -660,7 +747,8 @@ namespace Phoenix {
 			const GLuint Shader,
 			GLchar* const InfoLog,
 			const GLsizei MaxLength,
-			GLsizei& WrittenLength) {
+			GLsizei& WrittenLength)
+		{
 			F_Assert(InfoLog, "InfoLog must not be null.");
 			F_Assert(WrittenLength == 0, "This value must be initialized 0 by default.");
 
@@ -668,24 +756,28 @@ namespace Phoenix {
 		}
 
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glGetShader.xml */
-		static inline void GetShaderiv(const GLuint Shader, const EShaderData::Value ShaderData, GLint& OutResult) {
+		static inline void GetShaderiv(const GLuint Shader, const EShaderData::Value ShaderData, GLint& OutResult)
+		{
 			F_Assert(OutResult == 0, "This value must be initialized to 0 by default.");
 			glGetShaderiv(Shader, ShaderData, &OutResult);
 		}
 
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glGetUniformLocation.xml */
-		static inline GLint GetUniformLocation(const GLuint Program, const GLchar* const Name) {
+		static inline GLint GetUniformLocation(const GLuint Program, const GLchar* const Name)
+		{
 			const GLint UniformLocation = glGetUniformLocation(Program, Name);
 			return UniformLocation;
 		}
 
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glLinkProgram.xml */
-		static inline void LinkProgram(const GLuint Program) {
+		static inline void LinkProgram(const GLuint Program)
+		{
 			glLinkProgram(Program);
 		}
 
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glShaderSource.xml */
-		static inline void ShaderSource(const GLuint Shader, const GLchar* Code) {
+		static inline void ShaderSource(const GLuint Shader, const GLchar* Code)
+		{
 			const GLsizei Count = 1;
 			const GLint* const Length = nullptr;
 			glShaderSource(Shader, Count, &Code, Length);
@@ -700,7 +792,8 @@ namespace Phoenix {
 			const GLsizei Height,
 			const ETexFormat::Value Format,
 			const EType::Value Type,
-			const GLvoid* const Data) {
+			const GLvoid* const Data)
+		{
 			glTexImage2D(Target, Level, InternalFormat, Width, Height, 0, Format, Type, Data);
 		}
 
@@ -708,7 +801,8 @@ namespace Phoenix {
 		static inline void TexParameterf(
 			const ETexTarget::Value Target,
 			const ETexParameter::Value PName,
-			const GLfloat Param) {
+			const GLfloat Param)
+		{
 			glTexParameterf(Target, PName, Param);
 		}
 
@@ -716,17 +810,20 @@ namespace Phoenix {
 		static inline void TexParameteri(
 			const ETexTarget::Value Target,
 			const ETexParameter::Value PName,
-			const GLint Param) {
+			const GLint Param)
+		{
 			glTexParameteri(Target, PName, Param);
 		}
 
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glUniform.xml */
-		static inline void Uniform1f(const GLint Location, const GLfloat V0) {
+		static inline void Uniform1f(const GLint Location, const GLfloat V0)
+		{
 			glUniform1f(Location, V0);
 		}
 
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glUniform.xml */
-		static inline void Uniform2f(const GLint Location, const GLfloat V0, const GLfloat V1) {
+		static inline void Uniform2f(const GLint Location, const GLfloat V0, const GLfloat V1)
+		{
 			glUniform2f(Location, V0, V1);
 		}
 
@@ -735,7 +832,8 @@ namespace Phoenix {
 			const GLint Location,
 			const GLfloat V0,
 			const GLfloat V1,
-			const GLfloat V2) {
+			const GLfloat V2)
+		{
 			glUniform3f(Location, V0, V1, V2);
 		}
 
@@ -745,17 +843,20 @@ namespace Phoenix {
 			const GLfloat V0,
 			const GLfloat V1,
 			const GLfloat V2,
-			const GLfloat V3) {
+			const GLfloat V3)
+		{
 			glUniform4f(Location, V0, V1, V2, V3);
 		}
 
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glUniform.xml */
-		static inline void Uniform1i(const GLint Location, const GLint V0) {
+		static inline void Uniform1i(const GLint Location, const GLint V0)
+		{
 			glUniform1i(Location, V0);
 		}
 
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glUniform.xml */
-		static inline void Uniform2i(const GLint Location, const GLint V0, const GLint V1) {
+		static inline void Uniform2i(const GLint Location, const GLint V0, const GLint V1)
+		{
 			glUniform2i(Location, V0, V1);
 		}
 
@@ -764,7 +865,8 @@ namespace Phoenix {
 			const GLint Location,
 			const GLint V0,
 			const GLint V1,
-			const GLint V2) {
+			const GLint V2)
+		{
 			glUniform3i(Location, V0, V1, V2);
 		}
 
@@ -774,7 +876,8 @@ namespace Phoenix {
 			const GLint V0,
 			const GLint V1,
 			const GLint V2,
-			const GLint V3) {
+			const GLint V3)
+		{
 			glUniform4i(Location, V0, V1, V2, V3);
 		}
 
@@ -782,7 +885,8 @@ namespace Phoenix {
 		static inline void Uniform1fv(
 			const GLint Location,
 			const GLsizei Count,
-			const GLfloat* const Value) {
+			const GLfloat* const Value)
+		{
 			glUniform1fv(Location, Count, Value);
 		}
 
@@ -790,7 +894,8 @@ namespace Phoenix {
 		static inline void Uniform2fv(
 			const GLint Location,
 			const GLsizei Count,
-			const GLfloat* const Value) {
+			const GLfloat* const Value)
+		{
 			glUniform2fv(Location, Count, Value);
 		}
 
@@ -798,7 +903,8 @@ namespace Phoenix {
 		static inline void Uniform3fv(
 			const GLint Location,
 			const GLsizei Count,
-			const GLfloat* const Value) {
+			const GLfloat* const Value)
+		{
 			glUniform3fv(Location, Count, Value);
 		}
 
@@ -806,7 +912,8 @@ namespace Phoenix {
 		static inline void Uniform4fv(
 			const GLint Location,
 			const GLsizei Count,
-			const GLfloat* const Value) {
+			const GLfloat* const Value)
+		{
 			glUniform4fv(Location, Count, Value);
 		}
 
@@ -814,7 +921,8 @@ namespace Phoenix {
 		static inline void Uniform1iv(
 			const GLint Location,
 			const GLsizei Count,
-			const GLint* const Value) {
+			const GLint* const Value)
+		{
 			glUniform1iv(Location, Count, Value);
 		}
 
@@ -822,7 +930,8 @@ namespace Phoenix {
 		static inline void Uniform2iv(
 			const GLint Location,
 			const GLsizei Count,
-			const GLint* const Value) {
+			const GLint* const Value)
+		{
 			glUniform2iv(Location, Count, Value);
 		}
 
@@ -830,7 +939,8 @@ namespace Phoenix {
 		static inline void Uniform3iv(
 			const GLint Location,
 			const GLsizei Count,
-			const GLint* const Value) {
+			const GLint* const Value)
+		{
 			glUniform3iv(Location, Count, Value);
 		}
 
@@ -838,7 +948,8 @@ namespace Phoenix {
 		static inline void Uniform4iv(
 			const GLint Location,
 			const GLsizei Count,
-			const GLint* const Value) {
+			const GLint* const Value)
+		{
 			glUniform4iv(Location, Count, Value);
 		}
 
@@ -846,7 +957,8 @@ namespace Phoenix {
 		static inline void Uniform1uiv(
 			const GLint Location,
 			const GLsizei Count,
-			const GLuint* const Value) {
+			const GLuint* const Value)
+		{
 			glUniform1uiv(Location, Count, Value);
 		}
 
@@ -854,7 +966,8 @@ namespace Phoenix {
 		static inline void Uniform2uiv(
 			const GLint Location,
 			const GLsizei Count,
-			const GLuint* const Value) {
+			const GLuint* const Value)
+		{
 			glUniform2uiv(Location, Count, Value);
 		}
 
@@ -862,7 +975,8 @@ namespace Phoenix {
 		static inline void Uniform3uiv(
 			const GLint Location,
 			const GLsizei Count,
-			const GLuint* const Value) {
+			const GLuint* const Value)
+		{
 			glUniform3uiv(Location, Count, Value);
 		}
 
@@ -870,7 +984,8 @@ namespace Phoenix {
 		static inline void Uniform4uiv(
 			const GLint Location,
 			const GLsizei Count,
-			const GLuint* const Value) {
+			const GLuint* const Value)
+		{
 			glUniform4uiv(Location, Count, Value);
 		}
 
@@ -879,7 +994,8 @@ namespace Phoenix {
 			const GLint Location,
 			const GLsizei Count,
 			const GLboolean Transpose,
-			const GLfloat* const Value) {
+			const GLfloat* const Value)
+		{
 			glUniformMatrix2fv(Location, Count, Transpose, Value);
 		}
 
@@ -888,7 +1004,8 @@ namespace Phoenix {
 			const GLint Location,
 			const GLsizei Count,
 			const GLboolean Transpose,
-			const GLfloat* const Value) {
+			const GLfloat* const Value)
+		{
 			glUniformMatrix3fv(Location, Count, Transpose, Value);
 		}
 
@@ -897,17 +1014,20 @@ namespace Phoenix {
 			const GLint Location,
 			const GLsizei Count,
 			const GLboolean Transpose,
-			const GLfloat* const Value) {
+			const GLfloat* const Value)
+		{
 			glUniformMatrix4fv(Location, Count, Transpose, Value);
 		}
 
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glUseProgram.xml */
-		static inline void UseProgram(const GLuint Program) {
+		static inline void UseProgram(const GLuint Program)
+		{
 			glUseProgram(Program);
-		}
+	}
 
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glValidateProgram.xml */
-		static inline void ValidateProgram(const GLuint Program) {
+		static inline void ValidateProgram(const GLuint Program)
+		{
 			glValidateProgram(Program);
 		}
 
@@ -918,7 +1038,8 @@ namespace Phoenix {
 			const EType::Value Type,
 			const EBool::Value Normalized,
 			const GLsizei Stride,
-			const GLvoid* const Pointer) {
+			const GLvoid* const Pointer)
+		{
 			glVertexAttribPointer(Index, Size, Type, Normalized, Stride, Pointer);
 		}
 
@@ -928,7 +1049,8 @@ namespace Phoenix {
 			const GLint Size,
 			const EType::Value Type,
 			const GLsizei Stride,
-			const GLvoid* const Pointer) {
+			const GLvoid* const Pointer)
+		{
 			glVertexAttribIPointer(Index, Size, Type, Stride, Pointer);
 		}
 
@@ -938,15 +1060,17 @@ namespace Phoenix {
 			const GLint Size,
 			const EType::Value Type,
 			const GLsizei Stride,
-			const GLvoid* const Pointer) {
+			const GLvoid* const Pointer)
+		{
 			glVertexAttribLPointer(Index, Size, Type, Stride, Pointer);
 		}
 
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glViewport.xml */
-		static inline void Viewport(const GLint X, const GLint Y, const GLsizei Width, const GLsizei Height) {
+		static inline void Viewport(const GLint X, const GLint Y, const GLsizei Width, const GLsizei Height)
+		{
 			glViewport(X, Y, Width, Height);
 		}
-	}
+}
 }
 
 // #FIXME: Move this to a config file when appropriate.

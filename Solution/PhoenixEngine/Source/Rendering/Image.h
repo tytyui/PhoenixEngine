@@ -3,14 +3,18 @@
 
 #include "ExternalLib/GLIncludes.h"
 #include "Utility/Misc/Primitives.h"
+#include "Rendering/GLInterface.h"
 #include "Rendering/ImageData.h"
 
-namespace Phoenix {
-	class FImage {
+namespace Phoenix
+{
+	class FImage
+	{
 	public:
-		struct FInitParams {
+		struct FInitParams
+		{
 			const FImageData* ImageData{ nullptr };
-			GLint MipmapLevel{ 0 };
+			GL::MipmapLevelT MipmapLevel{ 0 };
 		};
 
 		FImage() = default;
@@ -33,10 +37,10 @@ namespace Phoenix {
 
 	protected:
 	private:
-		GLuint ID{ 0 };
+		GL::ImageIDT ID{ 0 };
 		EPixelFormat::Value PixelFormat{ EPixelFormat::Unknown };
-		UInt16 Width{ 0 };
-		UInt16 Height{ 0 };
+		FImageData::WidthT Width{ 0 };
+		FImageData::HeightT Height{ 0 };
 
 		void PostMoveReset();
 	};

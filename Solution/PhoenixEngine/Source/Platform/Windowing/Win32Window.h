@@ -49,6 +49,8 @@ namespace Phoenix
 
 		virtual void BufferSwap() override;
 
+		virtual void SetSwapInterval(const Int32 Interval) override;
+
 		//Input
 		typedef TFunction<void(Int32 Key, Int32 ScanCode, Int32 Action, Int32 Mods)> FWindowKeyPressCallback;
 		typedef TFunction<void(Int32 Button, Int32 Action, Int32 Mods)> FWindowMouseClickCallback;

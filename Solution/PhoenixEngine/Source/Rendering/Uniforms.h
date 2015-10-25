@@ -3,8 +3,10 @@
 
 #include "ExternalLib/GLIncludes.h"
 
-namespace Phoenix {
-	namespace EUniform {
+namespace Phoenix
+{
+	namespace EUniform
+	{
 		/* Matrices */
 		static const GLchar* const Projection = "uProjection";
 		static const GLchar* const View = "uView";

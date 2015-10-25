@@ -11,11 +11,14 @@ FMesh::FMesh(FMesh&& RHS)
 	, VertexBuffer(RHS.VertexBuffer)
 	, ElementBuffer(RHS.ElementBuffer)
 	, IndexCount(RHS.IndexCount)
-	, IndexTSize(RHS.IndexTSize) {
+	, IndexTSize(RHS.IndexTSize)
+	, VertexCount(RHS.VertexCount)
+{
 	RHS.PostMoveReset();
 }
 
-FMesh& FMesh::operator=(FMesh&& RHS) {
+FMesh& FMesh::operator=(FMesh&& RHS)
+{
 	F_Assert(this != &RHS, "Self move assign is illegal.");
 	DeInit();
 
@@ -24,16 +27,19 @@ FMesh& FMesh::operator=(FMesh&& RHS) {
 	ElementBuffer = RHS.ElementBuffer;
 	IndexCount = RHS.IndexCount;
 	IndexTSize = RHS.IndexTSize;
+	VertexCount = RHS.VertexCount;
 
 	RHS.PostMoveReset();
 	return *this;
 }
 
-FMesh::~FMesh() {
+FMesh::~FMesh()
+{
 	DeInit();
 }
 
-void FMesh::Init(const FMeshData& MeshData) {
+void FMesh::Init(const FMeshData& MeshData)
+{
 	// #FIXME: This function could be more
 	// maintainable than it currently is.
 	// Specifically: VertexAttribPointer and
@@ -90,55 +96,67 @@ void FMesh::Init(const FMeshData& MeshData) {
 
 		IndexCount = Size / MeshData.IndexTSize;
 		IndexTSize = MeshData.IndexTSize;
+		VertexCount = MeshData.VertexCount;
 	}
 
 	F_GL(GL::BindVertexArray(0));
 }
 
-bool FMesh::IsValid() const {
+bool FMesh::IsValid() const
+{
 	const bool Result = VertexArray != 0;
 	return Result;
 }
 
-void FMesh::DeInit() {
+void FMesh::DeInit()
+{
 	F_GLDisplayErrors();
-	if (VertexArray) {
+	if (VertexArray)
+	{
 		F_GL(GL::DeleteVertexArrays(1, &VertexArray));
 		VertexArray = 0;
 	}
 
-	if (VertexBuffer) {
+	if (VertexBuffer)
+	{
 		F_GL(GL::DeleteBuffers(1, &VertexBuffer));
 		VertexBuffer = 0;
 	}
 
-	if (ElementBuffer) {
+	if (ElementBuffer)
+	{
 		F_GL(GL::DeleteBuffers(1, &ElementBuffer));
 		ElementBuffer = 0;
 	}
 
 	IndexCount = 0;
 	IndexTSize = 0;
+	VertexCount = 0;
 }
 
-GLuint FMesh::GetVertexArray() const {
+GL::VertexArrayT FMesh::GetVertexArray() const
+{
 	return VertexArray;
 }
 
-GLsizei FMesh::GetIndexCount() const {
+GL::IndexCountT FMesh::GetIndexCount() const
+{
 	return IndexCount;
 }
 
-UInt8 FMesh::GetIndexTypeSize() const {
+FMeshData::IndexTSizeT FMesh::GetIndexTypeSize() const
+{
 	return IndexTSize;
 }
 
-GL::EType::Value FMesh::GetIndexType() const {
+GL::EType::Value FMesh::GetIndexType() const
+{
 	const UInt8 UInt8Size = sizeof(UInt8);
 	const UInt8 UInt16Size = sizeof(UInt16);
 	const UInt8 UInt32Size = sizeof(UInt32);
 
-	switch (IndexTSize) {
+	switch (IndexTSize)
+	{
 		case UInt8Size:
 		{
 			return GL::EType::UByte;
@@ -165,10 +183,17 @@ GL::EType::Value FMesh::GetIndexType() const {
 	return GL::EType::UByte;
 }
 
-void FMesh::PostMoveReset() {
+FMeshData::VertexCountT FMesh::GetVertexCount() const
+{
+	return VertexCount;
+}
+
+void FMesh::PostMoveReset()
+{
 	VertexArray = 0;
 	VertexBuffer = 0;
 	ElementBuffer = 0;
 	IndexCount = 0;
 	IndexTSize = 0;
+	VertexCount = 0;
 }

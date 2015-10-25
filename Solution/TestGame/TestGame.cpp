@@ -20,12 +20,11 @@ void FTestGame::Init()
 
 void FTestGame::Update(float dt)
 {
-	F_Log("TestGame::Update()\n");
+
 }
 
 void FTestGame::OnKeyPress(const FKeyboardEvent& KeyEvent)
 {
-	F_Log(__FUNCTION__);
 	if (KeyEvent.KeyCode == EKeyCode::Esc)
 	{
 		ShutDown();
@@ -34,6 +33,6 @@ void FTestGame::OnKeyPress(const FKeyboardEvent& KeyEvent)
 
 void FTestGame::OnMouseClick(const FMouseClickEvent& MouseClickEvent)
 {
-	F_Log(__FUNCTION__);
+
 }
 

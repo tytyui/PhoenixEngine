@@ -6,9 +6,12 @@
 using namespace Phoenix;
 using namespace Phoenix::GL;
 
-namespace Phoenix {
-	struct FImageHelper {
-		static inline ETexGLFormat::Value ToGLTexFormat(const EPixelFormat::Value PixelFormat) {
+namespace Phoenix
+{
+	struct FImageHelper
+	{
+		static inline ETexGLFormat::Value ToGLTexFormat(const EPixelFormat::Value PixelFormat)
+		{
 			static_assert(EPixelFormat::Count == 5, "This table requires updating.");
 			static const TArray<ETexGLFormat::Value, EPixelFormat::Count> LookUpTable = {
 				/* Unknown			*/ETexGLFormat::Red,
@@ -21,7 +24,8 @@ namespace Phoenix {
 			return LookUpTable[PixelFormat];
 		}
 
-		static inline ETexFormat::Value ToTexFormat(const EPixelFormat::Value PixelFormat) {
+		static inline ETexFormat::Value ToTexFormat(const EPixelFormat::Value PixelFormat)
+		{
 			static_assert(EPixelFormat::Count == 5, "This table requires updating.");
 			static const TArray<ETexFormat::Value, EPixelFormat::Count> LookUpTable = {
 				/* Unknown			*/ETexFormat::Red,
@@ -36,15 +40,17 @@ namespace Phoenix {
 	};
 }
 
-FImage::FImage(FImage&& RHS) 
+FImage::FImage(FImage&& RHS)
 	: ID(RHS.ID)
 	, PixelFormat(RHS.PixelFormat)
 	, Width(RHS.Width)
-	, Height(RHS.Height) {
+	, Height(RHS.Height)
+{
 	RHS.PostMoveReset();
 }
 
-FImage& FImage::operator=(FImage&& RHS) {
+FImage& FImage::operator=(FImage&& RHS)
+{
 	F_Assert(this != &RHS, "Self assignment is illegal.");
 
 	ID = RHS.ID;
@@ -56,7 +62,8 @@ FImage& FImage::operator=(FImage&& RHS) {
 	return *this;
 }
 
-void FImage::Init(const FInitParams& InitParams) {
+void FImage::Init(const FInitParams& InitParams)
+{
 	F_Assert(InitParams.ImageData, "ImageData is null.");
 	DeInit();
 
@@ -92,13 +99,16 @@ void FImage::Init(const FInitParams& InitParams) {
 	F_Assert(IsValid(), "Initialization succeeded but this class is invalid.");
 }
 
-bool FImage::IsValid() const {
+bool FImage::IsValid() const
+{
 	const bool Result = ID != 0;
 	return Result;
 }
 
-void FImage::DeInit() {
-	if (ID) {
+void FImage::DeInit()
+{
+	if (ID)
+	{
 		F_GL(GL::DeleteTextures(1, &ID));
 		ID = 0;
 	}
@@ -108,16 +118,19 @@ void FImage::DeInit() {
 	Height = 0;
 }
 
-void FImage::Enable() {
+void FImage::Enable()
+{
 	F_Assert(IsValid(), "Class is invalid.");
 	F_GL(GL::BindTexture(ETexTarget::T2D, ID));
 }
 
-void FImage::Disable() {
+void FImage::Disable()
+{
 	F_GL(GL::BindTexture(ETexTarget::T2D, 0));
 }
 
-void FImage::PostMoveReset() {
+void FImage::PostMoveReset()
+{
 	ID = 0;
 	PixelFormat = EPixelFormat::Unknown;
 	Width = 0;

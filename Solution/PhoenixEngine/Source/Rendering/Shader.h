@@ -4,11 +4,14 @@
 #include "Utility/Containers/Array.h"
 #include "Rendering/GLInterface.h"
 
-namespace Phoenix {
-	namespace EShaderIndex {
+namespace Phoenix
+{
+	namespace EShaderIndex
+	{
 		typedef UInt32 Type;
 
-		enum Value : Type {
+		enum Value : Type
+		{
 			Compute,
 			Vertex,
 			TessControl,
@@ -18,12 +21,14 @@ namespace Phoenix {
 			Count
 		};
 
-		static inline bool IsIndexValid(const EShaderIndex::Type ShaderIndex) {
+		static inline bool IsIndexValid(const EShaderIndex::Type ShaderIndex)
+		{
 			const bool Result = ShaderIndex < EShaderIndex::Count;
 			return Result;
 		}
 
-		static inline GL::EShader::Value ToShader(const EShaderIndex::Value ShaderIndex) {
+		static inline GL::EShader::Value ToShader(const EShaderIndex::Value ShaderIndex)
+		{
 			static_assert(EShaderIndex::Count == 6, "This table requires updating.");
 			static const TArray<GL::EShader::Value, EShaderIndex::Count> LookUpTable = {
 				GL::EShader::Compute,
@@ -39,11 +44,13 @@ namespace Phoenix {
 		}
 	}
 
-	class FShader {
+	class FShader
+	{
 	public:
 		static const GLint InvalidUniform;
 
-		struct FInitParams {
+		struct FInitParams
+		{
 			TArray<const GLchar*, EShaderIndex::Count> Code;
 
 			FInitParams();

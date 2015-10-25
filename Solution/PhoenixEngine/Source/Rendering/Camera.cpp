@@ -13,7 +13,8 @@ void FCamera::SetPerspective(
 	const Float32 FieldOfView,
 	const Float32 AspectRatio,
 	const Float32 Near,
-	const Float32 Far) {
+	const Float32 Far)
+{
 	F_Assert(FieldOfView > 0.f, "Field of view must be greater than 0.");
 	F_Assert(AspectRatio > 0.f, "Aspect ratio must be greater than 0..");
 	F_Assert(Near != Far, "Near and far must not be equal.");
@@ -25,7 +26,8 @@ void FCamera::SetOrthographic(
 	const Float32 Left,
 	const Float32 Right,
 	const Float32 Bottom,
-	const Float32 Top) {
+	const Float32 Top)
+{
 	F_Assert(Left > 0.f && Right > 0.f && Bottom > 0.f && Top > 0.f, "Invalid value(s).");
 	F_Assert(Left != Right, "Left must not be equal to right.");
 	F_Assert(Bottom != Top, "Bottom must not be equal to top.");
@@ -33,57 +35,69 @@ void FCamera::SetOrthographic(
 	Projection = glm::ortho(Left, Right, Bottom, Top);
 }
 
-void FCamera::SetPosition(const FVector3D& InPosition) {
+void FCamera::SetPosition(const FVector3D& InPosition)
+{
 	Position = InPosition;
 }
 
-void FCamera::SetDirection(const FVector3D& InDirection) {
+void FCamera::SetDirection(const FVector3D& InDirection)
+{
 	// #FIXME: Assert that it's normalized.
 	Direction = InDirection;
 }
 
-void FCamera::SetLookAtTarget(const FVector3D& Target) {
+void FCamera::SetLookAtTarget(const FVector3D& Target)
+{
 	F_Assert(Position != Target, "The camera's target must not be equal to the camera's position.");
 	Direction = glm::normalize(Target - Position);
 }
 
-void FCamera::SetUpVector(const FVector3D& InUpVector) {
+void FCamera::SetUpVector(const FVector3D& InUpVector)
+{
 	// #FIXME: Assert that it's normalized.
 	UpVector = InUpVector;
 }
 
-void FCamera::UpdateViewMatrix() {
+void FCamera::UpdateViewMatrix()
+{
 	// #FIXME: Assert direction is normalized.
 	// #FIXME: Assert up vector is normalized.
 	View = glm::lookAt(Position, Position + Direction, UpVector);
 }
 
-const FMatrix4D& FCamera::GetProjection() const {
+const FMatrix4D& FCamera::GetProjection() const
+{
 	return Projection;
 }
 
-const FMatrix4D& FCamera::GetView() const {
+const FMatrix4D& FCamera::GetView() const
+{
 	return View;
 }
 
-const FVector3D& FCamera::GetPosition() const {
+const FVector3D& FCamera::GetPosition() const
+{
 	return Position;
 }
 
-const FVector3D& FCamera::GetDirection() const {
+const FVector3D& FCamera::GetDirection() const
+{
 	return Direction;
 }
 
-const FVector3D& FCamera::GetUpVector() const {
+const FVector3D& FCamera::GetUpVector() const
+{
 	return UpVector;
 }
 
-const Float32* const FCamera::GetProjectionPtr() const {
+const Float32* const FCamera::GetProjectionPtr() const
+{
 	const Float32* const ProjectionPtr = glm::value_ptr(Projection);
 	return ProjectionPtr;
 }
 
-const Float32* const FCamera::GetViewPtr() const {
+const Float32* const FCamera::GetViewPtr() const
+{
 	const Float32* const ViewPtr = glm::value_ptr(View);
 	return ViewPtr;
 }

@@ -6,6 +6,14 @@ Solution/PhoenixEngine/Release
 Solution/TestGame/Debug
 Solution/TestGame/Release
 
+#Assets
+Solution/Libraries/Dll/x32/Assets/Audio
+Solution/Libraries/Dll/x32/Assets/DeprecatedShaders
+Solution/Libraries/Dll/x32/Assets/Materials
+Solution/Libraries/Dll/x32/Assets/Models
+Solution/Libraries/Dll/x32/Assets/Shaders
+Solution/Libraries/Dll/x32/Assets/Textures
+
 #Libs
 Solution/x64/Debug/PhoenixEngine.lib
 Solution/Libraries/Lib/Debug.x32/FBX/libfbxsdk-md.lib

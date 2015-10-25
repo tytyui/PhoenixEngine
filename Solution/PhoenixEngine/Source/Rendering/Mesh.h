@@ -4,9 +4,12 @@
 #include "ExternalLib/GLIncludes.h"
 #include "Utility/Misc/Primitives.h"
 #include "Rendering/GLInterface.h"
+#include "Rendering/MeshData.h"
 
-namespace Phoenix {
-	class FMesh {
+namespace Phoenix
+{
+	class FMesh
+	{
 	public:
 		FMesh() = default;
 
@@ -24,20 +27,23 @@ namespace Phoenix {
 
 		void DeInit();
 
-		GLuint GetVertexArray() const;
+		GL::VertexArrayT GetVertexArray() const;
 
-		GLsizei GetIndexCount() const;
+		GL::IndexCountT GetIndexCount() const;
 
-		UInt8 GetIndexTypeSize() const;
+		FMeshData::IndexTSizeT GetIndexTypeSize() const;
 
 		GL::EType::Value GetIndexType() const;
 
+		FMeshData::VertexCountT GetVertexCount() const;
+
 	private:
-		GLuint VertexArray{ 0 };
-		GLuint VertexBuffer{ 0 };
-		GLuint ElementBuffer{ 0 };
-		GLsizei IndexCount{ 0 };
-		UInt8 IndexTSize{ 0 };
+		GL::VertexArrayT VertexArray{ 0 };
+		GL::VertexBufferT VertexBuffer{ 0 };
+		GL::ElementBufferT ElementBuffer{ 0 };
+		GL::IndexCountT IndexCount{ 0 };
+		FMeshData::IndexTSizeT IndexTSize{ 0 };
+		FMeshData::VertexCountT VertexCount{ 0 };
 
 		void PostMoveReset();
 	};

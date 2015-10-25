@@ -2,13 +2,18 @@
 #define PHOENIX_MESH_DATA_H
 
 #include "ExternalLib/GLIncludes.h"
+#include "Utility/Containers/Array.h"
 #include "Utility/Containers/Vector.h"
+#include "Rendering/ImageData.h"
 
-namespace Phoenix {
-	namespace EMeshAttribute {
+namespace Phoenix
+{
+	namespace EMeshAttribute
+	{
 		typedef UInt16 Type;
 
-		enum BitMask : Type {
+		enum BitMask : Type
+		{
 			None = 0,
 			Positions = 1 << 0,
 			Normals = 1 << 1,
@@ -22,20 +27,23 @@ namespace Phoenix {
 		};
 	}
 
-	struct FMeshData {
+	struct FMeshData
+	{
 		typedef GLfloat PositionT;
 		typedef GLfloat NormalT;
 		typedef GLfloat UVCoordT;
 		typedef UInt8 IndexT;
+		typedef UInt8 IndexTSizeT;
+		typedef GLsizei VertexCountT;
+		typedef TVector<FMeshData> FEntries;
 
-		EMeshAttribute::Type ModelData{ EMeshAttribute::None };
+		EMeshAttribute::Type MeshAttrib{ EMeshAttribute::None };
 		TVector<PositionT> Positions;
 		TVector<NormalT> Normals;
 		TVector<UVCoordT> UVCoords;
 		TVector<IndexT> Indices;
-		UInt8 IndexTSize{ 0 };
-
-		typedef TVector<FMeshData> FEntries;
+		IndexTSizeT IndexTSize{ 0 };
+		VertexCountT VertexCount{ 0 };
 	};
 }
 

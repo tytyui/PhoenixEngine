@@ -5,6 +5,8 @@
 #include <numeric>
 #include <type_traits>
 
+#include "ExternalLib/GLFWIncludes.h"
+
 namespace Phoenix
 {
 	struct FHighResolutionTimer
@@ -18,24 +20,19 @@ namespace Phoenix
 		T GetDeltaSeconds();
 
 		template <class T>
-		T GetTimeInSeconds();
+		static T GetTimeInSeconds();
 
 	protected:
 	private:
-		typedef std::chrono::high_resolution_clock ClockT;
-		typedef std::chrono::high_resolution_clock::time_point TimeStampT;
-		template <class T>
-		using TDuration = std::chrono::duration<T>;
+		typedef Float64 TimeStampT;
 
-		TimeStampT PreviousTime;
-		TimeStampT CurrentTime;
+		TimeStampT PreviousTime{ 0 };
+		TimeStampT CurrentTime{ 0 };
 	};
-
-	typedef FHighResolutionTimer FHighResTimer;
-
+	
 	inline void FHighResolutionTimer::Reset()
 	{
-		const TimeStampT TimeStamp = ClockT::now();
+		const TimeStampT TimeStamp = glfwGetTime();
 
 		PreviousTime = TimeStamp;
 		CurrentTime = TimeStamp;
@@ -43,7 +40,7 @@ namespace Phoenix
 
 	inline void FHighResolutionTimer::Update()
 	{
-		const TimeStampT TimeStamp = ClockT::now();
+		const TimeStampT TimeStamp = glfwGetTime();
 
 		PreviousTime = CurrentTime;
 		CurrentTime = TimeStamp;
@@ -53,11 +50,8 @@ namespace Phoenix
 	T FHighResolutionTimer::GetDeltaSeconds()
 	{
 		static_assert(std::is_floating_point<T>::value, "This template must be a floating point type.");
-		using namespace std::chrono;
 
-		const TDuration<T> Duration = duration_cast<TDuration<T>>(CurrentTime - PreviousTime);
-
-		const T DeltaSeconds = Duration.count();
+		const T DeltaSeconds = static_cast<T>(CurrentTime - PreviousTime);
 		return DeltaSeconds;
 	}
 
@@ -66,10 +60,7 @@ namespace Phoenix
 	{
 		static_assert(std::is_floating_point<T>::value, "This template must be a floating point type.");
 
-		const TimeStampT TimeStamp = ClockT::now();
-		const TDuration<T> Duration = TimeStamp.time_since_epoch();
-
-		const T TimeInSeconds = Duration.count();
+		const T TimeInSeconds = static_cast<T>(glfwGetTime());
 		return TimeInSeconds;
 	}
 }

@@ -5,8 +5,10 @@
 #include "Math/Matrix4D.h"
 #include "Math/Vector3D.h"
 
-namespace Phoenix {
-	struct FCamera {
+namespace Phoenix
+{
+	struct FCamera
+	{
 	public:
 		static const FVector3D DefaultDirection;
 		static const FVector3D DefaultUpVector;

@@ -4,11 +4,14 @@
 #include "Utility/Misc/Primitives.h"
 #include "Rendering/ImageData.h"
 
-namespace Phoenix {
-	class FImageProcessor {
+namespace Phoenix
+{
+	class FImageProcessor
+	{
 		friend struct FImageProcessorHelper;
 	public:
-		struct FLoadParams {
+		struct FLoadParams
+		{
 			const FChar* File{ nullptr };
 			EPixelFormat::Value ImageLayout{ EPixelFormat::Unknown };
 		};
@@ -30,19 +33,19 @@ namespace Phoenix {
 
 		const FImageData& GetImageData() const;
 
-		const UInt8* GetPixels() const;
+		const FImageData::PixelsT GetPixels() const;
 
-		UInt32 GetPixelCount() const;
+		FImageData::PixelCountT GetPixelCount() const;
 
 		EPixelFormat::Value GetPixelFormat() const;
 
-		UInt16 GetWidth() const;
+		FImageData::WidthT GetWidth() const;
 
-		UInt16 GetHeight() const;
+		FImageData::HeightT GetHeight() const;
 
 	private:
-		static const UInt16 MaxWidth;
-		static const UInt16 MaxHeight;
+		static const FImageData::WidthT MaxWidth;
+		static const FImageData::HeightT MaxHeight;
 
 		FImageData Data;
 

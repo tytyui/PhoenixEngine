@@ -6,7 +6,8 @@
 
 using namespace Phoenix;
 
-void FModel::Init(const FMeshData::FEntries& MeshDataEntries) {
+void FModel::Init(const FMeshData::FEntries& MeshDataEntries)
+{
 	F_Assert(MeshDataEntries.size(), "Invalid mesh data entries size of 0.");
 	DeInit();
 
@@ -14,15 +15,19 @@ void FModel::Init(const FMeshData::FEntries& MeshDataEntries) {
 
 	const SizeT Size = Meshes.size();
 
-	for (SizeT I = 0; I < Size; ++I) {
+	for (SizeT I = 0; I < Size; ++I)
+	{
 		const FMeshData& MeshData = MeshDataEntries[I];
 		Meshes[I].Init(MeshData);
 	}
 }
 
-bool FModel::IsValid() const {
-	for (const auto& Mesh : Meshes) {
-		if (!Mesh.IsValid()) {
+bool FModel::IsValid() const
+{
+	for (const auto& Mesh : Meshes)
+	{
+		if (!Mesh.IsValid())
+		{
 			return false;
 		}
 	}
@@ -30,10 +35,12 @@ bool FModel::IsValid() const {
 	return true;
 }
 
-void FModel::DeInit() {
+void FModel::DeInit()
+{
 	Meshes.clear();
 }
 
-const FModel::FMeshes& FModel::GetMeshes() const {
+const FModel::FMeshes& FModel::GetMeshes() const
+{
 	return Meshes;
 }

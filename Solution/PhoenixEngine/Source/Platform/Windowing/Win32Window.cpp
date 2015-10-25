@@ -143,6 +143,11 @@ void FWin32Window::BufferSwap()
 	glfwSwapBuffers(Window);
 }
 
+void FWin32Window::SetSwapInterval(const Int32 Interval)
+{
+	glfwSwapInterval(Interval);
+}
+
 void FWin32Window::OnMinimize()
 {
 	// TODO::Implement me

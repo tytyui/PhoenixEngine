@@ -4,19 +4,24 @@
 #include "Utility/Misc/Memory.h"
 #include "Utility/Misc/Primitives.h"
 
-namespace Phoenix {
-	namespace ERenderEngineInternals {
+namespace Phoenix
+{
+	namespace ERenderEngineInternals
+	{
 		typedef UInt32 Type;
 
-		enum Value : Type {
+		enum Value : Type
+		{
 			Size = 512
 		};
 	}
 
-	class FRenderEngine {
+	class FRenderEngine
+	{
 		friend struct FRenderEngineInternals;
 	public:
-		struct FInitParams {
+		struct FInitParams
+		{
 
 		};
 
@@ -49,7 +54,7 @@ namespace Phoenix {
 		const struct FRenderEngineInternals& Get() const;
 
 		void DrawInternal();
-		
+
 		void EmptyFunction();
 
 		void DebugInitializeTestCode();

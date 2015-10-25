@@ -6,8 +6,10 @@
 #include "Rendering/MeshData.h"
 #include "Rendering/Mesh.h"
 
-namespace Phoenix {
-	class FModel {
+namespace Phoenix
+{
+	class FModel
+	{
 	public:
 		typedef TVector<FMesh> FMeshes;
 

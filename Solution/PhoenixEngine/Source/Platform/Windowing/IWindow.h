@@ -78,6 +78,8 @@ namespace Phoenix
 		// Swap buffers
 		virtual void BufferSwap() = 0;
 
+		virtual void SetSwapInterval(const Int32 Interval) = 0;
+
 	protected:
 
 		virtual void Init() = 0;

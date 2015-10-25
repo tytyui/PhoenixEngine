@@ -30,8 +30,6 @@ void FGame::StartGame()
 
 void FGame::InternalUpdate(float DT)
 {
-	F_Log("Game::InternalUpdate()");
-
 	//Callback to User Game
 	Update(DT);
 }
@@ -39,7 +37,6 @@ void FGame::InternalUpdate(float DT)
 void FGame::ShutDown()
 {
 	//#FIXME Establish proper shutdown protocol
-	F_Log("Game::Shutdown()");
 	Engine->ShutDown();
 }
 

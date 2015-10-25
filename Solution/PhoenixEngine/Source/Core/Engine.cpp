@@ -59,7 +59,7 @@ void FEngine::Run()
 	TThreadSafeVector<UInt32>::ContainerT ReceivedEvents;
 	Float32 AccumulatedTime = 0.f;
 
-	FHighResTimer Timer;
+	FHighResolutionTimer Timer;
 	Timer.Reset();
 
 	while (IsRunning)

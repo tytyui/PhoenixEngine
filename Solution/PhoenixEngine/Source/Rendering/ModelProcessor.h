@@ -6,16 +6,20 @@
 #include "Utility/Misc/String.h"
 #include "Rendering/MeshData.h"
 
-namespace Phoenix {
-	class FModelProcessor {
+namespace Phoenix
+{
+	class FModelProcessor
+	{
 		friend struct FModelProcessorHelper;
 	public:
-		struct FLoadParams {
+		struct FLoadParams
+		{
 			const FChar* File{ nullptr };
 			EMeshAttribute::Type MeshAttributeHints{ EMeshAttribute::None };
 		};
 
-		struct FSaveParams {
+		struct FSaveParams
+		{
 			const FChar* File{ nullptr };
 		};
 
@@ -38,15 +42,26 @@ namespace Phoenix {
 		const FMeshData::FEntries& GetMeshDataEntries() const;
 
 	private:
+		static const SizeT DefaultNodeCapacity;
+		static const SizeT DefaultMeshEntriesCapacity;
+
+		typedef void(FModelProcessor::*FLoadFunction)(const FLoadParams& LoadParams);
+
 		FMeshData::FEntries MeshEntries;
+
+		static FLoadFunction GetLoadFunction(const FLoadParams& LoadParams);
 
 		void LoadFBX(const FLoadParams& LoadParams);
 
 		void LoadMisc(const FLoadParams& LoadParams);
 
+		void LoadPhoenix(const FLoadParams& LoadParams);
+
 		static bool IsFileFBX(const FString& File);
 
 		static bool IsFileMisc(const FString& File);
+
+		static bool IsFilePhoenix(const FString& File);
 	};
 }
 

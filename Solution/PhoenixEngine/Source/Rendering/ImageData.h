@@ -3,11 +3,14 @@
 
 #include "Utility/Misc/Primitives.h"
 
-namespace Phoenix {
-	namespace EPixelFormat {
+namespace Phoenix
+{
+	namespace EPixelFormat
+	{
 		typedef UInt8 Type;
 
-		enum Value : Type {
+		enum Value : Type
+		{
 			Unknown,
 			Luminous,
 			LuminousAlpha,
@@ -17,11 +20,30 @@ namespace Phoenix {
 		};
 	}
 
-	struct FImageData {
-		UInt8* Pixels{ nullptr };
+	namespace ETextureType
+	{
+		typedef UInt8 Type;
+
+		enum Value : Type
+		{
+			Diffuse,
+			Normal,
+			Specular,
+			Count
+		};
+	}
+
+	struct FImageData
+	{
+		typedef UInt8* PixelsT;
+		typedef UInt32 PixelCountT;
+		typedef UInt16 WidthT;
+		typedef UInt16 HeightT;
+
+		PixelsT Pixels{ nullptr };
 		EPixelFormat::Value PixelFormat{ EPixelFormat::Unknown };
-		UInt16 Width{ 0 };
-		UInt16 Height{ 0 };
+		WidthT Width{ 0 };
+		HeightT Height{ 0 };
 	};
 }
 

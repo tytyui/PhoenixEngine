@@ -64,22 +64,21 @@ void FGameThread::ThreadRun()
 	ThreadInit();
 	F_LogTrace("GameThread::ThreadRun()");
 
-	// #FIXME: This low value is simply for demonstration purposes.
-	const Float32 FramesPerSec = .125f;
+	const Float32 FramesPerSec = 60.f;
 	const Float32 MaxDeltaTime = 1.f / FramesPerSec;
 
 	TThreadSafeVector<UInt32>::ContainerT ReceivedEvents;
 	Float32 AccumulatedTime = 0.f;
 	UInt32 UpdateCount = 0;
 
-	FHighResTimer Timer;
+	FHighResolutionTimer Timer;
 	Timer.Reset();
-
+	
 	while (IsRunning)
 	{
 		Timer.Update();
 		const Float32 DeltaSeconds = Timer.GetDeltaSeconds<Float32>();
-
+		
 		AccumulatedTime += DeltaSeconds;
 		UpdateCount = 0;
 
@@ -113,6 +112,9 @@ void FGameThread::ThreadRun()
 		}
 
 		RenderEngine.Draw();
+		// #FIXME: Calculate an appropriate sleep 
+		// time so the fps doesn't get ridiculous.
+		NThread::SleepThread(10);
 	}
 
 	ThreadDeInit();
