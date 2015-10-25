@@ -1,15 +1,15 @@
 #ifndef PHOENIX_INPUT_H
 #define PHOENIX_INPUT_H
 
-#include "input/KeyboardEvent.h"
-#include "Input/MouseClickEvent.h"
 #include "Utility/Misc/Function.h"
 #include "Utility/Misc/Primitives.h"
 #include "Utility/Misc/Singleton.h"
+#include "Input/KeyboardEvent.h"
+#include "Input/MouseClickEvent.h"
 
 namespace Phoenix
 {
-	class FWin32Window;
+	class IWindow;
 
 	class FInput
 	{
@@ -27,7 +27,7 @@ namespace Phoenix
 		typedef TFunction<void(const FKeyboardEvent&)> FKeyPressCallback;
 		typedef TFunction<void(const FMouseClickEvent&)> FMouseClickCallback;
 
-		void Init(FWin32Window* Window);
+		void Init(IWindow* Window);
 
 		//Register for Input events
 		void RegisterKeyPressCallback(const FKeyPressCallback& KeyPressCallback);

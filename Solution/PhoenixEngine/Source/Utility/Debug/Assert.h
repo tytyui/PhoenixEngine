@@ -3,6 +3,7 @@
 
 #include <cassert>
 
+#include "Utility/Debug/ConsoleColor.h"
 #include "Utility/Misc/String.h"
 #include "Utility/Misc/StringStream.h"
 
@@ -10,24 +11,26 @@
 #define PHOENIX_ENABLE_ASSERT 1
 
 #if PHOENIX_ENABLE_ASSERT
-#	define F_Assert(Expr, Msg)					\
-	{											\
-		if (!(Expr))							\
-		{										\
-			FStringStream SS;					\
-			SS << Msg;							\
-			const FString StrMsg = SS.str();	\
-												\
-			assert(StrMsg.c_str() && (Expr));	\
-		}										\
+#	define F_Assert(Expr, Msg)							\
+	{													\
+		if (!(Expr))									\
+		{												\
+			FStringStream SS;							\
+			SS << Msg;									\
+			const FString StrMsg = SS.str();			\
+														\
+			FConsoleColor::Set(EConsoleColor::Red);		\
+			assert(StrMsg.c_str() && 0);				\
+			FConsoleColor::Set(EConsoleColor::Grey);	\
+		}												\
 	}
 
-#	define F_AssertIf(Expr, Msg, Conditions)	\
-	{											\
-		if (Conditions)							\
-		{										\
-			F_Assert(Expr, Msg);				\
-		}										\
+#	define F_AssertIf(Expr, Msg, Conditions)			\
+	{													\
+		if (Conditions)									\
+		{												\
+			F_Assert(Expr, Msg);						\
+		}												\
 	}											
 
 #else

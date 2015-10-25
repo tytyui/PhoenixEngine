@@ -1,11 +1,11 @@
-#include "Platform/Windowing/Win32Window.h"
+#include "Platform/Windowing/GenericWindow.h"
 
 #include "ExternalLib/GLFWIncludes.h"
 #include "Utility/Debug/Assert.h"
 
 using namespace Phoenix;
 
-FWin32Window::FWin32Window(int Width, int Height, const FString& WindowTitle)
+FGenericWindow::FGenericWindow(int Width, int Height, const FString& WindowTitle)
 {
 	Dimensions = FVector2D(Width, Height);
 	WindowTitleText = WindowTitle;
@@ -13,12 +13,12 @@ FWin32Window::FWin32Window(int Width, int Height, const FString& WindowTitle)
 	Init();
 }
 
-FWin32Window::~FWin32Window()
+FGenericWindow::~FGenericWindow()
 {
 	
 }
 
-void FWin32Window::Init()
+void FGenericWindow::Init()
 {
 	bIsHidden = false;
 	bIsMinimized = false;
@@ -50,37 +50,44 @@ void FWin32Window::Init()
 		//Key Press
 		auto KeyPressCallback = [](GLFWwindow* Window, Int32 Key, Int32 ScanCode, Int32 Action, Int32 Mods)
 		{
-			static_cast<FWin32Window*>(glfwGetWindowUserPointer(Window))->OnKeyPress(Window, Key, ScanCode, Action, Mods);
+			static_cast<FGenericWindow*>(glfwGetWindowUserPointer(Window))->OnKeyPress(Window, Key, ScanCode, Action, Mods);
 		};
 		glfwSetKeyCallback(Window, KeyPressCallback);
 
 		auto MouseClickCallback = [](GLFWwindow* Window, Int32 Button, Int32 Action, Int32 Mods)
 		{
-			static_cast<FWin32Window*>(glfwGetWindowUserPointer(Window))->OnMouseClick(Window, Button, Action, Mods);
+			static_cast<FGenericWindow*>(glfwGetWindowUserPointer(Window))->OnMouseClick(Window, Button, Action, Mods);
 		};
 		glfwSetMouseButtonCallback(Window, MouseClickCallback);
 	}
 }
 
-void FWin32Window::OnKeyPress(FGLWindow * Window, Int32 Key, Int32 ScanCode, Int32 Action, Int32 Mods) const
+void FGenericWindow::OnKeyPress(FGLWindow * Window, Int32 Key, Int32 ScanCode, Int32 Action, Int32 Mods) const
 {
-	F_AssertNotNull(KeyPressCallback, "Key press Callback not set");
-	KeyPressCallback(Key, ScanCode, Action, Mods);
+	// #FIXME: If check is temporary for these callbacks.  Eventually, dummy functions will be used.
+	if (KeyPressCallback)
+	{
+		KeyPressCallback(Key, ScanCode, Action, Mods);
+	}
 }
 
-void FWin32Window::OnMouseClick(FGLWindow* Window, Int32 Button, Int32 Action, Int32 Mods) const
+void FGenericWindow::OnMouseClick(FGLWindow* Window, Int32 Button, Int32 Action, Int32 Mods) const
 {
-	F_AssertNotNull(MouseClickCallback, "Mouse Click Callback not set");
-	MouseClickCallback(Button, Action, Mods);
+	if (MouseClickCallback)
+	{
+		MouseClickCallback(Button, Action, Mods);
+	}
 }
 
-void FWin32Window::OnMouseMove(FGLWindow* Window, Float64 XPos, Float64 YPos) const
+void FGenericWindow::OnMouseMove(FGLWindow* Window, Float64 XPos, Float64 YPos) const
 {
-	F_AssertNotNull(MouseMoveCallback, "Mouse Move Callback not set");
-	MouseMoveCallback(XPos, YPos);
+	if (MouseMoveCallback)
+	{
+		MouseMoveCallback(XPos, YPos);
+	}
 }
 
-void FWin32Window::Hide()
+void FGenericWindow::Hide()
 {
 	if (!bIsHidden)
 	{
@@ -89,7 +96,7 @@ void FWin32Window::Hide()
 	}
 }
 
-void FWin32Window::Show()
+void FGenericWindow::Show()
 {
 	if (bIsHidden)
 	{
@@ -98,7 +105,7 @@ void FWin32Window::Show()
 	}
 }
 
-void FWin32Window::Minimize()
+void FGenericWindow::Minimize()
 {
 	if (!bIsMinimized)
 	{
@@ -109,7 +116,7 @@ void FWin32Window::Minimize()
 	}
 }
 
-void FWin32Window::Restore()
+void FGenericWindow::Restore()
 {
 	if (bIsMinimized)
 	{
@@ -120,110 +127,110 @@ void FWin32Window::Restore()
 	}
 }
 
-void FWin32Window::SetKeyPressCallback(const FWindowKeyPressCallback& KeyPressCallback)
+void FGenericWindow::SetKeyPressCallback(const FWindowKeyPressCallback& KeyPressCallback)
 {
 	F_AssertNotNull(KeyPressCallback, "Key Press Callback is Null");
 	this->KeyPressCallback = KeyPressCallback;
 }
 
-void FWin32Window::SetMouseClickCallback(const FWindowMouseClickCallback& MouseClickCallback)
+void FGenericWindow::SetMouseClickCallback(const FWindowMouseClickCallback& MouseClickCallback)
 {
 	F_AssertNotNull(MouseClickCallback, "Mouse Click Callback is Null");
 	this->MouseClickCallback = MouseClickCallback;
 }
 
-void FWin32Window::SetMouseMoveCallback(const FWindowMouseMoveCallback& MouseMoveCallback)
+void FGenericWindow::SetMouseMoveCallback(const FWindowMouseMoveCallback& MouseMoveCallback)
 {
 	F_AssertNotNull(MouseMoveCallback, "Mouse Move Callback is Null");
 	this->MouseMoveCallback = MouseMoveCallback;
 }
 
-void FWin32Window::BufferSwap()
+void FGenericWindow::BufferSwap()
 {
 	glfwSwapBuffers(Window);
 }
 
-void FWin32Window::SetSwapInterval(const Int32 Interval)
+void FGenericWindow::SetSwapInterval(const Int32 Interval)
 {
 	glfwSwapInterval(Interval);
 }
 
-void FWin32Window::OnMinimize()
+void FGenericWindow::OnMinimize()
 {
 	// TODO::Implement me
 }
 
-void FWin32Window::OnRestore()
+void FGenericWindow::OnRestore()
 {
 	// TODO::Implement me
 }
 
-void FWin32Window::SetFullScreen(const bool bFullScreenEnabled)
+void FGenericWindow::SetFullScreen(const bool bFullScreenEnabled)
 {
 	// TODO::Implement me
 }
 
-void FWin32Window::ProcessEvents()
+void FGenericWindow::ProcessEvents()
 {
 	glfwPollEvents();
 }
 
-void FWin32Window::SetDimensions(const FVector2D& InDimensions)
+void FGenericWindow::SetDimensions(const FVector2D& InDimensions)
 {
 	// Do checks/requisite functions when the dimensions change
 	Dimensions = InDimensions;
 }
 
-const FVector2D& FWin32Window::GetDimensions() const
+const FVector2D& FGenericWindow::GetDimensions() const
 {
 	return Dimensions;
 }
 
-void FWin32Window::SetPosition(const FVector2D& InPosition)
+void FGenericWindow::SetPosition(const FVector2D& InPosition)
 {
 	// Do checks/requisite functions when the position changes
 	Position = InPosition;
 }
 
-const FVector2D& FWin32Window::GetPosition() const
+const FVector2D& FGenericWindow::GetPosition() const
 {
 	return Position;
 }
 
-void FWin32Window::SetWindowTitle(const FString& InWindowTitleText)
+void FGenericWindow::SetWindowTitle(const FString& InWindowTitleText)
 {
 	// Do checks/requisite functions when the window title changes
 	WindowTitleText = InWindowTitleText;
 }
 
-const FString& FWin32Window::GetWindowTitle() const
+const FString& FGenericWindow::GetWindowTitle() const
 {
 	return WindowTitleText;
 }
 
-void FWin32Window::SetTaskbarIcon(const FIcon& InIcon)
+void FGenericWindow::SetTaskbarIcon(const FIcon& InIcon)
 {
 	// Do checks/requisite functions when the taskbar icon changes
 	TaskbarIcon = InIcon;
 }
 
-const FIcon& FWin32Window::GetTaskbarIcon() const
+const FIcon& FGenericWindow::GetTaskbarIcon() const
 {
 	return TaskbarIcon;
 }
 
-void FWin32Window::SetTitlebarIcon(const FIcon& InIcon)
+void FGenericWindow::SetTitlebarIcon(const FIcon& InIcon)
 {
 	// Do checks/requisite functions when the titlebar changes
 	TitlebarIcon = InIcon;
 }
 
-const FIcon& FWin32Window::GetTitlebarIcon() const
+const FIcon& FGenericWindow::GetTitlebarIcon() const
 {
 	return TitlebarIcon;
 }
 
-void FWin32Window::SetGraphicsContextCurrent()
+void FGenericWindow::SetGraphicsContextCurrent()
 {
 	glfwMakeContextCurrent(Window);
 }

@@ -1,59 +1,24 @@
 #include "Core/Engine.h"
 
 #include "ExternalLib/LibIncludes.h"
-#include "Input/Input.h"
-#include "Math/Math.h"
 #include "Utility/Debug/Debug.h"
 #include "Utility/FileIO/Endian.h"
-#include "Utility/Misc/Allocator.h"
 #include "Utility/Misc/Primitives.h"
 #include "Utility/Misc/Timer.h"
 #include "Utility/Threading/Thread.h"
+#include "Math/Math.h"
+#include "Platform/Windowing/GenericWindow.h"
 
 using namespace Phoenix;
 
-FEngine::FEngine()
+
+void FEngine::Run(FGameThread::FCreateGameSceneFunc CreateGameSceneFunc)
 {
-}
+	Init(CreateGameSceneFunc);
 
-void FEngine::Init(const FGameThread::FUpdateCallback& OnUpdateCallback)
-{
-	F_LogOpen("Log.txt");
-	F_LogTrace("Engine::Init()\n");
+	F_Assert(IsValid(), "Engine failed to initialize.");
 
-	FEndian::Init();
-
-	// This will change, calm your horses
-	MainWindow = new FWin32Window(800, 600, "PhoenixEngine");
-
-	{
-		FGameThread::FInitParams InitParams;
-
-		InitParams.Window = MainWindow;
-		InitParams.OutgoingEvents = &IncomingEvents;
-		InitParams.IncomingEvents = &OutgoingEvents;
-		InitParams.UpdateCallback = OnUpdateCallback;
-
-		GameThread.Init(InitParams);
-		F_Assert(GameThread.IsValid(), "Game Thread failed to initialize.");
-	}
-	
-	Input = std::make_unique<FInput>();
-	Input->Init(MainWindow);
-
-	IsRunning = true;
-}
-
-void FEngine::DeInit()
-{
-	F_LogClose();
-}
-
-void FEngine::Run()
-{
-	F_LogTrace("Engine::Run()\n");
-
-	const Float32 FramesPerSec = 60.f;
+	const Float32 FramesPerSec = 120.f;
 	const Float32 MaxDeltaTime = 1.f / FramesPerSec;
 
 	TThreadSafeVector<UInt32>::ContainerT ReceivedEvents;
@@ -65,8 +30,8 @@ void FEngine::Run()
 	while (IsRunning)
 	{
 		Timer.Update();
-		const Float32 DeltaSeconds = Timer.GetDeltaSeconds<Float32>();
-		AccumulatedTime += DeltaSeconds;
+		const Float32 DeltaTimeSec = Timer.GetDeltaSeconds<Float32>();
+		AccumulatedTime += DeltaTimeSec;
 
 		if (AccumulatedTime >= MaxDeltaTime)
 		{
@@ -92,15 +57,40 @@ void FEngine::Run()
 	DeInit();
 }
 
-void FEngine::ShutDown()
+void FEngine::Init(FGameThread::FCreateGameSceneFunc CreateGameSceneFunc)
 {
-	//#FIXME Establish proper shutdown protocol
-	F_Log("Engine::ShutDown()");
-	GameThread.ForceShutDown();
-	IsRunning = false;
+	F_LogOpen("Log.txt");
+	F_LogTrace("Engine::Init()\n");
+	F_Assert(CreateGameSceneFunc, "CreateGameSceneFunc is null.");
+
+	FEndian::Init();
+
+	MainWindow = std::make_shared<FGenericWindow>(800, 600, "PhoenixEngine");
+
+	{
+		FGameThread::FInitParams InitParams;
+
+		InitParams.Window = MainWindow;
+		InitParams.OutgoingEvents = &IncomingEvents;
+		InitParams.IncomingEvents = &OutgoingEvents;
+		InitParams.CreateGameSceneFunc = CreateGameSceneFunc;
+
+		GameThread.Init(InitParams);
+		F_Assert(GameThread.IsValid(), "Game Thread failed to initialize.");
+	}
+
+	IsRunning = true;
+	F_Assert(IsValid(), "Initialization was successful but this class is not valid.");
 }
 
-const TUniquePtr<FInput>& FEngine::GetInput() const
+bool FEngine::IsValid() const
 {
-	return Input;
+	return IsRunning;
+}
+
+void FEngine::DeInit()
+{
+	GameThread.ForceShutDown();
+	IsRunning = false;
+	F_LogClose();
 }

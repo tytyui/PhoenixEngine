@@ -1,13 +1,13 @@
 #include "Input/Input.h"
-#include "Platform/Windowing/Win32Window.h"
 #include "Utility/Debug/Assert.h"
 
 using namespace Phoenix;
 
-void FInput::Init(FWin32Window* Window)
+void FInput::Init(IWindow* Window)
 {
 	F_AssertNotNull(Window, "Window is Null");
 
+#if 0
 	Window->SetKeyPressCallback
 		([this](Int32 Key, Int32 ScanCode, Int32 Action, Int32 Mods) 
 		{
@@ -19,6 +19,7 @@ void FInput::Init(FWin32Window* Window)
 		{
 			OnWindowMouseClickEvent(Button, Action, Mods);
 		});
+#endif
 }
 
 //API

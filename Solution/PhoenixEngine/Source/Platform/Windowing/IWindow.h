@@ -1,9 +1,9 @@
-#pragma once
-
-#include "Math/Math.h"
-#include "Math/Vector2D.h"
+#ifndef PHOENIX_IWINDOW_H
+#define PHOENIX_IWINDOW_H
 
 #include "Utility/Misc/String.h"
+#include "Math/Math.h"
+#include "Math/Vector2D.h"
 
 namespace Phoenix
 {
@@ -11,27 +11,28 @@ namespace Phoenix
 
 	class FIcon
 	{
-
 	public:
 		// TODO::JOSH::NOTE
 		// Temp class so I can do stuff with this, like place it on the stack.
 		// Didn't know where to put it or what we expect from it, and just wanted
 		// to get stuff going.
 		FIcon() = default;
-		~FIcon() {}
-
+		~FIcon()
+		{
+		}
 	};
 
 	class IWindow
 	{
-
 	public:
-
 		IWindow() = default;
+
 		IWindow(const IWindow&) = delete;
 		const IWindow& operator=(const IWindow&) = delete;
 
-		virtual ~IWindow() {}
+		virtual ~IWindow()
+		{
+		}
 
 		// Hide / Show
 		virtual void Hide() = 0;
@@ -81,7 +82,6 @@ namespace Phoenix
 		virtual void SetSwapInterval(const Int32 Interval) = 0;
 
 	protected:
-
 		virtual void Init() = 0;
 
 		bool bIsHidden;
@@ -97,3 +97,5 @@ namespace Phoenix
 		FString WindowTitleText;
 	};
 }
+
+#endif

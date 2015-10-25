@@ -1,21 +1,21 @@
-#pragma once
+#ifndef PHOENIX_WIN32_WINDOW_H
+#define PHOENIX_WIN32_WINDOW_H
 
-#include "Platform/Windowing/IWindow.h"
 #include "Utility/Misc/Function.h"
+#include "Platform/Windowing/IWindow.h"
 
 typedef struct GLFWwindow FGLWindow;
 
 namespace Phoenix
 {
-	class FWin32Window : public IWindow
+	class FGenericWindow : public IWindow
 	{
-
 	public:
 
-		FWin32Window() = delete;
-		FWin32Window(int Width, int Height, const FString& WindowTitle);
+		FGenericWindow() = delete;
+		FGenericWindow(int Width, int Height, const FString& WindowTitle);
 
-		virtual ~FWin32Window();
+		virtual ~FGenericWindow();
 		
 		virtual void Hide() override;
 		virtual void Show() override;
@@ -78,3 +78,5 @@ namespace Phoenix
 
 	};
 }
+
+#endif

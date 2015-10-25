@@ -6,7 +6,6 @@
 #endif
 
 #include "Utility/Containers/Array.h"
-#include "Utility/Debug/Assert.h"
 #include "Utility/Misc/Primitives.h"
 
 namespace Phoenix
@@ -48,7 +47,6 @@ namespace Phoenix
 	inline FConsoleColor::FConsoleColor(const EConsoleColor::Value InColor)
 		: Color(InColor)
 	{
-		F_Assert(IsValid(), "This class must be valid.");
 	}
 
 	inline bool FConsoleColor::IsValid() const
@@ -65,7 +63,6 @@ namespace Phoenix
 	inline void FConsoleColor::Set(const FConsoleColor Color)
 	{
 #if _WIN32
-		F_Assert(Color.IsValid(), "ConsoleColor must be valid.");
 		static_assert(EConsoleColor::Count == 8, "This table requires updating.");
 		static const TArray<WORD, EConsoleColor::Count> LookUpTable =
 		{

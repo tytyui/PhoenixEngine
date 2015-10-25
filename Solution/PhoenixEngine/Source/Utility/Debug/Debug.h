@@ -105,7 +105,8 @@ namespace Phoenix
 			PHOENIX_DEBUG_LOCK();						\
 			Debug::Get() 								\
 				<< FConsoleColor(Color) 				\
-				<< SS.str();							\
+				<< SS.str()								\
+				<< FConsoleColor(EConsoleColor::Grey);	\
 		}
 
 #	if PHOENIX_DEBUG_LEVEL >= PHOENIX_DEBUG_LEVEL_1
@@ -163,8 +164,7 @@ namespace Phoenix
 				<< '\n';								\
 														\
 			PHOENIX_DEBUG_LOCK();						\
-			Log::Get() 									\
-				<< SS.str();							\
+			Log::Get() << SS.str();						\
 		}
 
 #	if PHOENIX_DEBUG_LEVEL >= PHOENIX_DEBUG_LEVEL_1

@@ -4,27 +4,19 @@
 #include "Utility/Debug/Debug.h"
 #include "Utility/Misc/Allocator.h"
 #include "Utility/Misc/Timer.h"
+#include "Platform/Windowing/IWindow.h"
 
 using namespace Phoenix;
 
 bool FGameThread::FInitParams::IsValid() const
 {
-	const bool IsWindowValid = Window != nullptr;
-	const bool AreOutgoingEventsValid = OutgoingEvents != nullptr;
-	const bool AreIncomingEventsValid = IncomingEvents != nullptr;
-	const bool IsUpdateCallbackValid = UpdateCallback != nullptr;
-
 	const bool Result =
-		IsWindowValid &&
-		AreOutgoingEventsValid &&
-		AreIncomingEventsValid &&
-		IsUpdateCallbackValid;
+		Window != nullptr &&
+		OutgoingEvents != nullptr &&
+		IncomingEvents != nullptr &&
+		CreateGameSceneFunc != nullptr;
 
 	return Result;
-}
-
-FGameThread::FGameThread()
-{
 }
 
 FGameThread::~FGameThread()
@@ -55,7 +47,7 @@ bool FGameThread::IsValid() const
 
 void FGameThread::ForceShutDown()
 {
-	F_LogWarning("Subsystems may not have been shut down properly.");
+	F_LogWarning("Subsystems might not be shut down properly.");
 	IsRunning = false;
 }
 
@@ -77,9 +69,9 @@ void FGameThread::ThreadRun()
 	while (IsRunning)
 	{
 		Timer.Update();
-		const Float32 DeltaSeconds = Timer.GetDeltaSeconds<Float32>();
+		const Float32 DeltaTimeSec = Timer.GetDeltaSeconds<Float32>();
 		
-		AccumulatedTime += DeltaSeconds;
+		AccumulatedTime += DeltaTimeSec;
 		UpdateCount = 0;
 
 		while (AccumulatedTime >= MaxDeltaTime)
@@ -97,8 +89,7 @@ void FGameThread::ThreadRun()
 
 			ReceivedEvents.clear();
 
-			// #FIXME: Update
-			InitData.UpdateCallback(MaxDeltaTime);
+			GameScene->Update(DeltaTimeSec);
 
 			// #FIXME: Dispatch any messages to Engine.cpp here.
 			//InitData.OutgoingEvents->AddEntry(1);
@@ -137,6 +128,12 @@ void FGameThread::ThreadInit()
 		F_Assert(RenderEngine.IsValid(), "Render Engine failed to initialize.");
 	}
 
+	{
+		GameScene = InitData.CreateGameSceneFunc();
+		F_Assert(GameScene, "GameScene is null.");
+		GameScene->Init();
+	}
+
 	F_LogTrace("GameThread::ThreadInit()\n");
 }
 
@@ -144,6 +141,14 @@ void FGameThread::ThreadDeInit()
 {
 	F_LogTrace("GameThread::ThreadDeInit()");
 	InitData = FInitParams();
+
+	{
+		if (GameScene)
+		{
+			GameScene->DeInit();
+			GameScene = nullptr;
+		}
+	}
 
 	{
 		RenderEngine.DeInit();

@@ -178,7 +178,7 @@ void FRenderEngine::DebugInitializeTestCode()
 	// clean and is for debugging purposes only.
 	auto& Eng = Get();
 
-#pragma region Initialize Camera
+#pragma region (Camera) Initialize Camera
 	{
 		const Float32 FOV = glm::radians(45.f);
 		const Float32 AspectRatio =
@@ -200,7 +200,7 @@ void FRenderEngine::DebugInitializeTestCode()
 	}
 #pragma endregion
 
-#pragma region Initialize Model
+#pragma region (Model) Initialize Model
 	{
 		static const FChar* const LoadFile = "Assets/Models/Fighter-Soul.obj";
 
@@ -220,7 +220,7 @@ void FRenderEngine::DebugInitializeTestCode()
 	}
 #pragma endregion
 
-#pragma region Initialize Shader
+#pragma region (ModelShader) Initialize Shader
 	{
 		TArray<FString, 2> Code;
 		TArray<const FChar* const, 2> Files = {
@@ -255,7 +255,7 @@ void FRenderEngine::DebugInitializeTestCode()
 	}
 #pragma endregion
 
-#pragma region Initialize Diffuse Image
+#pragma region (Image) Initialize Diffuse Image
 	{
 		FImageProcessor::FLoadParams LoadParams;
 		LoadParams.File = "Assets/Textures/ship_fighter_soul.jpg";
@@ -277,7 +277,7 @@ void FRenderEngine::DebugInitializeTestCode()
 	}
 #pragma endregion
 
-#pragma region Initialize FBX Model
+#pragma region (FBXModel) Initialize FBX Model
 	{
 		static const FChar* const LoadFile = "Assets/Models/box.fbx";
 
@@ -297,7 +297,7 @@ void FRenderEngine::DebugInitializeTestCode()
 	}
 #pragma endregion
 
-#pragma region Initialize FBX Image
+#pragma region (FBXImage) Initialize FBX Image
 	{
 		FImageProcessor::FLoadParams LoadParams;
 		LoadParams.File = "Assets/Textures/daggercolor.tga";
@@ -327,10 +327,9 @@ void FRenderEngine::DebugRenderTestCode()
 	auto& Eng = Get();
 
 	const bool ShouldReturn =
-		!Eng.Image.IsValid() ||
-		!Eng.ModelShader.IsValid() ||
 		!Eng.Model.IsValid() ||
 		!Eng.ModelShader.IsValid() ||
+		!Eng.Image.IsValid() ||
 		!Eng.FBXModel.IsValid() ||
 		!Eng.FBXImage.IsValid();
 

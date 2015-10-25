@@ -1,19 +1,16 @@
 #ifndef PHOENIX_ENGINE_H
 #define PHOENIX_ENGINE_H
 
-#include "Utility/Threading/ThreadSafeVector.h"
 #include "Utility/Misc/Memory.h"
+#include "Utility/Threading/ThreadSafeVector.h"
 #include "Core/GameThread.h"
-#include "Platform/Windowing/Win32Window.h"
 
 namespace Phoenix
 {
-	class FInput;
-
 	class FEngine
 	{
 	public:
-		FEngine();
+		FEngine() = default;
 
 		FEngine(const FEngine&) = delete;
 		FEngine& operator=(const FEngine&) = delete;
@@ -23,28 +20,23 @@ namespace Phoenix
 		
 		~FEngine() = default;
 
-		void Init(const FGameThread::FUpdateCallback& UpdateCallback);
-		void DeInit();
-
-		const TUniquePtr<FInput>& GetInput() const;
-
-		void Run();
-		void ShutDown();
+		void Run(FGameThread::FCreateGameSceneFunc CreateGameSceneFunc);
 
 	private:
-		//Engine SubSystems
-		FWin32Window* MainWindow{ nullptr };
+		TSharedPtr<class IWindow> MainWindow;
 		FGameThread GameThread;
-
-		//#FIXME This should be on the GameThread
-		TUniquePtr<FInput> Input;
 
 		// #FIXME: Change UInt32 to the Event structure.
 		TThreadSafeVector<UInt32> OutgoingEvents;
 		TThreadSafeVector<UInt32> IncomingEvents;
-		
 
 		bool IsRunning{ false };
+
+		void Init(FGameThread::FCreateGameSceneFunc CreateGameSceneFunc);
+
+		bool IsValid() const;
+
+		void DeInit();
 	};
 }
 

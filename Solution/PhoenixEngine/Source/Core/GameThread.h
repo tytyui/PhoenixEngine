@@ -3,31 +3,32 @@
 
 #include "Audio/AudioEngine.h"
 #include "Rendering/RenderEngine.h"
-#include "Platform/Windowing/IWindow.h"
 #include "Utility/Misc/Function.h"
+#include "Utility/Misc/Memory.h"
 #include "Utility/Misc/Primitives.h"
 #include "Utility/Threading/Atomic.h"
 #include "Utility/Threading/Thread.h"
 #include "Utility/Threading/ThreadSafeVector.h"
+#include "Core/GameScene.h"
 
 namespace Phoenix
 {
 	class FGameThread
 	{
 	public:
-		typedef TFunction<void(Float32)> FUpdateCallback;
+		typedef TUniquePtr<FGameScene>(*FCreateGameSceneFunc)();
 
 		struct FInitParams
 		{
-			IWindow* Window{ nullptr };
+			TSharedPtr<class IWindow> Window;
 			TThreadSafeVector<UInt32>* OutgoingEvents{ nullptr };
 			TThreadSafeVector<UInt32>* IncomingEvents{ nullptr };
-			FUpdateCallback UpdateCallback;
+			FCreateGameSceneFunc CreateGameSceneFunc{ nullptr };
 
 			bool IsValid() const;
 		};
 
-		FGameThread();
+		FGameThread() = default;
 
 		FGameThread(const FGameThread&) = delete;
 		FGameThread& operator=(const FGameThread&) = delete;
@@ -49,6 +50,7 @@ namespace Phoenix
 		FInitParams InitData;
 		FAudioEngine AudioEngine;
 		FRenderEngine RenderEngine;
+		TUniquePtr<FGameScene> GameScene;
 
 		TAtomic<bool> IsRunning{ false };
 
