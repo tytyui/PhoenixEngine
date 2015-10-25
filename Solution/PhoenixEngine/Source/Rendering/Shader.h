@@ -82,11 +82,15 @@ namespace Phoenix
 
 		static void Disable();
 
-		void SetProjection(const GLfloat* const ProjectionMatrixPtr);
+		void SetM44Projection(const GLfloat* const ProjectionMatrixPtr);
 
-		void SetView(const GLfloat* const ViewMatrixPtr);
+		void SetM44View(const GLfloat* const ViewMatrixPtr);
 
-		void SetWorld(const GLfloat* const WorldMatrixPtr);
+		void SetM44World(const GLfloat* const WorldMatrixPtr);
+
+		void SetM33InverseTransposeWorld(const GLfloat* const InverseTransposeWorldPtr);
+
+		void SetM44WorldViewProjectionPtr(const GLfloat* const WorldViewProjectionPtr);
 
 		void SetDiffuseMap(const GLint DiffuseMap);
 

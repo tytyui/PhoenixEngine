@@ -69,22 +69,34 @@ void FShader::Disable()
 	F_GL(GL::UseProgram(0));
 }
 
-void FShader::SetProjection(const GLfloat* const ProjectionMatrixPtr)
+void FShader::SetM44Projection(const GLfloat* const ProjectionMatrixPtr)
 {
 	const GLint UniformLocation = GetShaderUniformLocation(EUniform::Projection);
 	F_GL(GL::UniformMatrix4fv(UniformLocation, 1, GL::EBool::False, ProjectionMatrixPtr));
 }
 
-void FShader::SetView(const GLfloat* const ViewMatrixPtr)
+void FShader::SetM44View(const GLfloat* const ViewMatrixPtr)
 {
 	const GLint UniformLocation = GetShaderUniformLocation(EUniform::View);
 	F_GL(GL::UniformMatrix4fv(UniformLocation, 1, GL::EBool::False, ViewMatrixPtr));
 }
 
-void FShader::SetWorld(const GLfloat* const WorldMatrixPtr)
+void FShader::SetM44World(const GLfloat* const WorldMatrixPtr)
 {
 	const GLint UniformLocation = GetShaderUniformLocation(EUniform::World);
 	F_GL(GL::UniformMatrix4fv(UniformLocation, 1, GL::EBool::False, WorldMatrixPtr));
+}
+
+void FShader::SetM33InverseTransposeWorld(const GLfloat* const InverseTransposeWorldPtr)
+{
+	const GLint UniformLocation = GetShaderUniformLocation(EUniform::InverseTransposeWorld);
+	F_GL(GL::UniformMatrix4fv(UniformLocation, 1, GL::EBool::False, InverseTransposeWorldPtr));
+}
+
+void FShader::SetM44WorldViewProjectionPtr(const GLfloat* const WorldViewProjectionPtr)
+{
+	const GLint UniformLocation = GetShaderUniformLocation(EUniform::WorldViewProjection);
+	F_GL(GL::UniformMatrix4fv(UniformLocation, 1, GL::EBool::False, WorldViewProjectionPtr));
 }
 
 void FShader::SetDiffuseMap(const GLint DiffuseMap)
