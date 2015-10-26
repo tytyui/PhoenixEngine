@@ -2,6 +2,8 @@
 #define PHOENIX_SHADER_H
 
 #include "Utility/Containers/Array.h"
+#include "Math/Matrix3D.h"
+#include "Math/Matrix4D.h"
 #include "Rendering/GLInterface.h"
 
 namespace Phoenix
@@ -82,19 +84,19 @@ namespace Phoenix
 
 		static void Disable();
 
-		void SetM44Projection(const GLfloat* const ProjectionMatrixPtr);
+		void SetProjection(const FMatrix4D& ProjectionMatrix) const;
 
-		void SetM44View(const GLfloat* const ViewMatrixPtr);
+		void SetView(const FMatrix4D& ViewMatrix) const;
 
-		void SetM44World(const GLfloat* const WorldMatrixPtr);
+		void SetWorld(const FMatrix4D& WorldMatrix) const;
 
-		void SetM33InverseTransposeWorld(const GLfloat* const InverseTransposeWorldPtr);
+		void SetInverseTransposeWorld(const FMatrix3D& InverseTransposeWorld) const;
 
-		void SetM44WorldViewProjectionPtr(const GLfloat* const WorldViewProjectionPtr);
+		void SetWorldViewProjectionPtr(const FMatrix4D& WorldViewProjection) const;
 
-		void SetDiffuseMap(const GLint DiffuseMap);
+		void SetDiffuseMap(const GLint DiffuseMap) const;
 
-		void SetNormalMap(const GLint NormalMap);
+		void SetNormalMap(const GLint NormalMap) const;
 
 	private:
 		GLuint Program{ 0 };
@@ -102,21 +104,25 @@ namespace Phoenix
 
 		void InitProgram();
 
-		void DeInitProgram();
-
 		bool IsProgramValid() const;
+
+		void DeInitProgram();
 
 		void InitShader(const EShaderIndex::Value ShaderIndex, const GLchar* const Code);
 
-		void DeInitShader(const EShaderIndex::Value ShaderIndex);
-
 		bool IsShaderValid(const EShaderIndex::Value ShaderIndex) const;
+
+		void DeInitShader(const EShaderIndex::Value ShaderIndex);
 
 		GLint GetShaderUniformLocation(const GLchar* const UniformName) const;
 
 		bool IsShaderUniformValid(const GLchar* const UniformName) const;
 
 		void OnInitComplete();
+
+		void SetUniform(const FMatrix3D& Matrix3D, const GLchar* const UniformName) const;
+
+		void SetUniform(const FMatrix4D& Matrix4D, const GLchar* const UniformName) const;
 	};
 }
 

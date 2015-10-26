@@ -1,0 +1,17 @@
+#version 330 core
+
+layout (location = 0) in vec3 Position;
+layout (location = 1) in vec3 Normal;
+layout (location = 2) in vec2 DiffuseTexCoord;
+
+out vec3 FSIn_Normal;
+out vec2 FSIn_DiffuseUVCoord;
+
+uniform mat4 uWVP;
+uniform mat3 uInvTransposeWorld;
+
+void main() {
+    gl_Position = uWVP * vec4(Position, 1.0);
+	FSIn_Normal = uInvTransposeWorld * Normal;
+    FSIn_DiffuseUVCoord = DiffuseTexCoord;
+}

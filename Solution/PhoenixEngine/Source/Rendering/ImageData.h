@@ -41,9 +41,9 @@ namespace Phoenix
 		typedef UInt16 HeightT;
 
 		PixelsT Pixels{ nullptr };
-		EPixelFormat::Value PixelFormat{ EPixelFormat::Unknown };
 		WidthT Width{ 0 };
 		HeightT Height{ 0 };
+		EPixelFormat::Value PixelFormat{ EPixelFormat::Unknown };
 	};
 }
 

@@ -5,6 +5,7 @@
 #include "Utility/FileIO/FileStream.h"
 #include "Utility/Misc/Timer.h"
 #include "Math/Math.h"
+#include "Math/Matrix3D.h"
 #include "Math/MatrixTransform.h"
 #include "Math/Vector4D.h"
 #include "Platform/Windowing/IWindow.h"
@@ -348,6 +349,10 @@ void FRenderEngine::DebugRenderTestCode()
 
 	const FMatrix4D Identity;
 
+	const FMatrix4D& ProjectionMatrix = Eng.Camera.GetProjection();
+	const FMatrix4D& ViewMatrix = Eng.Camera.GetView();
+	const FMatrix4D ViewProjectionMatrix = ProjectionMatrix * ViewMatrix;
+
 	{
 		const Float32 TimeStamp = FHighResolutionTimer::GetTimeInSeconds<Float32>();
 
@@ -355,11 +360,13 @@ void FRenderEngine::DebugRenderTestCode()
 			glm::rotate(Identity, glm::radians(TimeStamp * 45.f), FVector3D(0, 1, 0)) *
 			glm::scale(Identity, FVector3D(0.035f));
 
+		FMatrix4D WorldViewProjectionMatrix = ViewProjectionMatrix * WorldMatrix;
+		FMatrix3D ITWorldMatrix = FMatrix3D(glm::transpose(glm::inverse(WorldMatrix)));
+		
 		Eng.ModelShader.Enable();
 
-		Eng.ModelShader.SetProjection(Eng.Camera.GetProjectionPtr());
-		Eng.ModelShader.SetView(Eng.Camera.GetViewPtr());
-		Eng.ModelShader.SetWorld(glm::value_ptr(WorldMatrix));
+		Eng.ModelShader.SetWorldViewProjectionPtr(WorldViewProjectionMatrix);
+		Eng.ModelShader.SetInverseTransposeWorld(ITWorldMatrix);
 		Eng.ModelShader.SetDiffuseMap(0);
 
 		// Note: #undefs exist for these defines.

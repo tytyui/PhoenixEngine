@@ -38,9 +38,9 @@ namespace Phoenix
 	protected:
 	private:
 		GL::ImageIDT ID{ 0 };
-		EPixelFormat::Value PixelFormat{ EPixelFormat::Unknown };
 		FImageData::WidthT Width{ 0 };
 		FImageData::HeightT Height{ 0 };
+		EPixelFormat::Value PixelFormat{ EPixelFormat::Unknown };
 
 		void PostMoveReset();
 	};

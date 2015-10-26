@@ -1,5 +1,6 @@
 #include "Rendering/Shader.h"
 
+#include "Math/MatrixTransform.h"
 #include "Rendering/Uniforms.h"
 
 using namespace Phoenix;
@@ -69,43 +70,38 @@ void FShader::Disable()
 	F_GL(GL::UseProgram(0));
 }
 
-void FShader::SetM44Projection(const GLfloat* const ProjectionMatrixPtr)
+void FShader::SetProjection(const FMatrix4D& ProjectionMatrix) const
 {
-	const GLint UniformLocation = GetShaderUniformLocation(EUniform::Projection);
-	F_GL(GL::UniformMatrix4fv(UniformLocation, 1, GL::EBool::False, ProjectionMatrixPtr));
+	SetUniform(ProjectionMatrix, EUniform::Projection);
 }
 
-void FShader::SetM44View(const GLfloat* const ViewMatrixPtr)
+void FShader::SetView(const FMatrix4D& ViewMatrix) const
 {
-	const GLint UniformLocation = GetShaderUniformLocation(EUniform::View);
-	F_GL(GL::UniformMatrix4fv(UniformLocation, 1, GL::EBool::False, ViewMatrixPtr));
+	SetUniform(ViewMatrix, EUniform::View);
 }
 
-void FShader::SetM44World(const GLfloat* const WorldMatrixPtr)
+void FShader::SetWorld(const FMatrix4D& WorldMatrix) const
 {
-	const GLint UniformLocation = GetShaderUniformLocation(EUniform::World);
-	F_GL(GL::UniformMatrix4fv(UniformLocation, 1, GL::EBool::False, WorldMatrixPtr));
+	SetUniform(WorldMatrix, EUniform::World);
 }
 
-void FShader::SetM33InverseTransposeWorld(const GLfloat* const InverseTransposeWorldPtr)
+void FShader::SetInverseTransposeWorld(const FMatrix3D& InverseTransposeWorld) const
 {
-	const GLint UniformLocation = GetShaderUniformLocation(EUniform::InverseTransposeWorld);
-	F_GL(GL::UniformMatrix4fv(UniformLocation, 1, GL::EBool::False, InverseTransposeWorldPtr));
+	SetUniform(InverseTransposeWorld, EUniform::InverseTransposeWorld);
 }
 
-void FShader::SetM44WorldViewProjectionPtr(const GLfloat* const WorldViewProjectionPtr)
+void FShader::SetWorldViewProjectionPtr(const FMatrix4D& WorldViewProjection) const
 {
-	const GLint UniformLocation = GetShaderUniformLocation(EUniform::WorldViewProjection);
-	F_GL(GL::UniformMatrix4fv(UniformLocation, 1, GL::EBool::False, WorldViewProjectionPtr));
+	SetUniform(WorldViewProjection, EUniform::WorldViewProjection);
 }
 
-void FShader::SetDiffuseMap(const GLint DiffuseMap)
+void FShader::SetDiffuseMap(const GLint DiffuseMap) const
 {
 	const GLint UniformLocation = GetShaderUniformLocation(EUniform::DiffuseMap);
 	F_GL(GL::Uniform1i(UniformLocation, DiffuseMap));
 }
 
-void FShader::SetNormalMap(const GLint NormalMap)
+void FShader::SetNormalMap(const GLint NormalMap) const
 {
 	const GLint UniformLocation = GetShaderUniformLocation(EUniform::NormalMap);
 	F_GL(GL::Uniform1i(UniformLocation, NormalMap));
@@ -118,6 +114,12 @@ void FShader::InitProgram()
 	F_LogErrorIf(Program == 0, "Failed to create shader program.");
 }
 
+bool FShader::IsProgramValid() const
+{
+	const bool Result = Program != 0;
+	return Result;
+}
+
 void FShader::DeInitProgram()
 {
 	if (Program)
@@ -125,12 +127,6 @@ void FShader::DeInitProgram()
 		F_GL(GL::DeleteProgram(Program));
 		Program = 0;
 	}
-}
-
-bool FShader::IsProgramValid() const
-{
-	const bool Result = Program != 0;
-	return Result;
 }
 
 void FShader::InitShader(const EShaderIndex::Value ShaderIndex, const GLchar* const Code)
@@ -171,6 +167,14 @@ void FShader::InitShader(const EShaderIndex::Value ShaderIndex, const GLchar* co
 	F_GL(GL::AttachShader(Program, Shader));
 }
 
+bool FShader::IsShaderValid(const EShaderIndex::Value ShaderType) const
+{
+	F_Assert(EShaderIndex::IsIndexValid(ShaderType), "Invalid index.");
+
+	const bool Result = Shaders[ShaderType] != 0;
+	return Result;
+}
+
 void FShader::DeInitShader(const EShaderIndex::Value ShaderIndex)
 {
 	F_Assert(EShaderIndex::IsIndexValid(ShaderIndex), "Invalid index.");
@@ -180,14 +184,6 @@ void FShader::DeInitShader(const EShaderIndex::Value ShaderIndex)
 		F_GL(GL::DeleteShader(Shaders[ShaderIndex]));
 		Shaders[ShaderIndex] = 0;
 	}
-}
-
-bool FShader::IsShaderValid(const EShaderIndex::Value ShaderType) const
-{
-	F_Assert(EShaderIndex::IsIndexValid(ShaderType), "Invalid index.");
-
-	const bool Result = Shaders[ShaderType] != 0;
-	return Result;
 }
 
 GLint FShader::GetShaderUniformLocation(const GLchar* const UniformName) const
@@ -242,4 +238,20 @@ void FShader::OnInitComplete()
 	}
 
 	F_LogTrace("Shader created.");
+}
+
+void FShader::SetUniform(const FMatrix3D& Matrix3D, const GLchar* const UniformName) const
+{
+	const GLint UniformLocation = GetShaderUniformLocation(UniformName);
+	const GLfloat* const Matrix3DPtr = glm::value_ptr(Matrix3D);
+
+	F_GL(GL::UniformMatrix3fv(UniformLocation, 1, GL::EBool::False, Matrix3DPtr));
+}
+
+void FShader::SetUniform(const FMatrix4D& Matrix4D, const GLchar* const UniformName) const
+{
+	const GLint UniformLocation = GetShaderUniformLocation(UniformName);
+	const GLfloat* const Matrix4DPtr = glm::value_ptr(Matrix4D);
+
+	F_GL(GL::UniformMatrix4fv(UniformLocation, 1, GL::EBool::False, Matrix4DPtr));
 }

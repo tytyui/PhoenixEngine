@@ -113,9 +113,9 @@ void FImage::DeInit()
 		ID = 0;
 	}
 
-	PixelFormat = EPixelFormat::Unknown;
 	Width = 0;
 	Height = 0;
+	PixelFormat = EPixelFormat::Unknown;
 }
 
 void FImage::Enable()
@@ -132,7 +132,7 @@ void FImage::Disable()
 void FImage::PostMoveReset()
 {
 	ID = 0;
-	PixelFormat = EPixelFormat::Unknown;
 	Width = 0;
 	Height = 0;
+	PixelFormat = EPixelFormat::Unknown;
 }

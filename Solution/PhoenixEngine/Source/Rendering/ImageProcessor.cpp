@@ -19,11 +19,11 @@ namespace Phoenix
 	{
 		static inline int ToForceChannels(const EPixelFormat::Value ImageLayout)
 		{
-			static_assert(SOIL_LOAD_AUTO == EPixelFormat::Unknown, "Enum modification is invalid.");
-			static_assert(SOIL_LOAD_L == EPixelFormat::Luminous, "Enum modification is invalid.");
-			static_assert(SOIL_LOAD_LA == EPixelFormat::LuminousAlpha, "Enum modification is invalid.");
-			static_assert(SOIL_LOAD_RGB == EPixelFormat::RGB, "Enum modification is invalid.");
-			static_assert(SOIL_LOAD_RGBA == EPixelFormat::RGBA, "Enum modification is invalid.");
+			static_assert(SOIL_LOAD_AUTO == EPixelFormat::Unknown, "This table requires updating.");
+			static_assert(SOIL_LOAD_L == EPixelFormat::Luminous, "This table requires updating.");
+			static_assert(SOIL_LOAD_LA == EPixelFormat::LuminousAlpha, "This table requires updating.");
+			static_assert(SOIL_LOAD_RGB == EPixelFormat::RGB, "This table requires updating.");
+			static_assert(SOIL_LOAD_RGBA == EPixelFormat::RGBA, "This table requires updating.");
 
 			static const UInt8 ArraySize = 5;
 			static const TArray<int, ArraySize> LookUpTable = {

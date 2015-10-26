@@ -1,0 +1,13 @@
+#version 330 core
+
+layout (location = 0) out vec4 ColourOut;
+
+in vec3 FSIn_Normal;
+in vec2 FSIn_DiffuseUVCoord;
+
+uniform sampler2D uDiffuseMap;
+
+void main()
+{
+	ColourOut = vec4(texture(uDiffuseMap, FSIn_DiffuseUVCoord).xyz, 1.0);
+}
