@@ -67,3 +67,4 @@ Solution/Libraries/Lib/Release.x32/FBX/libfbxsdk-md.lib
 
 # Misc Files
 Log.txt
+*nativecodeanalysis*.xml

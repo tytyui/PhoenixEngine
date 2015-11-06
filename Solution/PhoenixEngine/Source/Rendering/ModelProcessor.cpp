@@ -8,6 +8,7 @@
 #include "Utility/FileIO/Endian.h"
 #include "Utility/FileIO/FileStream.h"
 #include "Utility/Misc/Memory.h"
+#include "Math/Math.h"
 #include "Rendering/MeshData.h"
 
 // Note: This is required because some programmer 
@@ -525,7 +526,7 @@ void FModelProcessorHelper::ProcessMesh(
 
 			const SizeT Stride =
 				I * FModelProcessorHelper::VerticesPerTriangle * FModelProcessorHelper::FloatsPerVertex;
-			
+
 			for (Int32 J = 0; J < FModelProcessorHelper::FloatsPerVertex; ++J)
 			{
 				const SizeT Offset = J * FModelProcessorHelper::FloatsPerVertex;
@@ -613,8 +614,24 @@ void FModelProcessorHelper::ProcessMesh(
 
 					FbxVector2 UVCoord = UVCoordsArray->GetAt(Index);
 
-					MeshData.UVCoords[X] = static_cast<FMeshData::UVCoordT>(UVCoord[0]);
-					MeshData.UVCoords[Y] = static_cast<FMeshData::UVCoordT>(UVCoord[1]);
+					FMeshData::UVCoordT XValue = static_cast<FMeshData::UVCoordT>(UVCoord[0]);
+					FMeshData::UVCoordT YValue = static_cast<FMeshData::UVCoordT>(UVCoord[1]);
+
+					const Float32 MaxUVCoordValue = 1.f;
+					if (FMathf::Abs(XValue) > MaxUVCoordValue)
+					{
+						XValue = FMathf::Modulo(XValue, MaxUVCoordValue);
+					}
+
+					if (FMathf::Abs(YValue) > MaxUVCoordValue)
+					{
+						YValue = FMathf::Modulo(YValue, MaxUVCoordValue);
+					}
+
+					YValue = MaxUVCoordValue - YValue;
+
+					MeshData.UVCoords[X] = XValue;
+					MeshData.UVCoords[Y] = YValue;
 				}
 			}
 		}
@@ -646,8 +663,6 @@ void FModelProcessorHelper::ProcessMesh(
 			*IndexDataTypeTPtr = static_cast<IndexDataTypeT>(I);
 		}
 	}
-
-	UInt32* Indices = reinterpret_cast<UInt32*>(&MeshData.Indices[0]);
 
 	// #FIXME: Process materials/textures
 }

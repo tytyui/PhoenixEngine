@@ -43,6 +43,7 @@ static_assert(sizeof(FRenderEngine) == ERenderEngineInternals::Size, "Size must 
 
 FRenderEngine::FRenderEngine()
 {
+	// #FIXME: This might not be necessary.
 	std::memset(PImplData, 0, sizeof(PImplData));
 
 	FRenderEngineInternals& Ref = Get();
@@ -278,9 +279,19 @@ void FRenderEngine::DebugInitializeTestCode()
 	}
 #pragma endregion
 
+#define RENDER_ENGINE_USE_BOX_EXAMPLE 0
+#define RENDER_ENGINE_USE_DAGGER_EXAMPLE 0
+#define RENDER_ENGINE_USE_WIZARD_EXAMPLE 1
+
 #pragma region (FBXModel) Initialize FBX Model
 	{
+#if RENDER_ENGINE_USE_BOX_EXAMPLE
 		static const FChar* const LoadFile = "Assets/Models/box.fbx";
+#elif RENDER_ENGINE_USE_DAGGER_EXAMPLE 
+		static const FChar* const LoadFile = "Assets/Models/dagger.fbx";
+#elif RENDER_ENGINE_USE_WIZARD_EXAMPLE 
+		static const FChar* const LoadFile = "Assets/Models/wizard girl.fbx";
+#endif
 
 		FModelProcessor::FLoadParams LoadParams;
 		LoadParams.File = LoadFile;
@@ -300,8 +311,16 @@ void FRenderEngine::DebugInitializeTestCode()
 
 #pragma region (FBXImage) Initialize FBX Image
 	{
+#if RENDER_ENGINE_USE_BOX_EXAMPLE
+		static const FChar* const LoadFile = "Assets/Textures/daggercolor.tga";
+#elif RENDER_ENGINE_USE_DAGGER_EXAMPLE 
+		static const FChar* const LoadFile = "Assets/Textures/daggercolor.tga";
+#elif RENDER_ENGINE_USE_WIZARD_EXAMPLE 
+		static const FChar* const LoadFile = "Assets/Textures/WizardGirlColor_Red.tga";
+#endif
+
 		FImageProcessor::FLoadParams LoadParams;
-		LoadParams.File = "Assets/Textures/daggercolor.tga";
+		LoadParams.File = LoadFile;
 		LoadParams.ImageLayout = EPixelFormat::RGBA;
 
 		FImageProcessor ImageProcessor;
@@ -356,13 +375,29 @@ void FRenderEngine::DebugRenderTestCode()
 	{
 		const Float32 TimeStamp = FHighResolutionTimer::GetTimeInSeconds<Float32>();
 
+#if RENDER_ENGINE_USE_BOX_EXAMPLE
+		const Float32 Scale = 0.035f;
+		const Float32 DefaultRotationX = 0.f;
+		const Float32 YOffset = 0.f;
+#elif RENDER_ENGINE_USE_DAGGER_EXAMPLE 
+		const Float32 Scale = 0.035f;
+		const Float32 DefaultRotationX = 0.f;
+		const Float32 YOffset = 0.f;
+#elif RENDER_ENGINE_USE_WIZARD_EXAMPLE 
+		const Float32 Scale = 0.007f;
+		const Float32 DefaultRotationX = -90.f;
+		const Float32 YOffset = -0.25f;
+#endif
+
 		FMatrix4D WorldMatrix =
-			glm::rotate(Identity, glm::radians(TimeStamp * 45.f), FVector3D(0, 1, 0)) *
-			glm::scale(Identity, FVector3D(0.035f));
+			glm::translate(Identity, FVector3D(0, YOffset, 0)) *
+			glm::rotate(Identity, glm::radians(DefaultRotationX), FVector3D(1, 0, 0)) *
+			glm::rotate(Identity, glm::radians(TimeStamp * 30.f), FVector3D(0, 0, 1)) *
+			glm::scale(Identity, FVector3D(Scale));
 
 		FMatrix4D WorldViewProjectionMatrix = ViewProjectionMatrix * WorldMatrix;
 		FMatrix3D ITWorldMatrix = FMatrix3D(glm::transpose(glm::inverse(WorldMatrix)));
-		
+
 		Eng.ModelShader.Enable();
 
 		Eng.ModelShader.SetWorldViewProjectionPtr(WorldViewProjectionMatrix);
@@ -395,6 +430,10 @@ void FRenderEngine::DebugRenderTestCode()
 
 		Eng.ModelShader.Disable();
 	}
+
+#undef RENDER_ENGINE_USE_BOX_EXAMPLE
+#undef RENDER_ENGINE_USE_DAGGER_EXAMPLE
+#undef RENDER_ENGINE_USE_WIZARD_EXAMPLE
 
 #undef PHOENIX_RENDER_ENGINE_TEST_MODEL
 #undef PHOENIX_RENDER_ENGINE_TEST_IMG
