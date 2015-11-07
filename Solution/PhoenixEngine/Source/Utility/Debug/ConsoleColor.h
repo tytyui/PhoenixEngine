@@ -2,7 +2,7 @@
 #define PHOENIX_CONSOLE_COLOR_H
 
 #if _WIN32
-#include <windows.h> 
+#include <windows.h>
 #endif
 
 #include "Utility/Containers/Array.h"

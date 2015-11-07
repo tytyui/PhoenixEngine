@@ -11,10 +11,10 @@ namespace Phoenix
 		static const GLchar* const Projection = "uProjection";
 		static const GLchar* const View = "uView";
 		static const GLchar* const World = "uWorld";
-		static const GLchar* const InverseTransposeWorld = "uInvTransposeWorld";
+		static const GLchar* const InverseTransposeWorld = "uInverseTransposeWorld";
 
 		/* Matrices (Combined) */
-		static const GLchar* const WorldViewProjection = "uWVP";
+		static const GLchar* const WorldViewProjection = "uWorldViewProjection";
 
 		/* Textures */
 		static const GLchar* const DiffuseMap = "uDiffuseMap";

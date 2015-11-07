@@ -2,6 +2,7 @@
 #define PHOENIX_ASSERT_H
 
 #include <cassert>
+#include <iostream>
 
 #include "Utility/Debug/ConsoleColor.h"
 #include "Utility/Misc/String.h"
@@ -20,7 +21,10 @@
 			const FString StrMsg = SS.str();			\
 														\
 			FConsoleColor::Set(EConsoleColor::Red);		\
-			assert(StrMsg.c_str() && 0);				\
+			std::cout									\
+				<< "Assertion Error Message: " 			\
+				<< StrMsg.c_str() << "\n";				\
+			assert(Expr);								\
 			FConsoleColor::Set(EConsoleColor::Grey);	\
 		}												\
 	}

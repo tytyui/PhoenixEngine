@@ -7,11 +7,11 @@ layout (location = 2) in vec2 DiffuseTexCoord;
 out vec3 FSIn_Normal;
 out vec2 FSIn_DiffuseUVCoord;
 
-uniform mat4 uWVP;
-uniform mat3 uInvTransposeWorld;
+uniform mat4 uWorldViewProjection;
+uniform mat3 uInverseTransposeWorld;
 
 void main() {
-    gl_Position = uWVP * vec4(Position, 1.0);
-	FSIn_Normal = uInvTransposeWorld * Normal;
+    gl_Position = uWorldViewProjection * vec4(Position, 1.0);
+	FSIn_Normal = uInverseTransposeWorld * Normal;
     FSIn_DiffuseUVCoord = DiffuseTexCoord;
 }

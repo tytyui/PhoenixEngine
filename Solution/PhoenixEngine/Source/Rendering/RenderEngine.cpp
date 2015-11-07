@@ -43,9 +43,6 @@ static_assert(sizeof(FRenderEngine) == ERenderEngineInternals::Size, "Size must 
 
 FRenderEngine::FRenderEngine()
 {
-	// #FIXME: This might not be necessary.
-	std::memset(PImplData, 0, sizeof(PImplData));
-
 	FRenderEngineInternals& Ref = Get();
 	const FRenderEngineInternals* const Ptr = new (&Ref) FRenderEngineInternals();
 
@@ -378,19 +375,22 @@ void FRenderEngine::DebugRenderTestCode()
 #if RENDER_ENGINE_USE_BOX_EXAMPLE
 		const Float32 Scale = 0.035f;
 		const Float32 DefaultRotationX = 0.f;
+		const Float32 XOffset = -0.5f;
 		const Float32 YOffset = 0.f;
 #elif RENDER_ENGINE_USE_DAGGER_EXAMPLE 
 		const Float32 Scale = 0.035f;
 		const Float32 DefaultRotationX = 0.f;
+		const Float32 XOffset = -0.5f;
 		const Float32 YOffset = 0.f;
 #elif RENDER_ENGINE_USE_WIZARD_EXAMPLE 
 		const Float32 Scale = 0.007f;
 		const Float32 DefaultRotationX = -90.f;
+		const Float32 XOffset = -0.3f;
 		const Float32 YOffset = -0.25f;
 #endif
 
 		FMatrix4D WorldMatrix =
-			glm::translate(Identity, FVector3D(0, YOffset, 0)) *
+			glm::translate(Identity, FVector3D(XOffset, YOffset, 0)) *
 			glm::rotate(Identity, glm::radians(DefaultRotationX), FVector3D(1, 0, 0)) *
 			glm::rotate(Identity, glm::radians(TimeStamp * 30.f), FVector3D(0, 0, 1)) *
 			glm::scale(Identity, FVector3D(Scale));
@@ -404,13 +404,16 @@ void FRenderEngine::DebugRenderTestCode()
 		Eng.ModelShader.SetInverseTransposeWorld(ITWorldMatrix);
 		Eng.ModelShader.SetDiffuseMap(0);
 
+
+		F_GL(GL::ClearColor(0.15f, 0.4f, 1.f, 1.f));
+
 		// Note: #undefs exist for these defines.
 #define PHOENIX_RENDER_ENGINE_TEST_MODEL Eng.FBXModel
 #define PHOENIX_RENDER_ENGINE_TEST_IMG Eng.FBXImage
 #define PHOENIX_RENDER_ENGINE_TEST_USE_DRAW_ARRAYS 0
 
-		F_GL(GL::ClearColor(0.15f, 0.4f, 1.f, 1.f));
-
+#define PHOENIX_RENDER_ENGINE_TEST_DRAW_FBX_MODEL 1
+#if PHOENIX_RENDER_ENGINE_TEST_DRAW_FBX_MODEL
 		for (const auto& Mesh : PHOENIX_RENDER_ENGINE_TEST_MODEL.GetMeshes())
 		{
 			F_GL(GL::BindVertexArray(Mesh.GetVertexArray()));
@@ -418,18 +421,45 @@ void FRenderEngine::DebugRenderTestCode()
 			F_GL(GL::ActiveTexture(ETex::T0));
 			PHOENIX_RENDER_ENGINE_TEST_IMG.Enable();
 
-#if PHOENIX_RENDER_ENGINE_TEST_USE_DRAW_ARRAYS
+#	if PHOENIX_RENDER_ENGINE_TEST_USE_DRAW_ARRAYS
 			F_GL(GL::DrawArrays(EMode::Triangles, 0, Mesh.GetVertexCount()));
-#else
+#	else
 			F_GL(GL::DrawElements(EMode::Triangles, Mesh.GetIndexCount(), Mesh.GetIndexType(), nullptr));
-#endif
+#	endif
 
 			PHOENIX_RENDER_ENGINE_TEST_IMG.Disable();
 			F_GL(GL::BindVertexArray(0));
 		}
+#endif
+
+#define PHOENIX_RENDER_ENGINE_TEST_DRAW_ASSIMP_MODEL 1
+#if PHOENIX_RENDER_ENGINE_TEST_DRAW_ASSIMP_MODEL
+		WorldMatrix =
+			glm::translate(Identity, FVector3D(0, 0, 0)) *
+			glm::rotate(Identity, glm::radians(TimeStamp * 30.f), FVector3D(0, 1, 0)) *
+			glm::scale(Identity, FVector3D(0.07f));
+
+		WorldViewProjectionMatrix = ViewProjectionMatrix * WorldMatrix;
+		ITWorldMatrix = FMatrix3D(glm::transpose(glm::inverse(WorldMatrix)));
+
+		Eng.ModelShader.SetWorldViewProjectionPtr(WorldViewProjectionMatrix);
+		Eng.ModelShader.SetInverseTransposeWorld(ITWorldMatrix);
+
+		for (const auto& Mesh : Eng.Model.GetMeshes())
+		{
+			F_GL(GL::BindVertexArray(Mesh.GetVertexArray()));
+
+			F_GL(GL::ActiveTexture(ETex::T0));
+			Eng.Image.Enable();
+			F_GL(GL::DrawElements(EMode::Triangles, Mesh.GetIndexCount(), Mesh.GetIndexType(), nullptr));
+			Eng.Image.Disable();
+			F_GL(GL::BindVertexArray(0));
+		}
+#endif
 
 		Eng.ModelShader.Disable();
 	}
+}
 
 #undef RENDER_ENGINE_USE_BOX_EXAMPLE
 #undef RENDER_ENGINE_USE_DAGGER_EXAMPLE
@@ -438,4 +468,6 @@ void FRenderEngine::DebugRenderTestCode()
 #undef PHOENIX_RENDER_ENGINE_TEST_MODEL
 #undef PHOENIX_RENDER_ENGINE_TEST_IMG
 #undef PHOENIX_RENDER_ENGINE_TEST_USE_DRAW_ARRAYS
-}
+
+#undef PHOENIX_RENDER_ENGINE_TEST_DRAW_FBX_MODEL
+#undef PHOENIX_RENDER_ENGINE_TEST_DRAW_ASSIMP_MODEL

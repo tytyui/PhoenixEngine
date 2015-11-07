@@ -73,12 +73,12 @@ void FImage::Init(const FInitParams& InitParams)
 
 	F_GL(GL::GenTextures(1, &ID));
 	F_GL(GL::BindTexture(ETexTarget::T2D, ID));
+	
+	F_GL(GL::TexParameteri(ETexTarget::T2D, ETexParameter::TextureWrapS, InitParams.TexWrapS));
+	F_GL(GL::TexParameteri(ETexTarget::T2D, ETexParameter::TextureWrapT, InitParams.TexWrapT));
 
-	F_GL(GL::TexParameteri(ETexTarget::T2D, ETexParameter::TextureWrapS, ETexWrap::ClampToEdge));
-	F_GL(GL::TexParameteri(ETexTarget::T2D, ETexParameter::TextureWrapT, ETexWrap::ClampToEdge));
-
-	F_GL(GL::TexParameteri(ETexTarget::T2D, ETexParameter::TextureMinFilter, ETexMinFilter::Linear));
-	F_GL(GL::TexParameteri(ETexTarget::T2D, ETexParameter::TextureMagFilter, ETexMagFilter::Linear));
+	F_GL(GL::TexParameteri(ETexTarget::T2D, ETexParameter::TextureMinFilter, InitParams.TexMinFilter));
+	F_GL(GL::TexParameteri(ETexTarget::T2D, ETexParameter::TextureMagFilter, InitParams.TexMagFilter));
 
 	const ETexGLFormat::Value GLTexFormat = FImageHelper::ToGLTexFormat(ImageData.PixelFormat);
 	const ETexFormat::Value TexFormat = FImageHelper::ToTexFormat(ImageData.PixelFormat);

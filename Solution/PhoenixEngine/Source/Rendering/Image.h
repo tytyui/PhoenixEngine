@@ -15,6 +15,12 @@ namespace Phoenix
 		{
 			const FImageData* ImageData{ nullptr };
 			GL::MipmapLevelT MipmapLevel{ 0 };
+
+			GL::ETexWrap::Value TexWrapS{ GL::ETexWrap::ClampToEdge };
+			GL::ETexWrap::Value TexWrapT{ GL::ETexWrap::ClampToEdge };
+
+			GL::ETexMinFilter::Value TexMinFilter{ GL::ETexMinFilter::Linear };
+			GL::ETexMagFilter::Value TexMagFilter{ GL::ETexMagFilter::Linear };
 		};
 
 		FImage() = default;

@@ -50,6 +50,7 @@ namespace Phoenix
 #define PHOENIX_DEBUG_LEVEL_1 1
 #define PHOENIX_DEBUG_LEVEL_2 2
 #define PHOENIX_DEBUG_LEVEL_3 3
+#define PHOENIX_DEBUG_CODE_ON 1
 
 #define PHOENIX_DEBUG_LEVEL PHOENIX_DEBUG_LEVEL_3
 #define PHOENIX_DEBUG_USE_CONSOLE 1
@@ -60,6 +61,14 @@ namespace Phoenix
 #		define PHOENIX_DEBUG_LEVEL PHOENIX_DEBUG_LEVEL_3
 #	else
 #		define PHOENIX_DEBUG_LEVEL PHOENIX_DEBUG_LEVEL_0
+#	endif
+#endif
+
+#ifndef PHOENIX_DEBUG_CODE_ON
+#	if _DEBUG
+#		define PHOENIX_DEBUG_CODE_ON 1
+#	else
+#		define PHOENIX_DEBUG_CODE_ON 0
 #	endif
 #endif
 
@@ -189,6 +198,10 @@ namespace Phoenix
 
 #endif
 
+#if PHOENIX_DEBUG_CODE_ON
+#	define F_DebugCode(Code) Code
+#endif
+
 #ifndef F_LogOpen
 #	define F_LogOpen(File)
 #endif
@@ -215,6 +228,10 @@ namespace Phoenix
 #ifndef F_Log
 #	define F_Log(Msg)
 #	define F_LogIf(Expr, Msg)
+#endif
+
+#ifndef F_DebugCode
+#	define F_DebugCode(Code)
 #endif
 
 #endif

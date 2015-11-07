@@ -453,6 +453,10 @@ void FModelProcessorHelper::ProcessMesh(
 
 	if (UVCoordsHintIsSet && HasUVCoords)
 	{
+		F_Assert(AIMesh.mNumUVComponents[0] == FModelProcessorHelper::FloatsPerUVCoord, 
+			FModelProcessorHelper::FloatsPerUVCoord << " UVCoords were expected, but " 
+			<< AIMesh.mNumUVComponents[0] << " UVCoords exist instead.");
+
 		const SizeT UVCoordsArraySize = AIMesh.mNumVertices * FModelProcessorHelper::FloatsPerUVCoord;
 		MeshData.UVCoords.resize(UVCoordsArraySize);
 
