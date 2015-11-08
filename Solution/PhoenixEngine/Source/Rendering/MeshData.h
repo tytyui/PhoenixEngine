@@ -36,6 +36,7 @@ namespace Phoenix
 		typedef UInt8 IndexTSizeT;
 		typedef GLsizei VertexCountT;
 		typedef TVector<FMeshData> FEntries;
+		typedef UInt16 TexNameIndexT;
 
 		EMeshAttribute::Type MeshAttrib{ EMeshAttribute::None };
 		TVector<PositionT> Positions;
@@ -44,6 +45,8 @@ namespace Phoenix
 		TVector<IndexT> Indices;
 		IndexTSizeT IndexTSize{ 0 };
 		VertexCountT VertexCount{ 0 };
+		TVector<FChar> TextureNames;
+		TexNameIndexT DiffuseTexNameIndex{ 0 };
 	};
 }
 

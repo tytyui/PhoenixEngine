@@ -37,7 +37,7 @@ namespace Phoenix
 
 		void DeInit();
 
-		void Enable();
+		void Enable() const;
 
 		static void Disable();
 

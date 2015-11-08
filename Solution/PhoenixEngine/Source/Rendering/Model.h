@@ -3,8 +3,8 @@
 
 #include "Utility/Containers/Vector.h"
 #include "Utility/Misc/String.h"
-#include "Rendering/MeshData.h"
 #include "Rendering/Mesh.h"
+#include "Rendering/MeshData.h"
 
 namespace Phoenix
 {
@@ -21,7 +21,7 @@ namespace Phoenix
 		FModel(FModel&&) = default;
 		FModel& operator=(FModel&&) = default;
 
-		void Init(const FMeshData::FEntries& MeshDataEntries);
+		void Init(const FMeshData::FEntries& MeshDataEntries, const class FImageCache& ImageCache);
 
 		bool IsValid() const;
 

@@ -2,9 +2,11 @@
 #define PHOENIX_MESH_H
 
 #include "ExternalLib/GLIncludes.h"
+#include "Utility/Handle/Handle.h"
 #include "Utility/Misc/Primitives.h"
 #include "Rendering/GLInterface.h"
 #include "Rendering/MeshData.h"
+#include "Rendering/Image.h"
 
 namespace Phoenix
 {
@@ -21,7 +23,7 @@ namespace Phoenix
 
 		~FMesh();
 
-		void Init(const struct FMeshData& MeshData);
+		void Init(const FMeshData& MeshData, const class FImageCache& ImageCache);
 
 		bool IsValid() const;
 
@@ -37,6 +39,10 @@ namespace Phoenix
 
 		FMeshData::VertexCountT GetVertexCount() const;
 
+		EMeshAttribute::Type GetValidImages() const;
+
+		const THandle<FImage>& GetDiffuseImage() const;
+		
 	private:
 		GL::VertexArrayT VertexArray{ 0 };
 		GL::VertexBufferT VertexBuffer{ 0 };
@@ -44,6 +50,7 @@ namespace Phoenix
 		GL::IndexCountT IndexCount{ 0 };
 		FMeshData::IndexTSizeT IndexTSize{ 0 };
 		FMeshData::VertexCountT VertexCount{ 0 };
+		THandle<FImage> DiffuseImage;
 
 		void PostMoveReset();
 	};

@@ -1,8 +1,7 @@
 #include "Rendering/Mesh.h"
 
 #include "Utility/Debug/Assert.h"
-#include "Rendering/GLInterface.h"
-#include "Rendering/MeshData.h"
+#include "Rendering/Caches/ImageCache.h"
 
 using namespace Phoenix;
 
@@ -13,6 +12,7 @@ FMesh::FMesh(FMesh&& RHS)
 	, IndexCount(RHS.IndexCount)
 	, IndexTSize(RHS.IndexTSize)
 	, VertexCount(RHS.VertexCount)
+	, DiffuseImage(std::move(RHS.DiffuseImage))
 {
 	RHS.PostMoveReset();
 }
@@ -28,6 +28,7 @@ FMesh& FMesh::operator=(FMesh&& RHS)
 	IndexCount = RHS.IndexCount;
 	IndexTSize = RHS.IndexTSize;
 	VertexCount = RHS.VertexCount;
+	DiffuseImage = std::move(RHS.DiffuseImage);
 
 	RHS.PostMoveReset();
 	return *this;
@@ -38,7 +39,7 @@ FMesh::~FMesh()
 	DeInit();
 }
 
-void FMesh::Init(const FMeshData& MeshData)
+void FMesh::Init(const FMeshData& MeshData, const FImageCache& ImageCache)
 {
 	// #FIXME: This function could be more
 	// maintainable than it currently is.
@@ -97,9 +98,23 @@ void FMesh::Init(const FMeshData& MeshData)
 		IndexCount = Size / MeshData.IndexTSize;
 		IndexTSize = MeshData.IndexTSize;
 		VertexCount = MeshData.VertexCount;
+
+		F_GL(GL::BindVertexArray(0));
 	}
 
-	F_GL(GL::BindVertexArray(0));
+	{
+		if (MeshData.DiffuseTexNameIndex != 0)
+		{
+			const FChar* const DiffuseTexName = &MeshData.TextureNames[MeshData.DiffuseTexNameIndex];
+
+			// #FIXME: Retrieve the image from the cache as it should 
+			// have been loaded before this method was called.
+			// If it wasn't loaded, then too bad, this class should not
+			// depend on FImageProcessor.
+		}
+
+		// #FIXME: Set up remaining image data here (if it's available).
+	}
 }
 
 bool FMesh::IsValid() const
@@ -132,6 +147,7 @@ void FMesh::DeInit()
 	IndexCount = 0;
 	IndexTSize = 0;
 	VertexCount = 0;
+	DiffuseImage.DeInit();
 }
 
 GL::VertexArrayT FMesh::GetVertexArray() const
@@ -188,6 +204,23 @@ FMeshData::VertexCountT FMesh::GetVertexCount() const
 	return VertexCount;
 }
 
+EMeshAttribute::Type FMesh::GetValidImages() const
+{
+	EMeshAttribute::Type MeshAttrib = EMeshAttribute::None;
+	
+	if (DiffuseImage.IsValid())
+	{
+		MeshAttrib |= EMeshAttribute::DiffuseMap;
+	}
+
+	return MeshAttrib;
+}
+
+const THandle<FImage>& FMesh::GetDiffuseImage() const
+{
+	return DiffuseImage;
+}
+
 void FMesh::PostMoveReset()
 {
 	VertexArray = 0;
@@ -196,4 +229,5 @@ void FMesh::PostMoveReset()
 	IndexCount = 0;
 	IndexTSize = 0;
 	VertexCount = 0;
+	DiffuseImage.DeInit();
 }

@@ -118,7 +118,7 @@ void FImage::DeInit()
 	PixelFormat = EPixelFormat::Unknown;
 }
 
-void FImage::Enable()
+void FImage::Enable() const
 {
 	F_Assert(IsValid(), "Class is invalid.");
 	F_GL(GL::BindTexture(ETexTarget::T2D, ID));

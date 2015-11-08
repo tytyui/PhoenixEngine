@@ -2,11 +2,12 @@
 
 #include "Utility/Debug/Assert.h"
 #include "Utility/Debug/Debug.h"
+#include "Rendering/Caches/ImageCache.h"
 #include "Rendering/GLInterface.h"
 
 using namespace Phoenix;
 
-void FModel::Init(const FMeshData::FEntries& MeshDataEntries)
+void FModel::Init(const FMeshData::FEntries& MeshDataEntries, const FImageCache& ImageCache)
 {
 	F_Assert(MeshDataEntries.size(), "Invalid mesh data entries size of 0.");
 	DeInit();
@@ -18,7 +19,7 @@ void FModel::Init(const FMeshData::FEntries& MeshDataEntries)
 	for (SizeT I = 0; I < Size; ++I)
 	{
 		const FMeshData& MeshData = MeshDataEntries[I];
-		Meshes[I].Init(MeshData);
+		Meshes[I].Init(MeshData, ImageCache);
 	}
 }
 

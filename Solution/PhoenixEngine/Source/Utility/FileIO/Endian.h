@@ -13,9 +13,9 @@ namespace Phoenix
 		FEndian() = delete;
 
 		FEndian(const FEndian&) = delete;
-		FEndian(FEndian&&) = delete;
-
 		FEndian& operator=(const FEndian&) = delete;
+
+		FEndian(FEndian&&) = delete;
 		FEndian& operator=(FEndian&&) = delete;
 
 		static void Init();

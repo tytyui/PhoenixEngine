@@ -24,8 +24,6 @@ namespace Phoenix
 		template <class... Arguments>
 		THandle<T> CreateHandle(Arguments&&... Args);
 
-		TVector<T>& GetData();
-		
 		const TVector<T>& GetData() const;
 
 		SizeT GetDataSize() const;
@@ -74,12 +72,6 @@ namespace Phoenix
 
 		Handle.Init(this, HIDataIndex);
 		return Handle;
-	}
-
-	template <class T>
-	TVector<T>& THandles<T>::GetData()
-	{
-		return Data;
 	}
 
 	template <class T>

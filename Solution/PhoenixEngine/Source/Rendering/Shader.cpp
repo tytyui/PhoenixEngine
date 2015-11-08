@@ -1,5 +1,6 @@
 #include "Rendering/Shader.h"
 
+#include "Utility/Debug/Assert.h"
 #include "Math/MatrixTransform.h"
 #include "Rendering/Uniforms.h"
 
@@ -15,6 +16,24 @@ FShader::FInitParams::FInitParams()
 FShader::FShader()
 {
 	Shaders.fill(0);
+}
+
+FShader::FShader(FShader&& RHS)
+	: Program(RHS.Program)
+	, Shaders(RHS.Shaders)
+{
+	RHS.PostMoveReset();
+}
+
+FShader& FShader::operator=(FShader&& RHS)
+{
+	F_Assert(this != &RHS, "Self assignment is illegal.");
+
+	Program = RHS.Program;
+	Shaders = RHS.Shaders;
+	
+	RHS.PostMoveReset();
+	return *this;
 }
 
 FShader::~FShader()
@@ -254,4 +273,10 @@ void FShader::SetUniform(const FMatrix4D& Matrix4D, const GLchar* const UniformN
 	const GLfloat* const Matrix4DPtr = glm::value_ptr(Matrix4D);
 
 	F_GL(GL::UniformMatrix4fv(UniformLocation, 1, GL::EBool::False, Matrix4DPtr));
+}
+
+void FShader::PostMoveReset()
+{
+	Program = 0;
+	Shaders.fill(0);
 }

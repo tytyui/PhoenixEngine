@@ -2,10 +2,9 @@
 #define PHOENIX_HANDLE_H
 
 #include "Utility/Debug/Assert.h"
+#include "Utility/Debug/Debug.h"
 #include "Utility/Handle/HandleData.h"
 #include "Utility/Misc/Primitives.h"
-
-#undef max
 
 namespace Phoenix
 {
@@ -29,6 +28,12 @@ namespace Phoenix
 
 		void DeInit();
 
+		SizeT GetRefCount() const;
+
+		T& Get();
+
+		const T& Get() const;
+
 		T& operator*();
 
 		const T& operator*() const;
@@ -36,10 +41,6 @@ namespace Phoenix
 		T* operator->();
 
 		const T* operator->() const;
-
-		T& Get();
-
-		const T& Get() const;
 
 	protected:
 	private:
@@ -49,7 +50,9 @@ namespace Phoenix
 		template <bool AssertValidRefCount = true>
 		THandleItemData<T>& GetHandleItemData();
 
-		SizeT& GetRefCount();
+		SizeT& GetRefCountReference();
+
+		const SizeT& GetRefCountReference() const;
 
 		void PostMoveReset();
 	};
@@ -61,7 +64,7 @@ namespace Phoenix
 	{
 		if (HandleData)
 		{
-			SizeT& RefCount = GetRefCount();
+			SizeT& RefCount = GetRefCountReference();
 			++RefCount;
 		}
 	}
@@ -77,7 +80,7 @@ namespace Phoenix
 
 		if (HandleData)
 		{
-			SizeT& RefCount = GetRefCount();
+			SizeT& RefCount = GetRefCountReference();
 			++RefCount;
 		}
 
@@ -139,7 +142,7 @@ namespace Phoenix
 			return;
 		}
 
-		SizeT& ReferenceCount = GetRefCount();
+		SizeT& ReferenceCount = GetRefCountReference();
 
 		F_Assert(ReferenceCount > 0, 
 			"When HandleData is not null, ReferenceCount should be at least 1.");
@@ -163,6 +166,7 @@ namespace Phoenix
 				HandleData->Data[CurrentDataIndex] = std::move(HandleData->Data[LastDataIndex]);
 				const SizeT HIDataSize = HandleData->HIData.size();
 
+				// #FIXME: Best Case: O(1), Worst Case: O(N), Avg: O(N / 2).  Improve this.
 				for (SizeT I = 0; I < HIDataSize; ++I)
 				{
 					THandleItemData<T>& Item = HandleData->HIData[I];
@@ -187,6 +191,29 @@ namespace Phoenix
 
 		HandleData = nullptr;
 		HIDataIndex = 0;
+	}
+
+	template <class T>
+	T& THandle<T>::Get()
+	{
+		THandleItemData<T>& HIData = GetHandleItemData();
+		T& Item = HandleData->Data[HIData.DataIndex];
+		return Item;
+	}
+
+	template <class T>
+	SizeT THandle<T>::GetRefCount() const
+	{
+		const SizeT RefCount = GetRefCountReference();
+		return RefCount;
+	}
+
+	template <class T>
+	const T& THandle<T>::Get() const
+	{
+		THandleItemData<T>& HIData = GetHandleItemData();
+		T& Item = HandleData->Data[HIData.DataIndex];
+		return Item;
 	}
 
 	template <class T>
@@ -220,22 +247,6 @@ namespace Phoenix
 	}
 
 	template <class T>
-	T& THandle<T>::Get()
-	{
-		THandleItemData<T>& HIData = GetHandleItemData();
-		T& Item = HandleData->Data[HIData.DataIndex];
-		return Item;
-	}
-
-	template <class T>
-	const T& THandle<T>::Get() const
-	{
-		THandleItemData<T>& HIData = GetHandleItemData();
-		T& Item = HandleData->Data[HIData.DataIndex];
-		return Item;
-	}
-
-	template <class T>
 	template <bool AssertValidRefCount>
 	THandleItemData<T>& THandle<T>::GetHandleItemData()
 	{
@@ -252,7 +263,15 @@ namespace Phoenix
 	}
 
 	template <class T>
-	SizeT& THandle<T>::GetRefCount()
+	SizeT& THandle<T>::GetRefCountReference()
+	{
+		F_Assert(IsValid(), "Handle is not valid.");
+		THandleItemData<T>& HIData = HandleData->HIData[HIDataIndex];
+		return HIData.RefCount;
+	}
+
+	template <class T>
+	const SizeT& THandle<T>::GetRefCountReference() const
 	{
 		F_Assert(IsValid(), "Handle is not valid.");
 		THandleItemData<T>& HIData = HandleData->HIData[HIDataIndex];

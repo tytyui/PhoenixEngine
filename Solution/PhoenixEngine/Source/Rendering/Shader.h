@@ -57,8 +57,8 @@ namespace Phoenix
 
 			FInitParams();
 
-			FInitParams(const FInitParams&) = default;
-			FInitParams& operator=(const FInitParams&) = default;
+			FInitParams(const FInitParams&) = delete;
+			FInitParams& operator=(const FInitParams&) = delete;
 
 			FInitParams(FInitParams&&) = delete;
 			FInitParams& operator=(FInitParams&&) = delete;
@@ -67,10 +67,10 @@ namespace Phoenix
 		FShader();
 
 		FShader(const FShader&) = delete;
-		FShader& operator=(const FShader) = delete;
+		FShader& operator=(const FShader&) = delete;
 
-		FShader(FShader&&) = delete;
-		FShader& operator=(FShader&&) = delete;
+		FShader(FShader&&);
+		FShader& operator=(FShader&&);
 
 		~FShader();
 
@@ -123,6 +123,8 @@ namespace Phoenix
 		void SetUniform(const FMatrix3D& Matrix3D, const GLchar* const UniformName) const;
 
 		void SetUniform(const FMatrix4D& Matrix4D, const GLchar* const UniformName) const;
+
+		void PostMoveReset();
 	};
 }
 

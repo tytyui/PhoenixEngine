@@ -2,7 +2,7 @@
 #define PHOENIX_GAME_THREAD_H
 
 #include "Audio/AudioEngine.h"
-#include "Rendering/RenderEngine.h"
+#include "Rendering/GFXEngine.h"
 #include "Utility/Misc/Function.h"
 #include "Utility/Misc/Memory.h"
 #include "Utility/Misc/Primitives.h"
@@ -49,7 +49,7 @@ namespace Phoenix
 		FSafeThread Thread;
 		FInitParams InitData;
 		FAudioEngine AudioEngine;
-		FRenderEngine RenderEngine;
+		FGFXEngine GFXEngine;
 		TUniquePtr<FGameScene> GameScene;
 
 		TAtomic<bool> IsRunning{ false };

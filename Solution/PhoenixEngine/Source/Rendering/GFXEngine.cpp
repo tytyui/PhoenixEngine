@@ -1,4 +1,4 @@
-#include "Rendering/RenderEngine.h"
+#include "Rendering/GFXEngine.h"
 
 #include "ExternalLib/GLEWIncludes.h"
 #include "ExternalLib/GLIncludes.h"
@@ -9,8 +9,10 @@
 #include "Math/MatrixTransform.h"
 #include "Math/Vector4D.h"
 #include "Platform/Windowing/IWindow.h"
+#include "Rendering/Caches/GFXCaches.h"
 #include "Rendering/Camera.h"
 #include "Rendering/GLInterface.h"
+#include "Rendering/Handles/GFXHandles.h"
 #include "Rendering/Model.h"
 #include "Rendering/ModelProcessor.h"
 #include "Rendering/Image.h"
@@ -22,41 +24,43 @@ using namespace Phoenix;
 
 namespace Phoenix
 {
-	struct FRenderEngineInternals
+	struct FGFXEngineInternals
 	{
 		IWindow* MainWindow{ nullptr };
-		FRenderEngine::DrawFunction DrawFunc{ &FRenderEngine::EmptyFunction };
+		FGFXEngine::DrawFunction DrawFunc{ &FGFXEngine::EmptyFunction };
+		FGFXCaches Caches;
+		FGFXHandles Handles;
 		bool bIsInit{ false };
 
 		// #FIXME: Testing values.
 		FCamera Camera;
 		FModel Model;
 		FShader ModelShader;
-		FImage Image;
+		THandle<FImage> Image;
 		FModel FBXModel;
-		FImage FBXImage;
+		THandle<FImage> FBXImage;
 	};
 }
 
-static_assert(sizeof(FRenderEngine) >= sizeof(FRenderEngineInternals), "Size must be updated.");
-static_assert(sizeof(FRenderEngine) == ERenderEngineInternals::Size, "Size must be updated.");
+static_assert(sizeof(FGFXEngine) >= sizeof(FGFXEngineInternals), "Size must be updated.");
+static_assert(sizeof(FGFXEngine) == EGFXEngineInternals::Size, "Size must be updated.");
 
-FRenderEngine::FRenderEngine()
+FGFXEngine::FGFXEngine()
 {
-	FRenderEngineInternals& Ref = Get();
-	const FRenderEngineInternals* const Ptr = new (&Ref) FRenderEngineInternals();
+	FGFXEngineInternals& Ref = Get();
+	const FGFXEngineInternals* const Ptr = new (&Ref) FGFXEngineInternals();
 
 	F_Assert(this == (void*)Ptr, "Placement new required additional memory overhead.  Rework this.");
 }
 
-FRenderEngine::~FRenderEngine()
+FGFXEngine::~FGFXEngine()
 {
 	DeInit();
-	FRenderEngineInternals& Eng = Get();
-	Eng.~FRenderEngineInternals();
+	FGFXEngineInternals& Eng = Get();
+	Eng.~FGFXEngineInternals();
 }
 
-void FRenderEngine::Init(IWindow& InMainWindow)
+void FGFXEngine::Init(IWindow& InMainWindow)
 {
 	DeInit();
 	auto& Eng = Get();
@@ -89,7 +93,7 @@ void FRenderEngine::Init(IWindow& InMainWindow)
 
 	Eng.MainWindow->BufferSwap();
 
-	Eng.DrawFunc = &FRenderEngine::DrawInternal;
+	Eng.DrawFunc = &FGFXEngine::DrawInternal;
 	Eng.bIsInit = true;
 
 	F_Log("\tGFXEngine::Init() was successful.");
@@ -97,13 +101,13 @@ void FRenderEngine::Init(IWindow& InMainWindow)
 	DebugInitializeTestCode();
 }
 
-bool FRenderEngine::IsValid() const
+bool FGFXEngine::IsValid() const
 {
 	auto& Eng = Get();
 	return Eng.bIsInit;
 }
 
-void FRenderEngine::DeInit()
+void FGFXEngine::DeInit()
 {
 	auto& Eng = Get();
 
@@ -114,7 +118,7 @@ void FRenderEngine::DeInit()
 	Eng.Model.DeInit();
 	Eng.Camera = FCamera();
 
-	Eng.DrawFunc = &FRenderEngine::EmptyFunction;
+	Eng.DrawFunc = &FGFXEngine::EmptyFunction;
 	Eng.MainWindow = nullptr;
 
 	if (Eng.bIsInit)
@@ -124,7 +128,7 @@ void FRenderEngine::DeInit()
 	}
 }
 
-void FRenderEngine::Draw()
+void FGFXEngine::Draw()
 {
 	auto& Eng = Get();
 
@@ -132,25 +136,25 @@ void FRenderEngine::Draw()
 	(this->*Eng.DrawFunc)();
 }
 
-struct FRenderEngineInternals& FRenderEngine::Get()
+struct FGFXEngineInternals& FGFXEngine::Get()
 {
-	typedef FRenderEngineInternals FREI;
+	typedef FGFXEngineInternals FREI;
 
 	FREI* const Ptr = reinterpret_cast<FREI*>(&PImplData[0]);
 	FREI& Ref = *Ptr;
 	return Ref;
 }
 
-const struct FRenderEngineInternals& FRenderEngine::Get() const
+const struct FGFXEngineInternals& FGFXEngine::Get() const
 {
-	typedef FRenderEngineInternals FREI;
+	typedef FGFXEngineInternals FREI;
 
 	const FREI* const Ptr = reinterpret_cast<const FREI*>(&PImplData[0]);
 	const FREI& Ref = *Ptr;
 	return Ref;
 }
 
-void FRenderEngine::DrawInternal()
+void FGFXEngine::DrawInternal()
 {
 	F_Assert(IsValid(), "This class is invalid.");
 	auto& Eng = Get();
@@ -167,11 +171,11 @@ void FRenderEngine::DrawInternal()
 	Eng.MainWindow->BufferSwap();
 }
 
-void FRenderEngine::EmptyFunction()
+void FGFXEngine::EmptyFunction()
 {
 }
 
-void FRenderEngine::DebugInitializeTestCode()
+void FGFXEngine::DebugInitializeTestCode()
 {
 	// Note: This code is not truly meant to be 
 	// clean and is for debugging purposes only.
@@ -215,7 +219,9 @@ void FRenderEngine::DebugInitializeTestCode()
 			return;
 		}
 
-		Eng.Model.Init(ModelProcessor.GetMeshDataEntries());
+		// #FIXME: Load the images before the meshes try to find them.
+
+		Eng.Model.Init(ModelProcessor.GetMeshDataEntries(), Eng.Caches.GetImageCache());
 	}
 #pragma endregion
 
@@ -272,7 +278,9 @@ void FRenderEngine::DebugInitializeTestCode()
 		InitParams.ImageData = &ImageProcessor.GetImageData();
 		InitParams.MipmapLevel = 0;
 
-		Eng.Image.Init(InitParams);
+		Eng.Image = Eng.Handles.GetImageHandles().CreateHandle();
+		Eng.Image->Init(InitParams);
+		Eng.Caches.GetImageCache().AddEntry(LoadParams.File, Eng.Image);
 	}
 #pragma endregion
 
@@ -302,7 +310,9 @@ void FRenderEngine::DebugInitializeTestCode()
 			return;
 		}
 
-		Eng.FBXModel.Init(ModelProcessor.GetMeshDataEntries());
+		// #FIXME: Load the images before the meshes try to find them.
+
+		Eng.FBXModel.Init(ModelProcessor.GetMeshDataEntries(), Eng.Caches.GetImageCache());
 	}
 #pragma endregion
 
@@ -332,12 +342,14 @@ void FRenderEngine::DebugInitializeTestCode()
 		InitParams.ImageData = &ImageProcessor.GetImageData();
 		InitParams.MipmapLevel = 0;
 
-		Eng.FBXImage.Init(InitParams);
+		Eng.FBXImage = Eng.Handles.GetImageHandles().CreateHandle();
+		Eng.FBXImage->Init(InitParams);
+		Eng.Caches.GetImageCache().AddEntry(LoadParams.File, Eng.FBXImage);
 	}
 #pragma endregion
 }
 
-void FRenderEngine::DebugRenderTestCode()
+void FGFXEngine::DebugRenderTestCode()
 {
 	// Note: This code is not truly meant to be 
 	// clean and is for debugging purposes only.
@@ -419,7 +431,7 @@ void FRenderEngine::DebugRenderTestCode()
 			F_GL(GL::BindVertexArray(Mesh.GetVertexArray()));
 
 			F_GL(GL::ActiveTexture(ETex::T0));
-			PHOENIX_RENDER_ENGINE_TEST_IMG.Enable();
+			PHOENIX_RENDER_ENGINE_TEST_IMG->Enable();
 
 #	if PHOENIX_RENDER_ENGINE_TEST_USE_DRAW_ARRAYS
 			F_GL(GL::DrawArrays(EMode::Triangles, 0, Mesh.GetVertexCount()));
@@ -427,7 +439,7 @@ void FRenderEngine::DebugRenderTestCode()
 			F_GL(GL::DrawElements(EMode::Triangles, Mesh.GetIndexCount(), Mesh.GetIndexType(), nullptr));
 #	endif
 
-			PHOENIX_RENDER_ENGINE_TEST_IMG.Disable();
+			PHOENIX_RENDER_ENGINE_TEST_IMG->Disable();
 			F_GL(GL::BindVertexArray(0));
 		}
 #endif
@@ -450,9 +462,9 @@ void FRenderEngine::DebugRenderTestCode()
 			F_GL(GL::BindVertexArray(Mesh.GetVertexArray()));
 
 			F_GL(GL::ActiveTexture(ETex::T0));
-			Eng.Image.Enable();
+			Eng.Image->Enable();
 			F_GL(GL::DrawElements(EMode::Triangles, Mesh.GetIndexCount(), Mesh.GetIndexType(), nullptr));
-			Eng.Image.Disable();
+			Eng.Image->Disable();
 			F_GL(GL::BindVertexArray(0));
 		}
 #endif

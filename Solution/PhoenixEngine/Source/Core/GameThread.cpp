@@ -102,7 +102,7 @@ void FGameThread::ThreadRun()
 			}
 		}
 
-		RenderEngine.Draw();
+		GFXEngine.Draw();
 		// #FIXME: Calculate an appropriate sleep 
 		// time so the fps doesn't get ridiculous.
 		NThread::SleepThread(10);
@@ -124,8 +124,8 @@ void FGameThread::ThreadInit()
 
 	{
 		F_Assert(InitData.Window, "Window is null.");
-		RenderEngine.Init(*InitData.Window);
-		F_Assert(RenderEngine.IsValid(), "Render Engine failed to initialize.");
+		GFXEngine.Init(*InitData.Window);
+		F_Assert(GFXEngine.IsValid(), "Render Engine failed to initialize.");
 	}
 
 	{
@@ -151,7 +151,7 @@ void FGameThread::ThreadDeInit()
 	}
 
 	{
-		RenderEngine.DeInit();
+		GFXEngine.DeInit();
 	}
 
 	{	// #FIXME: DeInit Physics

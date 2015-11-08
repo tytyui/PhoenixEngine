@@ -8,6 +8,7 @@
 #include "Utility/FileIO/Endian.h"
 #include "Utility/FileIO/FileStream.h"
 #include "Utility/Misc/Memory.h"
+#include "Utility/Misc/String.h"
 #include "Math/Math.h"
 #include "Rendering/MeshData.h"
 
@@ -387,6 +388,7 @@ void FModelProcessorHelper::ProcessMesh(
 	const bool NormalsHintIsSet = (MeshData.MeshAttrib & EMeshAttribute::Normals) != 0;
 	const bool IndicesHintIsSet = (MeshData.MeshAttrib & EMeshAttribute::Indices) != 0;
 	const bool UVCoordsHintIsSet = (MeshData.MeshAttrib & EMeshAttribute::UVCoords) != 0;
+	const bool DiffuseMapHintIsSet = (MeshData.MeshAttrib & EMeshAttribute::DiffuseMap) != 0;
 
 	const bool HasVertexData = AIMesh.mNumVertices > 0;
 	const bool HasIndexData = AIMesh.mNumFaces > 0;
@@ -488,7 +490,55 @@ void FModelProcessorHelper::ProcessMesh(
 		}
 	}
 
-	// #FIXME: Process materials/textures.
+	if (DiffuseMapHintIsSet)
+	{
+		if (MeshData.TextureNames.size() == 0)
+		{
+			MeshData.TextureNames.push_back('\0');
+		}
+
+		F_Assert(AIMesh.mMaterialIndex < AIScene.mNumMaterials,
+			"Material index of " << AIMesh.mMaterialIndex 
+			<< " is over the limit of " << AIScene.mNumMaterials);
+
+		const aiMaterial* const AIMaterial = AIScene.mMaterials[AIMesh.mMaterialIndex];
+		F_Assert(AIMaterial, "AIMaterial is null.");
+
+		{
+			const UInt32 DiffuseTexCount = AIMaterial->GetTextureCount(aiTextureType_DIFFUSE);
+			F_Assert(DiffuseTexCount == 1,
+				"A diffuse texture count of 1 was expected, but a "
+				"value of " << DiffuseTexCount << " was returned.");
+		}
+
+		aiString AIString;
+
+		{
+			const aiReturn AIReturn = AIMaterial->GetTexture(aiTextureType_DIFFUSE, 0, &AIString);
+			F_Assert(AIReturn == aiReturn_SUCCESS, "Failed to retrieve diffuse texture name.");
+			F_Assert(AIString.length > 0, "AIString has a non-positive length.");
+		}
+
+		FMeshData::TexNameIndexT& DiffuseTexNameIndex = MeshData.DiffuseTexNameIndex;
+		TVector<FChar>& TextureNames = MeshData.TextureNames;
+
+		const SizeT InitialTexNamesSize = TextureNames.size();
+		F_Assert(InitialTexNamesSize < TNumericLimits<FMeshData::TexNameIndexT>::max(), 
+			"Initial index is too large to store in a FMeshData::TexNameIndexT");
+
+		SizeT CharPos = NString::FindLastOf(AIString.C_Str(), AIString.length, "/\\");
+		CharPos = CharPos != FString::npos ? CharPos + 1 : 0;
+		F_Assert(CharPos < AIString.length, "");
+
+		const SizeT UsedLength = AIString.length - CharPos;
+
+		DiffuseTexNameIndex = static_cast<FMeshData::TexNameIndexT>(InitialTexNamesSize);
+		TextureNames.resize(InitialTexNamesSize + UsedLength + 1);
+		std::memcpy(&TextureNames[DiffuseTexNameIndex], &AIString.data[CharPos], UsedLength);
+		TextureNames[TextureNames.size() - 1] = '\0';
+	}
+
+	// #FIXME: Fully process materials/textures.
 }
 
 void FModelProcessorHelper::ProcessMesh(

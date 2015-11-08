@@ -55,6 +55,47 @@ namespace Phoenix
 		}
 
 		//	--------------------------------------------------------------------------------
+		/*! \brief Finds the index in Str of the last character(s) specified in Contents.
+		*
+		*	Input: "Initial/File.cpp" 17 "/\\"
+		*	Output: 7.  FString::npos is returned if nothing was found.
+		*	Note: All FChar* must be null terminated.
+		*/
+		static inline SizeT FindLastOf(
+			const FChar* const Str,
+			const SizeT StrLength,
+			const FChar* const Contents)
+		{
+			const bool StrIsInvalid = Str == nullptr || StrLength == 0 || Str[0] == '\0';
+			const bool ContentsAreInvalid = Contents == nullptr || Contents[0] == '\0';
+
+			if (StrIsInvalid || ContentsAreInvalid)
+			{
+				return FString::npos;
+			}
+
+			const SizeT ContentsLength = std::strlen(Contents);
+
+			for (SizeT I = StrLength - 1; ; --I)
+			{
+				for (SizeT J = 0; J < ContentsLength; ++J)
+				{
+					if (Str[I] == Contents[J])
+					{
+						return I;
+					}
+				}
+
+				if (I == 0)
+				{
+					break;
+				}
+			}
+
+			return FString::npos;
+		}
+
+		//	--------------------------------------------------------------------------------
 		/*! \brief Converts any upper case characters to lower case.
 		*
 		*	Input: Initial/Directory/AdditionalDirectory/SomeFile.cpp
