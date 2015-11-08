@@ -1,4 +1,4 @@
-#include "Rendering/ModelProcessor.h"
+#include "Rendering/Model/ModelProcessor.h"
 
 #include "ExternalLib/AssimpIncludes.h"
 #include "ExternalLib/FBXIncludes.h"
@@ -10,7 +10,7 @@
 #include "Utility/Misc/Memory.h"
 #include "Utility/Misc/String.h"
 #include "Math/Math.h"
-#include "Rendering/MeshData.h"
+#include "Rendering/Mesh/MeshData.h"
 
 // Note: This is required because some programmer 
 // decided that defining max(a, b) was a good idea.

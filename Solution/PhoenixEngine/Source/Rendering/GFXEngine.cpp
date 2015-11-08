@@ -9,15 +9,15 @@
 #include "Math/MatrixTransform.h"
 #include "Math/Vector4D.h"
 #include "Platform/Windowing/IWindow.h"
-#include "Rendering/Caches/GFXCaches.h"
 #include "Rendering/Camera.h"
 #include "Rendering/GLInterface.h"
+#include "Rendering/Caches/GFXCaches.h"
 #include "Rendering/Handles/GFXHandles.h"
-#include "Rendering/Model.h"
-#include "Rendering/ModelProcessor.h"
-#include "Rendering/Image.h"
-#include "Rendering/ImageProcessor.h"
-#include "Rendering/Shader.h"
+#include "Rendering/Image/Image.h"
+#include "Rendering/Image/ImageProcessor.h"
+#include "Rendering/Model/Model.h"
+#include "Rendering/Model/ModelProcessor.h"
+#include "Rendering/Shader/Shader.h"
 
 using namespace Phoenix::GL;
 using namespace Phoenix;

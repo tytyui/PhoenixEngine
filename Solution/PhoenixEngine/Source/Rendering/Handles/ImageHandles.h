@@ -2,7 +2,7 @@
 #define PHOENIX_IMAGE_HANDLES_H
 
 #include "Utility/Handle/Handles.h"
-#include "Rendering/Image.h"
+#include "Rendering/Image/Image.h"
 
 namespace Phoenix
 {

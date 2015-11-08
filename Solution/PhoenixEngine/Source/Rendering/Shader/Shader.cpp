@@ -1,8 +1,8 @@
-#include "Rendering/Shader.h"
+#include "Rendering/Shader/Shader.h"
 
 #include "Utility/Debug/Assert.h"
 #include "Math/MatrixTransform.h"
-#include "Rendering/Uniforms.h"
+#include "Rendering/Shader/ShaderUniforms.h"
 
 using namespace Phoenix;
 

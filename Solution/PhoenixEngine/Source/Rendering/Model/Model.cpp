@@ -1,9 +1,9 @@
-#include "Rendering/Model.h"
+#include "Rendering/Model/Model.h"
 
 #include "Utility/Debug/Assert.h"
 #include "Utility/Debug/Debug.h"
-#include "Rendering/Caches/ImageCache.h"
 #include "Rendering/GLInterface.h"
+#include "Rendering/Caches/ImageCache.h"
 
 using namespace Phoenix;
 

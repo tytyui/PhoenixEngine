@@ -3,8 +3,8 @@
 
 #include "Utility/Containers/Vector.h"
 #include "Utility/Misc/String.h"
-#include "Rendering/Mesh.h"
-#include "Rendering/MeshData.h"
+#include "Rendering/Mesh/Mesh.h"
+#include "Rendering/Mesh/MeshData.h"
 
 namespace Phoenix
 {

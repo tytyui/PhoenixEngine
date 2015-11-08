@@ -1,7 +1,6 @@
 #ifndef PHOENIX_RENDER_ENGINE_H
 #define PHOENIX_RENDER_ENGINE_H
 
-#include "Utility/Misc/Memory.h"
 #include "Utility/Misc/Primitives.h"
 
 namespace Phoenix

@@ -1,8 +1,8 @@
 #ifndef PHOENIX_GFX_CACHES_H
 #define PHOENIX_GFX_CACHES_H
 
-#include "Rendering/Caches/ModelCache.h"
 #include "Rendering/Caches/ImageCache.h"
+#include "Rendering/Caches/ModelCache.h"
 #include "Rendering/Caches/ShaderCache.h"
 
 namespace Phoenix

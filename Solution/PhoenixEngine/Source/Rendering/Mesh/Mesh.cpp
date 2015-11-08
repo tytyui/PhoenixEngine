@@ -1,4 +1,4 @@
-#include "Rendering/Mesh.h"
+#include "Rendering/Mesh/Mesh.h"
 
 #include "Utility/Debug/Assert.h"
 #include "Rendering/Caches/ImageCache.h"

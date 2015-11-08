@@ -1,4 +1,4 @@
-#include "Rendering/ImageProcessor.h"
+#include "Rendering/Image/ImageProcessor.h"
 
 #include "ExternalLib/SOILIncludes.h"
 #include "Utility/Containers/Array.h"

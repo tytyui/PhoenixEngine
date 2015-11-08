@@ -3,7 +3,7 @@
 
 #include "Utility/Containers/NamedItemCache.h"
 #include "Utility/Handle/Handle.h"
-#include "Rendering/Model.h"
+#include "Rendering/Model/Model.h"
 
 namespace Phoenix
 {

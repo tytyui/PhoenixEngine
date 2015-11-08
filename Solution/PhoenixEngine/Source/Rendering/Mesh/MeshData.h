@@ -4,7 +4,7 @@
 #include "ExternalLib/GLIncludes.h"
 #include "Utility/Containers/Array.h"
 #include "Utility/Containers/Vector.h"
-#include "Rendering/ImageData.h"
+#include "Rendering/Image/ImageData.h"
 
 namespace Phoenix
 {

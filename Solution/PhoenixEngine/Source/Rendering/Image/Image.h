@@ -4,7 +4,7 @@
 #include "ExternalLib/GLIncludes.h"
 #include "Utility/Misc/Primitives.h"
 #include "Rendering/GLInterface.h"
-#include "Rendering/ImageData.h"
+#include "Rendering/Image/ImageData.h"
 
 namespace Phoenix
 {

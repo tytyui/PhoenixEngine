@@ -1,8 +1,8 @@
 #ifndef PHOENIX_GFX_HANDLES_H
 #define PHOENIX_GFX_HANDLES_H
 
-#include "Rendering/Handles/ModelHandles.h"
 #include "Rendering/Handles/ImageHandles.h"
+#include "Rendering/Handles/ModelHandles.h"
 #include "Rendering/Handles/ShaderHandles.h"
 
 namespace Phoenix

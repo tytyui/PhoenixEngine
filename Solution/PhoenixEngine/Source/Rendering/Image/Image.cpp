@@ -1,4 +1,4 @@
-#include "Rendering/Image.h"
+#include "Rendering/Image/Image.h"
 
 #include "Utility/Containers/Array.h"
 #include "Rendering/GLInterface.h"

@@ -2,7 +2,7 @@
 #define PHOENIX_IMAGE_PROCESSOR_H
 
 #include "Utility/Misc/Primitives.h"
-#include "Rendering/ImageData.h"
+#include "Rendering/Image/ImageData.h"
 
 namespace Phoenix
 {

@@ -2,7 +2,7 @@
 #define PHOENIX_MODEL_HANDLES_H
 
 #include "Utility/Handle/Handles.h"
-#include "Rendering/Model.h"
+#include "Rendering/Model/Model.h"
 
 namespace Phoenix
 {

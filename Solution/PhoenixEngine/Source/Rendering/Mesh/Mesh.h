@@ -5,8 +5,8 @@
 #include "Utility/Handle/Handle.h"
 #include "Utility/Misc/Primitives.h"
 #include "Rendering/GLInterface.h"
-#include "Rendering/MeshData.h"
-#include "Rendering/Image.h"
+#include "Rendering/Image/Image.h"
+#include "Rendering/Mesh/MeshData.h"
 
 namespace Phoenix
 {

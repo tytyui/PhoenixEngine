@@ -2,7 +2,7 @@
 #define PHOENIX_SHADER_HANDLES_H
 
 #include "Utility/Handle/Handles.h"
-#include "Rendering/Shader.h"
+#include "Rendering/Shader/Shader.h"
 
 namespace Phoenix
 {

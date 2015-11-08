@@ -19,6 +19,10 @@ Solution/x64/Debug/PhoenixEngine.lib
 Solution/Libraries/Lib/Debug.x32/FBX/libfbxsdk-md.lib
 Solution/Libraries/Lib/Release.x32/FBX/libfbxsdk-md.lib
 
+#PDBs
+PhoenixEngine.pdb
+vc140.pdb
+
 **/Build
 **/obj/Debug
 **/obj/Release
