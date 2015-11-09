@@ -3,6 +3,7 @@
 
 #include <cmath>
 
+#include "Utility/Debug/Assert.h"
 #include "Utility/Misc/Primitives.h"
 
 namespace Phoenix
@@ -11,6 +12,9 @@ namespace Phoenix
 	struct TMath
 	{
 		static T Abs(const T Value);
+		static T Clamp(const T Value, const T Min, const T Max);
+		static T IsCloseTo(const T Value, const T DesiredValue, const T AcceptableRange = 0.000001);
+		static T IsInRange(const T Value, const T Min, const T Max);
 		static T Modulo(const T Value, const T Mod);
 	};
 
@@ -21,6 +25,34 @@ namespace Phoenix
 	T TMath<T>::Abs(const T Value)
 	{
 		const T Result = std::abs(Value);
+		return Result;
+	}
+
+	template <class T>
+	T TMath<T>::Clamp(const T Value, const T Min, const T Max)
+	{
+		F_Assert(Min <= Max, "Invalid values, min: " << Min << ", max: " << Max);
+		const T Result = 
+			Value < Min ? Min :
+			Value > Max ? Max :
+			Value;
+		return Result;
+	}
+
+	template <class T>
+	T TMath<T>::IsCloseTo(const T Value, const T DesiredValue, const T AcceptableRange)
+	{
+		const T Delta = DesiredValue - Value;
+		const T AbsDelta = TMath<T>::Abs(Delta);
+
+		const bool Result = AbsDelta <= AcceptableRange;
+		return Result;
+	}
+
+	template <class T>
+	T TMath<T>::IsInRange(const T Value, const T Min, const T Max)
+	{
+		const bool Result = TMath<T>::Clamp(Value, Min, Max) == Value;
 		return Result;
 	}
 

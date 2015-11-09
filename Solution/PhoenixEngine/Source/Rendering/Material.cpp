@@ -1,6 +1,7 @@
 #include "Rendering/Material.h"
 
 #include "Utility/Debug/Assert.h"
+#include "Math/Math.h"
 
 using namespace Phoenix;
 
@@ -17,7 +18,11 @@ FMaterialBase FMaterialBase::Create(
 	const FVector4D& Colour)
 {
 	F_Assert(EMaterialType::IsValid(MaterialType), "Material type is invalid.");
-	// #FIXME: Validate colour
+	for (glm::length_t I = 0; I < Colour.length(); ++I)
+	{
+		F_Assert(FMathf::IsInRange(Colour[I], 0.f, 1.f),
+			"Invalid Colour value.");
+	}
 
 	FMaterialBase MaterialBase;
 
@@ -33,7 +38,11 @@ FAshikMaterial FAshikMaterial::Create(
 	const Float32 AnisotropicU,
 	const Float32 AnisotropicV)
 {
-	// #FIXME: Validate via clamp ((val, min, max) == val) operation.
+	F_Assert(FMathf::IsInRange(AnisotropicU, AnisotropicRange.x, AnisotropicRange.y),
+		"Invalid AnisotropicU value.");
+	F_Assert(FMathf::IsInRange(AnisotropicV, AnisotropicRange.x, AnisotropicRange.y),
+		"Invalid AnisotropicV value.");
+
 	FAshikMaterial Ashik;
 
 	Ashik.AnisotropicU = AnisotropicU;
@@ -47,7 +56,9 @@ const FVector2D FBlinnMaterial::SpecularExpRange = FVector2D(1.f, 1024.f);
 FBlinnMaterial FBlinnMaterial::Create(
 	const Float32 SpecularExp)
 {
-	// #FIXME: Validate via clamp operation.
+	F_Assert(FMathf::IsInRange(SpecularExp, SpecularExpRange.x, SpecularExpRange.y),
+		"Invalid SpecularExp value.");
+
 	FBlinnMaterial Blinn;
 
 	Blinn.SpecularExp = SpecularExp;
@@ -62,7 +73,11 @@ FCookMaterial FCookMaterial::Create(
 	const Float32 Roughness,
 	const Float32 RefANI)
 {
-	// #FIXME: Validate via clamp operations.
+	F_Assert(FMathf::IsInRange(Roughness, RoughnessRange.x, RoughnessRange.y),
+		"Invalid Roughness value.");
+	F_Assert(FMathf::IsInRange(RefANI, RefANIRange.x, RefANIRange.y),
+		"Invalid RefANI value.");
+
 	FCookMaterial Cook;
 
 	Cook.Roughness = Roughness;
@@ -80,7 +95,13 @@ FStraussMaterial FStraussMaterial::Create(
 	const Float32 Metalness,
 	const Float32 Transparency)
 {
-	// #FIXME: Validate via clamp operations.
+	F_Assert(FMathf::IsInRange(Smoothness, SmoothnessRange.x, SmoothnessRange.y),
+		"Invalid Smoothness value.");
+	F_Assert(FMathf::IsInRange(Metalness, MetalnessRange.x, MetalnessRange.y),
+		"Invalid Metalness value.");
+	F_Assert(FMathf::IsInRange(Transparency, TransparencyRange.x, TransparencyRange.y),
+		"Invalid Transparency value.");
+
 	FStraussMaterial Strauss;
 
 	Strauss.Smoothness = Smoothness;
@@ -95,7 +116,9 @@ const FVector2D FWardMaterial::RoughnessRange = FVector2D(0.f, 1.f);
 FWardMaterial FWardMaterial::Create(
 	const Float32 Roughness)
 {
-	// #FIXME: Validate via clamp operation.
+	F_Assert(FMathf::IsInRange(Roughness, RoughnessRange.x, RoughnessRange.y),
+		"Invalid Transparency value.");
+
 	FWardMaterial Ward;
 
 	Ward.Roughness = Roughness;

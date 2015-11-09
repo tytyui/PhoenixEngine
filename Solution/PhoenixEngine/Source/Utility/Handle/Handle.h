@@ -166,7 +166,6 @@ namespace Phoenix
 				HandleData->Data[CurrentDataIndex] = std::move(HandleData->Data[LastDataIndex]);
 				const SizeT HIDataSize = HandleData->HIData.size();
 
-				// #FIXME: Best Case: O(1), Worst Case: O(N), Avg: O(N / 2).  Improve this.
 				for (SizeT I = 0; I < HIDataSize; ++I)
 				{
 					THandleItemData<T>& Item = HandleData->HIData[I];

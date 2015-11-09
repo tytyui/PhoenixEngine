@@ -281,7 +281,6 @@ namespace Phoenix
 		FRawAlignedAlloc::Delete(Data);
 	}
 
-	// #FIXME: The "size" of the array should probably be stored and hidden from the user.
 	template <class T>
 	void FAlignedAlloc::DeleteArray(T* Data, const SizeT ArrayLength)
 	{

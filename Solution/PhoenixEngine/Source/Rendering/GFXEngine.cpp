@@ -3,6 +3,7 @@
 #include "ExternalLib/GLEWIncludes.h"
 #include "ExternalLib/GLIncludes.h"
 #include "Utility/FileIO/FileStream.h"
+#include "Utility/Misc/Memory.h"
 #include "Utility/Misc/Timer.h"
 #include "Math/Math.h"
 #include "Math/Matrix3D.h"
@@ -28,17 +29,18 @@ namespace Phoenix
 	{
 		IWindow* MainWindow{ nullptr };
 		FGFXEngine::DrawFunction DrawFunc{ &FGFXEngine::EmptyFunction };
-		FGFXCaches Caches;
-		FGFXHandles Handles;
+		TUniquePtr<FGFXCaches> Caches{ std::make_unique<FGFXCaches>() };
+		TUniquePtr<FGFXHandles> Handles{ std::make_unique<FGFXHandles>() };
 		bool bIsInit{ false };
 
 		// #FIXME: Testing values.
 		FCamera Camera;
-		FModel Model;
-		FShader ModelShader;
+		THandle<FModel> Model;
+		THandle<FShader> ModelShader;
 		THandle<FImage> Image;
-		FModel FBXModel;
+		THandle<FModel> FBXModel;
 		THandle<FImage> FBXImage;
+		bool bIsDebugCodeInit{ false };
 	};
 }
 
@@ -96,7 +98,7 @@ void FGFXEngine::Init(IWindow& InMainWindow)
 	Eng.DrawFunc = &FGFXEngine::DrawInternal;
 	Eng.bIsInit = true;
 
-	F_Log("\tGFXEngine::Init() was successful.");
+	F_Log("\tGFXEngine::Init() was successful.  Class internals size: " << sizeof(FGFXEngineInternals));
 	F_Assert(IsValid(), "Initialization was successful but this class is still invalid.");
 	DebugInitializeTestCode();
 }
@@ -221,7 +223,8 @@ void FGFXEngine::DebugInitializeTestCode()
 
 		// #FIXME: Load the images before the meshes try to find them.
 
-		Eng.Model.Init(ModelProcessor.GetMeshDataEntries(), Eng.Caches.GetImageCache());
+		Eng.Model = Eng.Handles->GetModelHandles().CreateHandle();
+		Eng.Model->Init(ModelProcessor.GetMeshDataEntries(), Eng.Caches->GetImageCache());
 	}
 #pragma endregion
 
@@ -256,7 +259,8 @@ void FGFXEngine::DebugInitializeTestCode()
 		Params.Code[EShaderIndex::Vertex] = Code[0].c_str();
 		Params.Code[EShaderIndex::Fragment] = Code[1].c_str();
 
-		Eng.ModelShader.Init(Params);
+		Eng.ModelShader = Eng.Handles->GetShaderHandles().CreateHandle();
+		Eng.ModelShader->Init(Params);
 	}
 #pragma endregion
 
@@ -278,9 +282,9 @@ void FGFXEngine::DebugInitializeTestCode()
 		InitParams.ImageData = &ImageProcessor.GetImageData();
 		InitParams.MipmapLevel = 0;
 
-		Eng.Image = Eng.Handles.GetImageHandles().CreateHandle();
+		Eng.Image = Eng.Handles->GetImageHandles().CreateHandle();
 		Eng.Image->Init(InitParams);
-		Eng.Caches.GetImageCache().AddEntry(LoadParams.File, Eng.Image);
+		Eng.Caches->GetImageCache().AddEntry(LoadParams.File, Eng.Image);
 	}
 #pragma endregion
 
@@ -312,7 +316,8 @@ void FGFXEngine::DebugInitializeTestCode()
 
 		// #FIXME: Load the images before the meshes try to find them.
 
-		Eng.FBXModel.Init(ModelProcessor.GetMeshDataEntries(), Eng.Caches.GetImageCache());
+		Eng.FBXModel = Eng.Handles->GetModelHandles().CreateHandle();
+		Eng.FBXModel->Init(ModelProcessor.GetMeshDataEntries(), Eng.Caches->GetImageCache());
 	}
 #pragma endregion
 
@@ -342,10 +347,12 @@ void FGFXEngine::DebugInitializeTestCode()
 		InitParams.ImageData = &ImageProcessor.GetImageData();
 		InitParams.MipmapLevel = 0;
 
-		Eng.FBXImage = Eng.Handles.GetImageHandles().CreateHandle();
+		Eng.FBXImage = Eng.Handles->GetImageHandles().CreateHandle();
 		Eng.FBXImage->Init(InitParams);
-		Eng.Caches.GetImageCache().AddEntry(LoadParams.File, Eng.FBXImage);
+		Eng.Caches->GetImageCache().AddEntry(LoadParams.File, Eng.FBXImage);
 	}
+
+	Eng.bIsDebugCodeInit = true;
 #pragma endregion
 }
 
@@ -355,12 +362,7 @@ void FGFXEngine::DebugRenderTestCode()
 	// clean and is for debugging purposes only.
 	auto& Eng = Get();
 
-	const bool ShouldReturn =
-		!Eng.Model.IsValid() ||
-		!Eng.ModelShader.IsValid() ||
-		!Eng.Image.IsValid() ||
-		!Eng.FBXModel.IsValid() ||
-		!Eng.FBXImage.IsValid();
+	const bool ShouldReturn = !Eng.bIsDebugCodeInit;
 
 	if (ShouldReturn)
 	{
@@ -410,11 +412,11 @@ void FGFXEngine::DebugRenderTestCode()
 		FMatrix4D WorldViewProjectionMatrix = ViewProjectionMatrix * WorldMatrix;
 		FMatrix3D ITWorldMatrix = FMatrix3D(glm::transpose(glm::inverse(WorldMatrix)));
 
-		Eng.ModelShader.Enable();
+		Eng.ModelShader->Enable();
 
-		Eng.ModelShader.SetWorldViewProjectionPtr(WorldViewProjectionMatrix);
-		Eng.ModelShader.SetInverseTransposeWorld(ITWorldMatrix);
-		Eng.ModelShader.SetDiffuseMap(0);
+		Eng.ModelShader->SetWorldViewProjectionPtr(WorldViewProjectionMatrix);
+		Eng.ModelShader->SetInverseTransposeWorld(ITWorldMatrix);
+		Eng.ModelShader->SetDiffuseMap(0);
 
 
 		F_GL(GL::ClearColor(0.15f, 0.4f, 1.f, 1.f));
@@ -426,7 +428,7 @@ void FGFXEngine::DebugRenderTestCode()
 
 #define PHOENIX_RENDER_ENGINE_TEST_DRAW_FBX_MODEL 1
 #if PHOENIX_RENDER_ENGINE_TEST_DRAW_FBX_MODEL
-		for (const auto& Mesh : PHOENIX_RENDER_ENGINE_TEST_MODEL.GetMeshes())
+		for (const auto& Mesh : PHOENIX_RENDER_ENGINE_TEST_MODEL->GetMeshes())
 		{
 			F_GL(GL::BindVertexArray(Mesh.GetVertexArray()));
 
@@ -454,10 +456,10 @@ void FGFXEngine::DebugRenderTestCode()
 		WorldViewProjectionMatrix = ViewProjectionMatrix * WorldMatrix;
 		ITWorldMatrix = FMatrix3D(glm::transpose(glm::inverse(WorldMatrix)));
 
-		Eng.ModelShader.SetWorldViewProjectionPtr(WorldViewProjectionMatrix);
-		Eng.ModelShader.SetInverseTransposeWorld(ITWorldMatrix);
+		Eng.ModelShader->SetWorldViewProjectionPtr(WorldViewProjectionMatrix);
+		Eng.ModelShader->SetInverseTransposeWorld(ITWorldMatrix);
 
-		for (const auto& Mesh : Eng.Model.GetMeshes())
+		for (const auto& Mesh : Eng.Model->GetMeshes())
 		{
 			F_GL(GL::BindVertexArray(Mesh.GetVertexArray()));
 
@@ -469,7 +471,7 @@ void FGFXEngine::DebugRenderTestCode()
 		}
 #endif
 
-		Eng.ModelShader.Disable();
+		Eng.ModelShader->Disable();
 	}
 }
 

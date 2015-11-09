@@ -1,6 +1,7 @@
 #include "AudioListener.h"
 
 #include "Utility/Debug/Assert.h"
+#include "Math/Math.h"
 
 using namespace Phoenix;
 
@@ -46,7 +47,12 @@ void FAudioListener::Set(
 	const FVector3D& InVelocityPerSec,
 	const FVector3D& InUpVector)
 {
-	// #FIXME: Some data verification is required here.
+	F_Assert(FMathf::IsCloseTo(glm::length(InLookDirection), 1.f),
+		"LookDirection is not normalized.  Current length: " 
+		<< std::fixed << glm::length(InLookDirection));
+	F_Assert(FMathf::IsCloseTo(glm::length(InUpVector), 1.f),
+		"UpVector is not normalized.  Current length: "
+		<< std::fixed << glm::length(InUpVector));
 
 	Position = InPosition;
 	LookDirection = InLookDirection;
@@ -63,6 +69,10 @@ void FAudioListener::SetPosition(const FVector3D& InPosition)
 
 void FAudioListener::SetLookDirection(const FVector3D& InLookDirection)
 {
+	F_Assert(FMathf::IsCloseTo(glm::length(InLookDirection), 1.f),
+		"UpVector is not normalized.  Current length: "
+		<< std::fixed << glm::length(InLookDirection));
+
 	LookDirection = InLookDirection;
 	UpdateSoundEngineValues();
 }
@@ -75,7 +85,10 @@ void FAudioListener::SetVelocityPerSec(const FVector3D& InVelocityPerSec)
 
 void FAudioListener::SetUpVector(const FVector3D& InUpVector)
 {
-	// #FIXME: Assert that the up vector is normalized.
+	F_Assert(FMathf::IsCloseTo(glm::length(InUpVector), 1.f),
+		"UpVector is not normalized.  Current length: " 
+		<< std::fixed << glm::length(InUpVector));
+
 	UpVector = InUpVector;
 	UpdateSoundEngineValues();
 }

@@ -11,7 +11,7 @@ namespace Phoenix
 
 		enum Value : Type
 		{
-			Size = 1024
+			Size = 256
 		};
 	}
 

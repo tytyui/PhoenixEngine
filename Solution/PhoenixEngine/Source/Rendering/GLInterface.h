@@ -1023,7 +1023,7 @@ namespace Phoenix
 		static inline void UseProgram(const GLuint Program)
 		{
 			glUseProgram(Program);
-	}
+		}
 
 		/* Ref: https://www.opengl.org/sdk/docs/man/docbook4/xhtml/glValidateProgram.xml */
 		static inline void ValidateProgram(const GLuint Program)
@@ -1070,10 +1070,9 @@ namespace Phoenix
 		{
 			glViewport(X, Y, Width, Height);
 		}
-}
+	}
 }
 
-// #FIXME: Move this to a config file when appropriate.
 #define PHOENIX_DEBUG_GL 1
 #define PHOENIX_DEBUG_GL_MAX_ERROR_MSGS_PER_CALL 10
 
@@ -1088,7 +1087,7 @@ namespace Phoenix
 #if PHOENIX_DEBUG_GL
 
 #	define F_GLDisplayErrors()														\
-		for (UInt32 I = 0; I < PHOENIX_DEBUG_GL_MAX_ERROR_MSGS_PER_CALL; ++I)			\
+		for (UInt32 I = 0; I < PHOENIX_DEBUG_GL_MAX_ERROR_MSGS_PER_CALL; ++I)		\
 		{																			\
 			const GL::EError::Type GLError = glGetError();							\
 																					\
@@ -1106,7 +1105,7 @@ namespace Phoenix
 		}
 
 #	define F_GLIgnoreErrors()													\
-		for (UInt32 I = 0; I < PHOENIX_DEBUG_GL_MAX_ERROR_MSGS_PER_CALL; ++I)		\
+		for (UInt32 I = 0; I < PHOENIX_DEBUG_GL_MAX_ERROR_MSGS_PER_CALL; ++I)	\
 		{																		\
 			const GL::EError::Type GLError = glGetError();						\
 																				\

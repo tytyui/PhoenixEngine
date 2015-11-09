@@ -8,7 +8,6 @@
 #include "Utility/Misc/String.h"
 #include "Utility/Misc/StringStream.h"
 
-// #FIXME: Move to appropriate config file.
 #define PHOENIX_ENABLE_ASSERT 1
 
 #if PHOENIX_ENABLE_ASSERT

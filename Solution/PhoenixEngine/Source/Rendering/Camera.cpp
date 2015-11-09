@@ -1,6 +1,7 @@
 #include "Rendering/Camera.h"
 
 #include "Utility/Debug/Assert.h"
+#include "Math/Math.h"
 #include "Math/MathCommon.h"
 #include "Math/MatrixTransform.h"
 
@@ -42,7 +43,7 @@ void FCamera::SetPosition(const FVector3D& InPosition)
 
 void FCamera::SetDirection(const FVector3D& InDirection)
 {
-	// #FIXME: Assert that it's normalized.
+	F_Assert(FMathf::IsCloseTo(glm::length(InDirection), 1.f), "Direction is not normalized.");
 	Direction = InDirection;
 }
 
@@ -54,14 +55,14 @@ void FCamera::SetLookAtTarget(const FVector3D& Target)
 
 void FCamera::SetUpVector(const FVector3D& InUpVector)
 {
-	// #FIXME: Assert that it's normalized.
+	F_Assert(FMathf::IsCloseTo(glm::length(InUpVector), 1.f), "UpVector is not normalized.");
 	UpVector = InUpVector;
 }
 
 void FCamera::UpdateViewMatrix()
 {
-	// #FIXME: Assert direction is normalized.
-	// #FIXME: Assert up vector is normalized.
+	F_Assert(FMathf::IsCloseTo(glm::length(Direction), 1.f), "Direction is not normalized.");
+	F_Assert(FMathf::IsCloseTo(glm::length(UpVector), 1.f), "UpVector is not normalized.");
 	View = glm::lookAt(Position, Position + Direction, UpVector);
 }
 
