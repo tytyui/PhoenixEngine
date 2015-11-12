@@ -34,15 +34,35 @@ namespace Phoenix
 			const aiScene& AIScene,
 			const aiMesh& AIMesh);
 
-		static void ProcessMesh(
-			FMeshData& MeshData,
-			fbxsdk::FbxMesh& FBXMesh);
-
 		template <class IndexT>
 		static void ProcessMeshFaces(
 			FMeshData& MeshData,
 			const aiScene& AIScene,
 			const aiMesh& AIMesh);
+
+		static void ProcessMaterial(
+			FMeshData& MeshData,
+			FMeshData::TexNameIndexT& TextureNameIndex,
+			const aiScene& AIScene,
+			const aiMesh& AIMesh,
+			const aiTextureType AITextureType);
+
+		static void ProcessMesh(
+			FMeshData& MeshData,
+			const fbxsdk::FbxNode& FBXNode,
+			fbxsdk::FbxMesh& FBXMesh);
+
+		static void ProcessMaterial(
+			FMeshData& MeshData,
+			FMeshData::TexNameIndexT& TextureNameIndex,
+			const fbxsdk::FbxSurfaceMaterial& FBXSurfaceMaterial,
+			const FChar* const PropertyName);
+
+		static void AppendTextureName(
+			FMeshData& MeshData,
+			FMeshData::TexNameIndexT& TextureNameIndex,
+			const FChar* const Str,
+			const SizeT StrLength);
 	};
 }
 
@@ -200,18 +220,16 @@ void FModelProcessor::LoadFBX(const FLoadParams& LoadParams)
 						MeshEntries.push_back(std::move(MeshData));
 					}
 
+					const SizeT MeshEntryIndex = MeshEntries.size() - 1;
+					FMeshData& MeshData = MeshEntries[MeshEntryIndex];
+
+					TRawPtr<FbxMesh> FBXMesh = static_cast<FbxMesh*>(FBXNodeAttribute.Get());
+					FModelProcessorHelper::ProcessMesh(MeshData, FBXNode, *FBXMesh);
+
+					if (MeshData.MeshAttrib == EMeshAttribute::None)
 					{
-						const SizeT MeshEntryIndex = MeshEntries.size() - 1;
-						FMeshData& MeshData = MeshEntries[MeshEntryIndex];
-
-						TRawPtr<FbxMesh> FBXMesh = static_cast<FbxMesh*>(FBXNodeAttribute.Get());
-						FModelProcessorHelper::ProcessMesh(MeshData, *FBXMesh);
-
-						if (MeshData.MeshAttrib == EMeshAttribute::None)
-						{
-							F_LogError("Mesh entry initialization failed.");
-							MeshEntries.pop_back();
-						}
+						F_LogError("Mesh entry initialization failed.");
+						MeshEntries.pop_back();
 					}
 					break;
 				}
@@ -382,13 +400,13 @@ void FModelProcessorHelper::ProcessMesh(
 	const aiMesh& AIMesh)
 {
 	F_Assert(MeshData.MeshAttrib, "No model data hints were requested.");
-	// #FIXME: Compress the code.
 
 	const bool PositionHintIsSet = (MeshData.MeshAttrib & EMeshAttribute::Positions) != 0;
 	const bool NormalsHintIsSet = (MeshData.MeshAttrib & EMeshAttribute::Normals) != 0;
 	const bool IndicesHintIsSet = (MeshData.MeshAttrib & EMeshAttribute::Indices) != 0;
 	const bool UVCoordsHintIsSet = (MeshData.MeshAttrib & EMeshAttribute::UVCoords) != 0;
 	const bool DiffuseMapHintIsSet = (MeshData.MeshAttrib & EMeshAttribute::DiffuseMap) != 0;
+	const bool NormalMapHintIsSet = (MeshData.MeshAttrib & EMeshAttribute::NormalMap) != 0;
 
 	const bool HasVertexData = AIMesh.mNumVertices > 0;
 	const bool HasIndexData = AIMesh.mNumFaces > 0;
@@ -455,8 +473,8 @@ void FModelProcessorHelper::ProcessMesh(
 
 	if (UVCoordsHintIsSet && HasUVCoords)
 	{
-		F_Assert(AIMesh.mNumUVComponents[0] == FModelProcessorHelper::FloatsPerUVCoord, 
-			FModelProcessorHelper::FloatsPerUVCoord << " UVCoords were expected, but " 
+		F_Assert(AIMesh.mNumUVComponents[0] == FModelProcessorHelper::FloatsPerUVCoord,
+			FModelProcessorHelper::FloatsPerUVCoord << " UVCoords were expected, but "
 			<< AIMesh.mNumUVComponents[0] << " UVCoords exist instead.");
 
 		const SizeT UVCoordsArraySize = AIMesh.mNumVertices * FModelProcessorHelper::FloatsPerUVCoord;
@@ -492,66 +510,109 @@ void FModelProcessorHelper::ProcessMesh(
 
 	if (DiffuseMapHintIsSet)
 	{
-		if (MeshData.TextureNames.size() == 0)
+		FModelProcessorHelper::ProcessMaterial(
+			MeshData,
+			MeshData.DiffuseTexNameIndex,
+			AIScene,
+			AIMesh,
+			aiTextureType_DIFFUSE);
+
+		if (MeshData.DiffuseTexNameIndex == 0)
 		{
-			MeshData.TextureNames.push_back('\0');
+			MeshData.MeshAttrib &= ~EMeshAttribute::DiffuseMap;
 		}
-
-		F_Assert(AIMesh.mMaterialIndex < AIScene.mNumMaterials,
-			"Material index of " << AIMesh.mMaterialIndex 
-			<< " is over the limit of " << AIScene.mNumMaterials);
-
-		const aiMaterial* const AIMaterial = AIScene.mMaterials[AIMesh.mMaterialIndex];
-		F_Assert(AIMaterial, "AIMaterial is null.");
-
-		{
-			const UInt32 DiffuseTexCount = AIMaterial->GetTextureCount(aiTextureType_DIFFUSE);
-			F_Assert(DiffuseTexCount == 1,
-				"A diffuse texture count of 1 was expected, but a "
-				"value of " << DiffuseTexCount << " was returned.");
-		}
-
-		aiString AIString;
-
-		{
-			const aiReturn AIReturn = AIMaterial->GetTexture(aiTextureType_DIFFUSE, 0, &AIString);
-			F_Assert(AIReturn == aiReturn_SUCCESS, "Failed to retrieve diffuse texture name.");
-			F_Assert(AIString.length > 0, "AIString has a non-positive length.");
-		}
-
-		FMeshData::TexNameIndexT& DiffuseTexNameIndex = MeshData.DiffuseTexNameIndex;
-		TVector<FChar>& TextureNames = MeshData.TextureNames;
-
-		const SizeT InitialTexNamesSize = TextureNames.size();
-		F_Assert(InitialTexNamesSize < TNumericLimits<FMeshData::TexNameIndexT>::max(), 
-			"Initial index is too large to store in a FMeshData::TexNameIndexT");
-
-		SizeT CharPos = NString::FindLastOf(AIString.C_Str(), AIString.length, "/\\");
-		CharPos = CharPos != FString::npos ? CharPos + 1 : 0;
-		F_Assert(CharPos < AIString.length, "");
-
-		const SizeT UsedLength = AIString.length - CharPos;
-
-		DiffuseTexNameIndex = static_cast<FMeshData::TexNameIndexT>(InitialTexNamesSize);
-		TextureNames.resize(InitialTexNamesSize + UsedLength + 1);
-		std::memcpy(&TextureNames[DiffuseTexNameIndex], &AIString.data[CharPos], UsedLength);
-		TextureNames[TextureNames.size() - 1] = '\0';
 	}
 
-	// #FIXME: Fully process materials/textures.
+	if (NormalMapHintIsSet)
+	{
+		FModelProcessorHelper::ProcessMaterial(
+			MeshData,
+			MeshData.NormalTexNameIndex,
+			AIScene,
+			AIMesh,
+			aiTextureType_NORMALS);
+
+		if (MeshData.NormalTexNameIndex == 0)
+		{
+			MeshData.MeshAttrib &= ~EMeshAttribute::NormalMap;
+		}
+	}
+}
+
+template <class IndexT>
+void FModelProcessorHelper::ProcessMeshFaces(
+	FMeshData& MeshData,
+	const aiScene& AIScene,
+	const aiMesh& AIMesh)
+{
+	static_assert(!TNumericLimits<IndexT>::is_signed, "IndexT must be unsigned.");
+	static_assert(sizeof(IndexT) >= 1, "sizeof(IndexT) must be >= 1 byte.");
+	static_assert(sizeof(IndexT) <= 4, "sizeof(IndexT) must be <= 4 bytes.");
+
+	const SizeT IndicesSize = AIMesh.mNumFaces * FModelProcessorHelper::IndicesPerFace * sizeof(IndexT);
+
+	MeshData.Indices.resize(IndicesSize);
+	MeshData.IndexTSize = sizeof(IndexT);
+
+	for (UInt32 I = 0; I < AIMesh.mNumFaces; I++)
+	{
+		const aiFace& AIFace = AIMesh.mFaces[I];
+
+		F_Assert(AIFace.mNumIndices == IndicesPerFace, "Face data was not triangulated.");
+		for (UInt8 J = 0; J < FModelProcessorHelper::IndicesPerFace; ++J)
+		{
+			F_Assert(AIFace.mIndices[J] <= TNumericLimits<IndexT>::max(), "Index is out of bounds.");
+			const SizeT IndicesI = I * FModelProcessorHelper::IndicesPerFace * sizeof(IndexT) + J * sizeof(IndexT);
+
+			UInt8* const UInt8Ptr = &(MeshData.Indices[IndicesI]);
+			IndexT* const IndexTPtr = reinterpret_cast<IndexT*>(UInt8Ptr);
+
+			*IndexTPtr = static_cast<IndexT>(AIFace.mIndices[J]);
+		}
+	}
+}
+
+void FModelProcessorHelper::ProcessMaterial(
+	FMeshData& MeshData,
+	FMeshData::TexNameIndexT& TextureNameIndex,
+	const aiScene& AIScene,
+	const aiMesh& AIMesh,
+	const aiTextureType AITextureType)
+{
+	F_Assert(AIMesh.mMaterialIndex < AIScene.mNumMaterials,
+		"Material index of " << AIMesh.mMaterialIndex << " is over the limit of " << AIScene.mNumMaterials);
+
+	const aiMaterial* const AIMaterial = AIScene.mMaterials[AIMesh.mMaterialIndex];
+	F_Assert(AIMaterial, "AIMaterial is null.");
+
+	const UInt32 TextureCount = AIMaterial->GetTextureCount(AITextureType);
+	if (TextureCount == 0)
+	{
+		return;
+	}
+
+	aiString AIString;
+	const aiReturn AIReturn = AIMaterial->GetTexture(AITextureType, 0, &AIString);
+	F_Assert(AIReturn == aiReturn_SUCCESS, "Failed to retrieve texture name.");
+	F_Assert(AIString.length > 0, "AIString has a non-positive length.");
+
+	AppendTextureName(MeshData, TextureNameIndex, AIString.C_Str(), AIString.length);
 }
 
 void FModelProcessorHelper::ProcessMesh(
 	FMeshData& MeshData,
+	const FbxNode& FBXNode,
 	FbxMesh& FBXMesh)
 {
 	F_Assert(MeshData.MeshAttrib, "No model data hints were requested.");
-	// #FIXME: Compress the code.
 
 	const bool PositionHintIsSet = (MeshData.MeshAttrib & EMeshAttribute::Positions) != 0;
 	const bool NormalsHintIsSet = (MeshData.MeshAttrib & EMeshAttribute::Normals) != 0;
 	const bool IndicesHintIsSet = (MeshData.MeshAttrib & EMeshAttribute::Indices) != 0;
 	const bool UVCoordsHintIsSet = (MeshData.MeshAttrib & EMeshAttribute::UVCoords) != 0;
+	const bool DiffuseMapHintIsSet = (MeshData.MeshAttrib & EMeshAttribute::DiffuseMap) != 0;
+	const bool NormalMapHintIsSet = (MeshData.MeshAttrib & EMeshAttribute::NormalMap) != 0;
+	const bool ShouldReadTextureData = DiffuseMapHintIsSet || NormalMapHintIsSet;
 
 	const Int32 ControlPointsCount = FBXMesh.GetControlPointsCount();
 	const Int32 TriangleCount = FBXMesh.GetPolygonCount();
@@ -718,38 +779,131 @@ void FModelProcessorHelper::ProcessMesh(
 		}
 	}
 
-	// #FIXME: Process materials/textures
-}
-
-template <class IndexT>
-void FModelProcessorHelper::ProcessMeshFaces(
-	FMeshData& MeshData,
-	const aiScene& AIScene,
-	const aiMesh& AIMesh)
-{
-	static_assert(!TNumericLimits<IndexT>::is_signed, "IndexT must be unsigned.");
-	static_assert(sizeof(IndexT) >= 1, "sizeof(IndexT) must be >= 1 byte.");
-	static_assert(sizeof(IndexT) <= 4, "sizeof(IndexT) must be <= 4 bytes.");
-
-	const SizeT IndicesSize = AIMesh.mNumFaces * FModelProcessorHelper::IndicesPerFace * sizeof(IndexT);
-
-	MeshData.Indices.resize(IndicesSize);
-	MeshData.IndexTSize = sizeof(IndexT);
-
-	for (UInt32 I = 0; I < AIMesh.mNumFaces; I++)
+	if (ShouldReadTextureData)
 	{
-		const aiFace& AIFace = AIMesh.mFaces[I];
+		const Int32 MaterialObjectCount = FBXNode.GetSrcObjectCount<FbxSurfaceMaterial>();
+		F_LogWarningIf(MaterialObjectCount > 1, "1 material was expected, but " << MaterialObjectCount << " exist.");
+		F_DebugBreakIf(MaterialObjectCount > 1);
 
-		F_Assert(AIFace.mNumIndices == IndicesPerFace, "Face data was not triangulated.");
-		for (UInt8 J = 0; J < FModelProcessorHelper::IndicesPerFace; ++J)
+		if (MaterialObjectCount > 0)
 		{
-			F_Assert(AIFace.mIndices[J] <= TNumericLimits<IndexT>::max(), "Index is out of bounds.");
-			const SizeT IndicesI = I * FModelProcessorHelper::IndicesPerFace * sizeof(IndexT) + J * sizeof(IndexT);
+			const FbxSurfaceMaterial* const FBXSurfaceMaterial = FBXNode.GetSrcObject<FbxSurfaceMaterial>(0);
+			if (FBXSurfaceMaterial)
+			{
+				if (DiffuseMapHintIsSet)
+				{
+					ProcessMaterial(
+						MeshData, 
+						MeshData.DiffuseTexNameIndex,
+						*FBXSurfaceMaterial, 
+						FbxSurfaceMaterial::sDiffuse);
+				}
 
-			UInt8* const UInt8Ptr = &(MeshData.Indices[IndicesI]);
-			IndexT* const IndexTPtr = reinterpret_cast<IndexT*>(UInt8Ptr);
+				if (NormalsHintIsSet)
+				{
+					ProcessMaterial(
+						MeshData, 
+						MeshData.NormalTexNameIndex, 
+						*FBXSurfaceMaterial, 
+						FbxSurfaceMaterial::sNormalMap);
+				}
+			}
+		}
 
-			*IndexTPtr = static_cast<IndexT>(AIFace.mIndices[J]);
+		if (MeshData.DiffuseTexNameIndex == 0)
+		{
+			MeshData.MeshAttrib &= ~EMeshAttribute::DiffuseMap;
+		}
+
+		if (MeshData.NormalTexNameIndex == 0)
+		{
+			MeshData.MeshAttrib &= ~EMeshAttribute::NormalMap;
 		}
 	}
+}
+
+void FModelProcessorHelper::ProcessMaterial(
+	FMeshData& MeshData,
+	FMeshData::TexNameIndexT& TextureNameIndex,
+	const FbxSurfaceMaterial& FBXSurfaceMaterial,
+	const FChar* const PropertyName)
+{
+	const FbxProperty FBXProperty = FBXSurfaceMaterial.FindProperty(PropertyName);
+
+	const Int32 LayeredTextureCount = FBXProperty.GetSrcObjectCount<FbxLayeredTexture>();
+	F_LogWarningIf(LayeredTextureCount > 1, "1 layered texture was expected, but " << LayeredTextureCount << " exist.");
+	F_DebugBreakIf(LayeredTextureCount > 1);
+
+	if (LayeredTextureCount > 0)
+	{
+		const FbxObject* const FBXPropertyObject = FBXProperty.GetSrcObject(0);
+		const FbxLayeredTexture* const FBXLayeredTexture = FbxCast<FbxLayeredTexture>(FBXPropertyObject);
+		F_Assert(FBXLayeredTexture, "FBXLayeredTexture is null.");
+
+		const Int32 TextureCount = FBXLayeredTexture->GetSrcObjectCount<FbxTexture>();
+		F_LogWarningIf(TextureCount > 1, "1 texture was expected, but " << TextureCount << " exist.");
+		F_DebugBreakIf(TextureCount > 1);
+
+		if (TextureCount > 0)
+		{
+			const FbxObject* const FBXLayeredTextureObj = FBXLayeredTexture->GetSrcObject(0);
+			const FbxFileTexture* const FBXFileTexture = FbxCast<FbxFileTexture>(FBXLayeredTextureObj);
+			F_Assert(FBXFileTexture, "FBXFileTexture is null.");
+
+			const FChar* const TextureName = FBXFileTexture->GetFileName();
+			const SizeT TextureNameLength = NString::GetLength(TextureName);
+			F_Assert(TextureName, "TextureName is null.");
+
+			AppendTextureName(MeshData, TextureNameIndex, TextureName, TextureNameLength);
+		}
+	}
+	else if (LayeredTextureCount == 0)
+	{
+		const Int32 TextureCount = FBXProperty.GetSrcObjectCount<FbxTexture>();
+		F_LogWarningIf(TextureCount > 1, "1 texture was expected, but " << TextureCount << " exist.");
+		F_DebugBreakIf(TextureCount > 1);
+
+		if (TextureCount > 0)
+		{
+			const FbxObject* const FBXPropertyObj = FBXProperty.GetSrcObject(0);
+			const FbxFileTexture* const FBXFileTexture = FbxCast<FbxFileTexture>(FBXPropertyObj);
+			F_Assert(FBXFileTexture, "FBXFileTexture is null.");
+
+			const FChar* const TextureName = FBXFileTexture->GetFileName();
+			const SizeT TextureNameLength = NString::GetLength(TextureName);
+			F_Assert(TextureName, "TextureName is null.");
+
+			AppendTextureName(MeshData, TextureNameIndex, TextureName, TextureNameLength);
+		}
+	}
+}
+
+void FModelProcessorHelper::AppendTextureName(
+	FMeshData& MeshData,
+	FMeshData::TexNameIndexT& TextureNameIndex,
+	const FChar* const Str,
+	const SizeT StrLength)
+{
+	TVector<FChar>& TextureNames = MeshData.TextureNames;
+
+	if (MeshData.TextureNames.size() == 0)
+	{
+		MeshData.TextureNames.push_back('\0');
+	}
+
+	const SizeT InitialTexNamesSize = TextureNames.size();
+	F_Assert(InitialTexNamesSize < TNumericLimits<FMeshData::TexNameIndexT>::max(),
+		"Initial index is too large to store in a FMeshData::TexNameIndexT");
+
+	SizeT CharPos = NString::FindLastOf(Str, StrLength, "/\\");
+	CharPos = CharPos != FString::npos ? CharPos + 1 : 0;
+	F_Assert(CharPos < StrLength,
+		"Character position of " << CharPos << " should be less than " << StrLength);
+
+	const SizeT UsedLength = StrLength - CharPos;
+
+	TextureNameIndex = static_cast<FMeshData::TexNameIndexT>(InitialTexNamesSize);
+	TextureNames.resize(InitialTexNamesSize + UsedLength + 1);
+	std::memcpy(&TextureNames[TextureNameIndex], &Str[CharPos], UsedLength);
+	TextureNames[TextureNames.size() - 1] = '\0';
 }

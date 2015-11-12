@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "Utility/Debug/Assert.h"
+#include "Utility/Debug/Debug.h"
 #include "Utility/Misc/Primitives.h"
 
 namespace Phoenix
@@ -104,9 +105,10 @@ namespace Phoenix
 		const SizeT DataValueModAlignment = PtrValues.DataValue % Alignment;
 		SizeT UserPtrOffset = Alignment - DataValueModAlignment;
 
-		// #FIXME: Verify this in 64 bit mode.
 		if (UserPtrOffset < PointerSize)
 		{
+			// #FIXME: Verify this in 64 bit mode.
+			F_DebugBreak();
 			UserPtrOffset += Alignment;
 		}
 

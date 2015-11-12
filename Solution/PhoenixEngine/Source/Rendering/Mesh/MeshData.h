@@ -47,6 +47,7 @@ namespace Phoenix
 		VertexCountT VertexCount{ 0 };
 		TVector<FChar> TextureNames;
 		TexNameIndexT DiffuseTexNameIndex{ 0 };
+		TexNameIndexT NormalTexNameIndex{ 0 };
 	};
 }
 

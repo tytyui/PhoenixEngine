@@ -51,24 +51,33 @@ namespace Phoenix
 #define PHOENIX_DEBUG_LEVEL_2 2
 #define PHOENIX_DEBUG_LEVEL_3 3
 #define PHOENIX_DEBUG_CODE_ON 1
+#define PHOENIX_DEBUG_BREAK_POINTS_ON 1
 
 #define PHOENIX_DEBUG_LEVEL PHOENIX_DEBUG_LEVEL_3
 #define PHOENIX_DEBUG_USE_CONSOLE 1
 #define PHOENIX_DEBUG_THREAD_SAFE 1
-
-#ifndef PHOENIX_DEBUG_LEVEL
-#	if _DEBUG
-#		define PHOENIX_DEBUG_LEVEL PHOENIX_DEBUG_LEVEL_3
-#	else
-#		define PHOENIX_DEBUG_LEVEL PHOENIX_DEBUG_LEVEL_0
-#	endif
-#endif
 
 #ifndef PHOENIX_DEBUG_CODE_ON
 #	if _DEBUG
 #		define PHOENIX_DEBUG_CODE_ON 1
 #	else
 #		define PHOENIX_DEBUG_CODE_ON 0
+#	endif
+#endif
+
+#ifndef PHOENIX_DEBUG_BREAK_POINTS_ON
+#	if _DEBUG
+#		define PHOENIX_DEBUG_BREAK_POINTS_ON 1
+#	else
+#		define PHOENIX_DEBUG_BREAK_POINTS_ON 0
+#	endif
+#endif
+
+#ifndef PHOENIX_DEBUG_LEVEL
+#	if _DEBUG
+#		define PHOENIX_DEBUG_LEVEL PHOENIX_DEBUG_LEVEL_3
+#	else
+#		define PHOENIX_DEBUG_LEVEL PHOENIX_DEBUG_LEVEL_0
 #	endif
 #endif
 
@@ -86,6 +95,17 @@ namespace Phoenix
 #	else
 #		define PHOENIX_DEBUG_THREAD_SAFE 1
 #	endif
+#endif
+
+#if PHOENIX_DEBUG_BREAK_POINTS_ON
+#	if _MSC_VER
+#		define F_DebugBreak() DebugBreak()
+#		define F_DebugBreakIf(Expr) if (Expr) { F_DebugBreak(); }
+#	endif
+#endif
+
+#if PHOENIX_DEBUG_CODE_ON
+#	define F_DebugCode(Code) Code
 #endif
 
 #if PHOENIX_DEBUG_USE_CONSOLE
@@ -198,8 +218,13 @@ namespace Phoenix
 
 #endif
 
-#if PHOENIX_DEBUG_CODE_ON
-#	define F_DebugCode(Code) Code
+#ifndef F_DebugBreak
+#	define F_DebugBreak()
+#	define F_DebugBreakIf(Expr)
+#endif
+
+#ifndef F_DebugCode
+#	define F_DebugCode(Code)
 #endif
 
 #ifndef F_LogOpen
@@ -228,10 +253,6 @@ namespace Phoenix
 #ifndef F_Log
 #	define F_Log(Msg)
 #	define F_LogIf(Expr, Msg)
-#endif
-
-#ifndef F_DebugCode
-#	define F_DebugCode(Code)
 #endif
 
 #endif
