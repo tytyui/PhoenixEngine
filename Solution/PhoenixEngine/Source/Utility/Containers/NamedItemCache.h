@@ -25,6 +25,10 @@ namespace Phoenix
 
 		const T* GetItem(const KeyT& Key) const;
 
+		T& GetItem(const KeyT& Key, T& DefaultReturnValue);
+
+		const T& GetItem(const KeyT& Key, const T& DefaultReturnValue) const;
+
 		bool HasItem(const KeyT& Key) const;
 
 		SizeT GetItemCount() const;
@@ -88,6 +92,30 @@ namespace Phoenix
 		}
 
 		return nullptr;
+	}
+
+	template <class T>
+	T& TNamedItemCache<T>::GetItem(const KeyT& Key, T& DefaultReturnValue)
+	{
+		T* Result = GetItem(Key);
+		if (!Result)
+		{
+			return DefaultReturnValue;
+		}
+
+		return *Result;
+	}
+
+	template <class T>
+	const T& TNamedItemCache<T>::GetItem(const KeyT& Key, const T& DefaultReturnValue) const
+	{
+		const T* const Result = GetItem(Key);
+		if (!Result)
+		{
+			return DefaultReturnValue;
+		}
+
+		return *Result;
 	}
 
 	template <class T>

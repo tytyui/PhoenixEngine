@@ -15,7 +15,7 @@ FAudioEngine::~FAudioEngine()
 
 void FAudioEngine::Init()
 {
-	F_Assert(!SoundEngine, "You must call DeInit prior to calling Init when already initialized.");
+	DeInit();
 	SoundEngine = irrklang::createIrrKlangDevice();
 
 	if (!SoundEngine)
@@ -26,8 +26,6 @@ void FAudioEngine::Init()
 	}
 
 	AudioListener.Init(SoundEngine);
-
-	F_Log("AudioEngine initialized.");
 }
 
 bool FAudioEngine::IsValid() const
@@ -57,8 +55,6 @@ void FAudioEngine::DeInit()
 	}
 
 	SoundEngine = nullptr;
-
-	F_Log("AudioEngine deinitialized.");
 }
 
 void FAudioEngine::SetMasterVolume(const Float32 Volume)

@@ -51,7 +51,10 @@ FImage::FImage(FImage&& RHS)
 
 FImage& FImage::operator=(FImage&& RHS)
 {
-	F_Assert(this != &RHS, "Self assignment is illegal.");
+	if (this == &RHS)
+	{
+		return *this;
+	}
 
 	ID = RHS.ID;
 	PixelFormat = RHS.PixelFormat;
@@ -65,6 +68,9 @@ FImage& FImage::operator=(FImage&& RHS)
 void FImage::Init(const FInitParams& InitParams)
 {
 	F_Assert(InitParams.ImageData, "ImageData is null.");
+	F_Assert(InitParams.ImageData->Width != 0, "Width should not be zero.");
+	F_Assert(InitParams.ImageData->Height != 0, "Height should not be zero.");
+
 	DeInit();
 
 	const FImageData& ImageData = *InitParams.ImageData;

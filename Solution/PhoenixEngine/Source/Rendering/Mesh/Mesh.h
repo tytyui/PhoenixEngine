@@ -51,6 +51,7 @@ namespace Phoenix
 		FMeshData::IndexTSizeT IndexTSize{ 0 };
 		FMeshData::VertexCountT VertexCount{ 0 };
 		THandle<FImage> DiffuseImage;
+		THandle<FImage> NormalImage;
 
 		void PostMoveReset();
 	};

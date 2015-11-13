@@ -2,6 +2,7 @@
 
 #include "ExternalLib/GLEWIncludes.h"
 #include "ExternalLib/GLIncludes.h"
+#include "Utility/Containers/Array.h"
 #include "Utility/FileIO/FileStream.h"
 #include "Utility/Misc/Memory.h"
 #include "Utility/Misc/Timer.h"
@@ -29,18 +30,48 @@ namespace Phoenix
 	{
 		IWindow* MainWindow{ nullptr };
 		FGFXEngine::DrawFunction DrawFunc{ &FGFXEngine::EmptyFunction };
-		TUniquePtr<FGFXCaches> Caches{ std::make_unique<FGFXCaches>() };
 		TUniquePtr<FGFXHandles> Handles{ std::make_unique<FGFXHandles>() };
+		TUniquePtr<FGFXCaches> Caches{ std::make_unique<FGFXCaches>() };
 		bool bIsInit{ false };
 
 		// #FIXME: Testing values.
 		FCamera Camera;
-		THandle<FModel> Model;
 		THandle<FShader> ModelShader;
-		THandle<FImage> Image;
+		THandle<FModel> Model;
 		THandle<FModel> FBXModel;
-		THandle<FImage> FBXImage;
 		bool bIsDebugCodeInit{ false };
+	};
+
+	namespace EAssetPath
+	{
+		typedef UInt8 Type;
+
+		enum Value : Type
+		{
+			Models,
+			Shaders,
+			Textures,
+			Count
+		};
+
+		static const FChar* const Get(const Value AssetPath);
+	}
+
+	struct FGFXHelper
+	{
+		static bool LoadAndCacheModel(
+			FGFXCaches& GFXCaches,
+			FGFXHandles& GFXHandles,
+			FString& ModelFileName,
+			const FChar* const RelativeDirPath,
+			const EMeshAttribute::Type MeshAttributes);
+
+		static bool LoadAndCacheImage(
+			FGFXCaches& GFXCaches,
+			FGFXHandles& GFXHandles,
+			FString& TexFileName,
+			const FChar* const RelativeDirPath,
+			const EPixelFormat::Value PixelFormat);
 	};
 }
 
@@ -98,7 +129,7 @@ void FGFXEngine::Init(IWindow& InMainWindow)
 	Eng.DrawFunc = &FGFXEngine::DrawInternal;
 	Eng.bIsInit = true;
 
-	F_Log("\tGFXEngine::Init() was successful.  Class internals size: " << sizeof(FGFXEngineInternals));
+	F_Log("\tGFXEngine internal size: " << sizeof(FGFXEngineInternals));
 	F_Assert(IsValid(), "Initialization was successful but this class is still invalid.");
 	DebugInitializeTestCode();
 }
@@ -113,13 +144,13 @@ void FGFXEngine::DeInit()
 {
 	auto& Eng = Get();
 
-	Eng.FBXImage.DeInit();
 	Eng.FBXModel.DeInit();
-	Eng.Image.DeInit();
 	Eng.ModelShader.DeInit();
 	Eng.Model.DeInit();
 	Eng.Camera = FCamera();
 
+	Eng.Caches = std::make_unique<FGFXCaches>();
+	Eng.Handles = std::make_unique<FGFXHandles>();
 	Eng.DrawFunc = &FGFXEngine::EmptyFunction;
 	Eng.MainWindow = nullptr;
 
@@ -205,29 +236,6 @@ void FGFXEngine::DebugInitializeTestCode()
 	}
 #pragma endregion
 
-#pragma region (Model) Initialize Model
-	{
-		static const FChar* const LoadFile = "Assets/Models/Fighter-Soul.obj";
-
-		FModelProcessor::FLoadParams LoadParams;
-		LoadParams.File = LoadFile;
-		LoadParams.MeshAttributeHints = EMeshAttribute::All;
-
-		FModelProcessor ModelProcessor;
-		ModelProcessor.Load(LoadParams);
-
-		if (!ModelProcessor.HasMeshDataEntries())
-		{
-			return;
-		}
-
-		// #FIXME: Load the images before the meshes try to find them.
-
-		Eng.Model = Eng.Handles->GetModelHandles().CreateHandle();
-		Eng.Model->Init(ModelProcessor.GetMeshDataEntries(), Eng.Caches->GetImageCache());
-	}
-#pragma endregion
-
 #pragma region (ModelShader) Initialize Shader
 	{
 		TArray<FString, 2> Code;
@@ -264,27 +272,27 @@ void FGFXEngine::DebugInitializeTestCode()
 	}
 #pragma endregion
 
-#pragma region (Image) Initialize Diffuse Image
+#pragma region (Model) Initialize Model
 	{
-		FImageProcessor::FLoadParams LoadParams;
-		LoadParams.File = "Assets/Textures/ship_fighter_soul.jpg";
-		LoadParams.ImageLayout = EPixelFormat::RGBA;
+		static const FChar* const LoadFile = "Fighter-Soul.obj";
 
-		FImageProcessor ImageProcessor;
-		ImageProcessor.Load(LoadParams);
+		FString ModelFileName = LoadFile;
+		const FChar* const RelativeDirPath = EAssetPath::Get(EAssetPath::Models);
 
-		if (!ImageProcessor.IsValid())
+		FGFXHelper::LoadAndCacheModel(
+			*Eng.Caches,
+			*Eng.Handles,
+			ModelFileName,
+			RelativeDirPath,
+			EMeshAttribute::All);
+
+		ModelFileName = LoadFile;
+		Eng.Model = Eng.Caches->GetModelCache().GetItem(ModelFileName, Eng.Model);
+
+		if (!Eng.Model.IsValid())
 		{
 			return;
 		}
-
-		FImage::FInitParams InitParams;
-		InitParams.ImageData = &ImageProcessor.GetImageData();
-		InitParams.MipmapLevel = 0;
-
-		Eng.Image = Eng.Handles->GetImageHandles().CreateHandle();
-		Eng.Image->Init(InitParams);
-		Eng.Caches->GetImageCache().AddEntry(LoadParams.File, Eng.Image);
 	}
 #pragma endregion
 
@@ -292,68 +300,36 @@ void FGFXEngine::DebugInitializeTestCode()
 #define RENDER_ENGINE_USE_DAGGER_EXAMPLE 0
 #define RENDER_ENGINE_USE_WIZARD_EXAMPLE 1
 
-#pragma region (FBXModel) Initialize FBX Model
+#pragma region (FBXModel) Initialize FBX Model & Image
 	{
 #if RENDER_ENGINE_USE_BOX_EXAMPLE
-		static const FChar* const LoadFile = "Assets/Models/box.fbx";
+		static const FChar* const LoadFile = "box.fbx";
 #elif RENDER_ENGINE_USE_DAGGER_EXAMPLE 
-		static const FChar* const LoadFile = "Assets/Models/dagger.fbx";
+		static const FChar* const LoadFile = "dagger.fbx";
 #elif RENDER_ENGINE_USE_WIZARD_EXAMPLE 
-		static const FChar* const LoadFile = "Assets/Models/wizard girl.fbx";
+		static const FChar* const LoadFile = "wizard girl.fbx";
 #endif
+		FString ModelFileName = LoadFile;
+		const FChar* const RelativeDirPath = EAssetPath::Get(EAssetPath::Models);
 
-		FModelProcessor::FLoadParams LoadParams;
-		LoadParams.File = LoadFile;
-		LoadParams.MeshAttributeHints = EMeshAttribute::All;
+		FGFXHelper::LoadAndCacheModel(
+			*Eng.Caches,
+			*Eng.Handles,
+			ModelFileName,
+			RelativeDirPath,
+			EMeshAttribute::All);
+		
+		ModelFileName = LoadFile;
+		Eng.FBXModel = Eng.Caches->GetModelCache().GetItem(ModelFileName, Eng.FBXModel);
 
-		FModelProcessor ModelProcessor;
-		ModelProcessor.Load(LoadParams);
-
-		if (!ModelProcessor.HasMeshDataEntries())
+		if (!Eng.FBXModel.IsValid())
 		{
 			return;
 		}
-
-		// #FIXME: Load the images before the meshes try to find them.
-
-		Eng.FBXModel = Eng.Handles->GetModelHandles().CreateHandle();
-		Eng.FBXModel->Init(ModelProcessor.GetMeshDataEntries(), Eng.Caches->GetImageCache());
 	}
 #pragma endregion
-
-#pragma region (FBXImage) Initialize FBX Image
-	{
-#if RENDER_ENGINE_USE_BOX_EXAMPLE
-		static const FChar* const LoadFile = "Assets/Textures/daggercolor.tga";
-#elif RENDER_ENGINE_USE_DAGGER_EXAMPLE 
-		static const FChar* const LoadFile = "Assets/Textures/daggercolor.tga";
-#elif RENDER_ENGINE_USE_WIZARD_EXAMPLE 
-		static const FChar* const LoadFile = "Assets/Textures/WizardGirlColor_Red.tga";
-#endif
-
-		FImageProcessor::FLoadParams LoadParams;
-		LoadParams.File = LoadFile;
-		LoadParams.ImageLayout = EPixelFormat::RGBA;
-
-		FImageProcessor ImageProcessor;
-		ImageProcessor.Load(LoadParams);
-
-		if (!ImageProcessor.IsValid())
-		{
-			return;
-		}
-
-		FImage::FInitParams InitParams;
-		InitParams.ImageData = &ImageProcessor.GetImageData();
-		InitParams.MipmapLevel = 0;
-
-		Eng.FBXImage = Eng.Handles->GetImageHandles().CreateHandle();
-		Eng.FBXImage->Init(InitParams);
-		Eng.Caches->GetImageCache().AddEntry(LoadParams.File, Eng.FBXImage);
-	}
 
 	Eng.bIsDebugCodeInit = true;
-#pragma endregion
 }
 
 void FGFXEngine::DebugRenderTestCode()
@@ -418,12 +394,10 @@ void FGFXEngine::DebugRenderTestCode()
 		Eng.ModelShader->SetInverseTransposeWorld(ITWorldMatrix);
 		Eng.ModelShader->SetDiffuseMap(0);
 
-
 		F_GL(GL::ClearColor(0.15f, 0.4f, 1.f, 1.f));
 
 		// Note: #undefs exist for these defines.
 #define PHOENIX_RENDER_ENGINE_TEST_MODEL Eng.FBXModel
-#define PHOENIX_RENDER_ENGINE_TEST_IMG Eng.FBXImage
 #define PHOENIX_RENDER_ENGINE_TEST_USE_DRAW_ARRAYS 0
 
 #define PHOENIX_RENDER_ENGINE_TEST_DRAW_FBX_MODEL 1
@@ -433,7 +407,7 @@ void FGFXEngine::DebugRenderTestCode()
 			F_GL(GL::BindVertexArray(Mesh.GetVertexArray()));
 
 			F_GL(GL::ActiveTexture(ETex::T0));
-			PHOENIX_RENDER_ENGINE_TEST_IMG->Enable();
+			Mesh.GetDiffuseImage()->Enable();
 
 #	if PHOENIX_RENDER_ENGINE_TEST_USE_DRAW_ARRAYS
 			F_GL(GL::DrawArrays(EMode::Triangles, 0, Mesh.GetVertexCount()));
@@ -441,7 +415,7 @@ void FGFXEngine::DebugRenderTestCode()
 			F_GL(GL::DrawElements(EMode::Triangles, Mesh.GetIndexCount(), Mesh.GetIndexType(), nullptr));
 #	endif
 
-			PHOENIX_RENDER_ENGINE_TEST_IMG->Disable();
+			Mesh.GetDiffuseImage()->Disable();
 			F_GL(GL::BindVertexArray(0));
 		}
 #endif
@@ -464,9 +438,9 @@ void FGFXEngine::DebugRenderTestCode()
 			F_GL(GL::BindVertexArray(Mesh.GetVertexArray()));
 
 			F_GL(GL::ActiveTexture(ETex::T0));
-			Eng.Image->Enable();
+			Mesh.GetDiffuseImage()->Enable();
 			F_GL(GL::DrawElements(EMode::Triangles, Mesh.GetIndexCount(), Mesh.GetIndexType(), nullptr));
-			Eng.Image->Disable();
+			Mesh.GetDiffuseImage()->Disable();
 			F_GL(GL::BindVertexArray(0));
 		}
 #endif
@@ -475,12 +449,149 @@ void FGFXEngine::DebugRenderTestCode()
 	}
 }
 
+const FChar* const EAssetPath::Get(const Value AssetPath)
+{
+	static_assert(EAssetPath::Count == 3, "This table needs updating.");
+	TArray<const FChar* const, EAssetPath::Count> LookUpTable =
+	{
+		"Assets/Models/",
+		"Assets/Shaders/",
+		"Assets/Textures/"
+	};
+
+	const FChar* const Result = LookUpTable[AssetPath];
+	return Result;
+}
+
+bool FGFXHelper::LoadAndCacheModel(
+	FGFXCaches& GFXCaches,
+	FGFXHandles& GFXHandles,
+	FString& ModelFileName,
+	const FChar* const RelativeDirPath,
+	const EMeshAttribute::Type MeshAttributes)
+{
+	FModelCache& ModelCache = GFXCaches.GetModelCache();
+	FModelHandles& ModelHandles = GFXHandles.GetModelHandles();
+
+	FImageCache& ImageCache = GFXCaches.GetImageCache();
+
+	if (ModelCache.HasItem(ModelFileName))
+	{
+		return true;
+	}
+
+	const FString FullPath = RelativeDirPath + ModelFileName;
+
+	FModelProcessor::FLoadParams LoadParams;
+	LoadParams.File = FullPath.c_str();
+	LoadParams.MeshAttributeHints = MeshAttributes;
+
+	FModelProcessor ModelProcessor;
+	ModelProcessor.Load(LoadParams);
+	
+	if (!ModelProcessor.HasMeshDataEntries())
+	{
+		return false;
+	}
+
+	const FChar* const RelativeTexturesPath = EAssetPath::Get(EAssetPath::Textures);
+	FString TexFileName;
+
+	for (const auto& Mesh : ModelProcessor.GetMeshDataEntries())
+	{
+		static_assert(EMeshDataIndex::Count == 2, "This section requires updating.");
+		if (Mesh.HasTextureName(EMeshDataIndex::Diffuse))
+		{
+			TexFileName = Mesh.GetTextureName(EMeshDataIndex::Diffuse);
+			const bool IsCached = FGFXHelper::LoadAndCacheImage(
+				GFXCaches,
+				GFXHandles,
+				TexFileName,
+				RelativeTexturesPath,
+				EPixelFormat::RGB);
+
+			if (!IsCached)
+			{
+				F_LogError("Failed to cache image " << TexFileName);
+				return false;
+			}
+		}
+
+		if (Mesh.HasTextureName(EMeshDataIndex::Normal))
+		{
+			TexFileName = Mesh.GetTextureName(EMeshDataIndex::Normal);
+			const bool IsCached = FGFXHelper::LoadAndCacheImage(
+				GFXCaches,
+				GFXHandles,
+				TexFileName,
+				RelativeTexturesPath,
+				EPixelFormat::RGB);
+
+			F_LogWarningIf(!IsCached, "Failed to cache image " << TexFileName);
+		}
+	}
+
+	THandle<FModel> ModelHandle = ModelHandles.CreateHandle();
+	ModelHandle->Init(ModelProcessor.GetMeshDataEntries(), ImageCache);
+
+	if (!ModelHandle.IsValid())
+	{
+		return false;
+	}
+
+	ModelCache.AddEntry(std::move(ModelFileName), std::move(ModelHandle));
+	return true;
+}
+
+bool FGFXHelper::LoadAndCacheImage(
+	FGFXCaches& GFXCaches,
+	FGFXHandles& GFXHandles,
+	FString& TexFileName,
+	const FChar* const RelativeDirPath,
+	const EPixelFormat::Value PixelFormat)
+{
+	FImageCache& ImgCache = GFXCaches.GetImageCache();
+	FImageHandles& ImgHandles = GFXHandles.GetImageHandles();
+
+	if (ImgCache.HasItem(TexFileName))
+	{
+		return true;
+	}
+
+	const FString FullPath = RelativeDirPath + TexFileName;
+
+	FImageProcessor::FLoadParams LoadParams;
+	LoadParams.File = FullPath.c_str();
+	LoadParams.ImageLayout = PixelFormat;
+
+	FImageProcessor ImageProcessor;
+	ImageProcessor.Load(LoadParams);
+
+	if (!ImageProcessor.IsValid())
+	{
+		return false;
+	}
+
+	FImage::FInitParams InitParams;
+	InitParams.ImageData = &ImageProcessor.GetImageData();
+
+	THandle<FImage> ImgHandle = ImgHandles.CreateHandle();
+	ImgHandle->Init(InitParams);
+
+	if (!ImgHandle->IsValid())
+	{
+		return false;
+	}
+
+	ImgCache.AddEntry(std::move(TexFileName), std::move(ImgHandle));
+	return true;
+}
+
 #undef RENDER_ENGINE_USE_BOX_EXAMPLE
 #undef RENDER_ENGINE_USE_DAGGER_EXAMPLE
 #undef RENDER_ENGINE_USE_WIZARD_EXAMPLE
 
 #undef PHOENIX_RENDER_ENGINE_TEST_MODEL
-#undef PHOENIX_RENDER_ENGINE_TEST_IMG
 #undef PHOENIX_RENDER_ENGINE_TEST_USE_DRAW_ARRAYS
 
 #undef PHOENIX_RENDER_ENGINE_TEST_DRAW_FBX_MODEL

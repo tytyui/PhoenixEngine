@@ -27,11 +27,14 @@ FShader::FShader(FShader&& RHS)
 
 FShader& FShader::operator=(FShader&& RHS)
 {
-	F_Assert(this != &RHS, "Self assignment is illegal.");
+	if (this == &RHS)
+	{
+		return *this;
+	}
 
 	Program = RHS.Program;
 	Shaders = RHS.Shaders;
-	
+
 	RHS.PostMoveReset();
 	return *this;
 }
@@ -256,7 +259,7 @@ void FShader::OnInitComplete()
 		return;
 	}
 
-	F_LogTrace("Shader created.");
+	F_Log("Shader created.");
 }
 
 void FShader::SetUniform(const FMatrix3D& Matrix3D, const GLchar* const UniformName) const

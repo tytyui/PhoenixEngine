@@ -27,6 +27,18 @@ namespace Phoenix
 		};
 	}
 
+	namespace EMeshDataIndex
+	{
+		typedef UInt8 Type;
+
+		enum Value : Type
+		{
+			Diffuse,
+			Normal,
+			Count
+		};
+	}
+
 	struct FMeshData
 	{
 		typedef GLfloat PositionT;
@@ -46,8 +58,25 @@ namespace Phoenix
 		IndexTSizeT IndexTSize{ 0 };
 		VertexCountT VertexCount{ 0 };
 		TVector<FChar> TextureNames;
-		TexNameIndexT DiffuseTexNameIndex{ 0 };
-		TexNameIndexT NormalTexNameIndex{ 0 };
+		TArray<TexNameIndexT, EMeshDataIndex::Count> TexNameIndices;
+
+		FMeshData()
+		{
+			TexNameIndices.fill(0);
+		}
+
+		bool HasTextureName(const EMeshDataIndex::Value Index) const
+		{
+			const bool Result = TexNameIndices[Index] != 0;
+			return Result;
+		}
+
+		const FChar* const GetTextureName(const EMeshDataIndex::Value Index) const
+		{
+			const TexNameIndexT TexNameIndex = TexNameIndices[Index];
+			const FChar* const TextureName = &TextureNames[TexNameIndex];
+			return TextureName;
+		}
 	};
 }
 

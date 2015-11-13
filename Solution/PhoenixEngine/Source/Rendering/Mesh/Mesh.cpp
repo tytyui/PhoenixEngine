@@ -41,10 +41,8 @@ FMesh::~FMesh()
 
 void FMesh::Init(const FMeshData& MeshData, const FImageCache& ImageCache)
 {
-	// #FIXME: This function could be more
-	// maintainable than it currently is.
-	// Specifically: VertexAttribPointer and
-	// EnableVertexAttribArray.
+	// #FIXME: This function could be more maintainable than it currently is.
+	// Specifically: VertexAttribPointer and EnableVertexAttribArray.
 	F_Assert(MeshData.Positions.size(), "Position data is missing.");
 	F_Assert(MeshData.Normals.size(), "Normal data is missing.");
 	F_Assert(MeshData.UVCoords.size(), "UVCoords data is missing.");
@@ -103,17 +101,11 @@ void FMesh::Init(const FMeshData& MeshData, const FImageCache& ImageCache)
 	}
 
 	{
-		if (MeshData.DiffuseTexNameIndex != 0)
+		if (MeshData.HasTextureName(EMeshDataIndex::Diffuse))
 		{
-			const FChar* const DiffuseTexName = &MeshData.TextureNames[MeshData.DiffuseTexNameIndex];
-
-			// #FIXME: Retrieve the image from the cache as it should 
-			// have been loaded before this method was called.
-			// If it wasn't loaded, then too bad, this class should not
-			// depend on FImageProcessor.
+			const FChar* const DiffuseName = MeshData.GetTextureName(EMeshDataIndex::Diffuse);
+			DiffuseImage = ImageCache.GetItem(DiffuseName, DiffuseImage);
 		}
-
-		// #FIXME: Set up remaining image data here (if it's available).
 	}
 }
 

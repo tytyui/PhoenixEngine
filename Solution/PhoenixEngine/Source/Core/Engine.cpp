@@ -60,7 +60,6 @@ void FEngine::Run(FGameThread::FCreateGameSceneFunc CreateGameSceneFunc)
 void FEngine::Init(FGameThread::FCreateGameSceneFunc CreateGameSceneFunc)
 {
 	F_LogOpen("Log.txt");
-	F_LogTrace("Engine::Init()\n");
 	F_Assert(CreateGameSceneFunc, "CreateGameSceneFunc is null.");
 
 	FEndian::Init();

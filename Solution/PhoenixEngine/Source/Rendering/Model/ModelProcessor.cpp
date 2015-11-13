@@ -29,6 +29,12 @@ namespace Phoenix
 		static const FChar* const GetAttributeTypeName(
 			const FbxNodeAttribute::EType Type);
 
+		static bool IsFileFBX(const FString& File);
+
+		static bool IsFileMisc(const FString& File);
+
+		static bool IsFilePhoenix(const FString& File);
+
 		static void ProcessMesh(
 			FMeshData& MeshData,
 			const aiScene& AIScene,
@@ -120,17 +126,17 @@ FModelProcessor::FLoadFunction FModelProcessor::GetLoadFunction(const FLoadParam
 {
 	const FString File = LoadParams.File;
 
-	if (IsFilePhoenix(File))
+	if (FModelProcessorHelper::IsFilePhoenix(File))
 	{
 		return &FModelProcessor::LoadPhoenix;
 	}
 
-	if (IsFileFBX(File))
+	if (FModelProcessorHelper::IsFileFBX(File))
 	{
 		return &FModelProcessor::LoadFBX;
 	}
 
-	if (IsFileMisc(File))
+	if (FModelProcessorHelper::IsFileMisc(File))
 	{
 		return &FModelProcessor::LoadMisc;
 	}
@@ -239,6 +245,8 @@ void FModelProcessor::LoadFBX(const FLoadParams& LoadParams)
 
 	FBXManager->Destroy();
 	FBXManager = nullptr;
+
+	F_Log("Model created: " << NString::ExtractFileName(LoadParams.File));
 }
 
 void FModelProcessor::LoadMisc(const FLoadParams& LoadParams)
@@ -325,43 +333,13 @@ void FModelProcessor::LoadMisc(const FLoadParams& LoadParams)
 		}
 	}
 
-	F_LogTrace("Model created from " << LoadParams.File);
+	F_Log("Model created: " << NString::ExtractFileName(LoadParams.File));
 }
 
 void FModelProcessor::LoadPhoenix(const FLoadParams& LoadParams)
 {
 	// Note: This will be done at a later date.
 	F_Assert(false, "This method is not yet implemented.");
-}
-
-bool FModelProcessor::IsFileFBX(const FString& File)
-{
-	F_Assert(File.size(), "Invalid file name.");
-
-	FString Extension = NString::ExtractExtension(File);
-	NString::ToLower(Extension);
-
-	const bool Result = Extension == "fbx";
-	return Result;
-}
-
-bool FModelProcessor::IsFileMisc(const FString& File)
-{
-	F_Assert(File.size(), "Invalid file name.");
-
-	const bool Result = !(IsFileFBX(File) || IsFilePhoenix(File));
-	return Result;
-}
-
-bool FModelProcessor::IsFilePhoenix(const FString& File)
-{
-	F_Assert(File.size(), "Invalid file name.");
-
-	FString Extension = NString::ExtractExtension(File);
-	NString::ToLower(Extension);
-
-	const bool Result = Extension == "pmesh";
-	return Result;
 }
 
 const FChar* const FModelProcessorHelper::GetAttributeTypeName(
@@ -392,6 +370,36 @@ const FChar* const FModelProcessorHelper::GetAttributeTypeName(
 	}
 
 	return "unknown";
+}
+
+bool FModelProcessorHelper::IsFileFBX(const FString& File)
+{
+	F_Assert(File.size(), "Invalid file name.");
+
+	FString Extension = NString::ExtractExtension(File);
+	NString::ToLower(Extension);
+
+	const bool Result = Extension == "fbx";
+	return Result;
+}
+
+bool FModelProcessorHelper::IsFileMisc(const FString& File)
+{
+	F_Assert(File.size(), "Invalid file name.");
+
+	const bool Result = !(IsFileFBX(File) || IsFilePhoenix(File));
+	return Result;
+}
+
+bool FModelProcessorHelper::IsFilePhoenix(const FString& File)
+{
+	F_Assert(File.size(), "Invalid file name.");
+
+	FString Extension = NString::ExtractExtension(File);
+	NString::ToLower(Extension);
+
+	const bool Result = Extension == "pmesh";
+	return Result;
 }
 
 void FModelProcessorHelper::ProcessMesh(
@@ -512,12 +520,12 @@ void FModelProcessorHelper::ProcessMesh(
 	{
 		FModelProcessorHelper::ProcessMaterial(
 			MeshData,
-			MeshData.DiffuseTexNameIndex,
+			MeshData.TexNameIndices[EMeshDataIndex::Diffuse],
 			AIScene,
 			AIMesh,
 			aiTextureType_DIFFUSE);
 
-		if (MeshData.DiffuseTexNameIndex == 0)
+		if (MeshData.TexNameIndices[EMeshDataIndex::Diffuse] == 0)
 		{
 			MeshData.MeshAttrib &= ~EMeshAttribute::DiffuseMap;
 		}
@@ -527,12 +535,12 @@ void FModelProcessorHelper::ProcessMesh(
 	{
 		FModelProcessorHelper::ProcessMaterial(
 			MeshData,
-			MeshData.NormalTexNameIndex,
+			MeshData.TexNameIndices[EMeshDataIndex::Normal],
 			AIScene,
 			AIMesh,
 			aiTextureType_NORMALS);
 
-		if (MeshData.NormalTexNameIndex == 0)
+		if (MeshData.TexNameIndices[EMeshDataIndex::Normal] == 0)
 		{
 			MeshData.MeshAttrib &= ~EMeshAttribute::NormalMap;
 		}
@@ -790,32 +798,34 @@ void FModelProcessorHelper::ProcessMesh(
 			const FbxSurfaceMaterial* const FBXSurfaceMaterial = FBXNode.GetSrcObject<FbxSurfaceMaterial>(0);
 			if (FBXSurfaceMaterial)
 			{
+				static_assert(EMeshDataIndex::Count == 2, "This section requires updating.");
 				if (DiffuseMapHintIsSet)
 				{
 					ProcessMaterial(
-						MeshData, 
-						MeshData.DiffuseTexNameIndex,
-						*FBXSurfaceMaterial, 
+						MeshData,
+						MeshData.TexNameIndices[EMeshDataIndex::Diffuse],
+						*FBXSurfaceMaterial,
 						FbxSurfaceMaterial::sDiffuse);
 				}
 
 				if (NormalsHintIsSet)
 				{
 					ProcessMaterial(
-						MeshData, 
-						MeshData.NormalTexNameIndex, 
-						*FBXSurfaceMaterial, 
+						MeshData,
+						MeshData.TexNameIndices[EMeshDataIndex::Normal],
+						*FBXSurfaceMaterial,
 						FbxSurfaceMaterial::sNormalMap);
 				}
 			}
 		}
 
-		if (MeshData.DiffuseTexNameIndex == 0)
+		static_assert(EMeshDataIndex::Count == 2, "This section requires updating.");
+		if (MeshData.TexNameIndices[EMeshDataIndex::Diffuse] == 0)
 		{
 			MeshData.MeshAttrib &= ~EMeshAttribute::DiffuseMap;
 		}
 
-		if (MeshData.NormalTexNameIndex == 0)
+		if (MeshData.TexNameIndices[EMeshDataIndex::Normal] == 0)
 		{
 			MeshData.MeshAttrib &= ~EMeshAttribute::NormalMap;
 		}

@@ -4,6 +4,7 @@
 #include "Utility/Containers/Array.h"
 #include "Utility/Debug/Assert.h"
 #include "Utility/Debug/Debug.h"
+#include "Utility/Misc/String.h"
 
 using namespace Phoenix;
 
@@ -60,7 +61,10 @@ FImageProcessor::FImageProcessor(FImageProcessor&& RHS)
 
 FImageProcessor& FImageProcessor::operator=(FImageProcessor&& RHS)
 {
-	F_Assert(this != &RHS, "Self assignment is illegal.");
+	if (this == &RHS)
+	{
+		return *this;
+	}
 
 	Data = RHS.Data;
 
@@ -106,13 +110,7 @@ void FImageProcessor::Load(const FLoadParams& LoadParams)
 	Data.Width = static_cast<FImageData::WidthT>(ImageWidth);
 	Data.Height = static_cast<FImageData::HeightT>(ImageHeight);
 	Data.PixelFormat = FImageProcessorHelper::ToImageLayout(ForceChannels);
-
-	F_LogTrace(
-		"Created image from " << LoadParams.File
-		<< ", W: " << Data.Width
-		<< " H: " << Data.Height
-		<< ", Ch: " << ImageChannels
-		<< ", ForceCh: " << ForceChannels);
+	F_Log("Image created: " << NString::ExtractFileName(LoadParams.File));
 }
 
 bool FImageProcessor::IsValid() const
