@@ -22,13 +22,7 @@ workspace "PhoenixEngine"
 		links { "glew", "OpenGL.framework"}
 		buildoptions { "-F ./Libraries/Lib/%{cfg.buildcfg}.%{cfg.platform}/IrrKlang -L ./Libraries/Lib/%{cfg.buildcfg}.%{cfg.platform}/IrrKlang" }
 		linkoptions { "-F ./Libraries/Lib/%{cfg.buildcfg}.%{cfg.platform}/IrrKlang -L ./Libraries/Lib/%{cfg.buildcfg}.%{cfg.platform}/IrrKlang"  }
-	
-	filter "configurations:x64"
-		debugdir "Libraries/Dll/x64/"
-
-	filter "configurations:x32"
-		debugdir "Libraries/Dll/x32/"
-	
+					
 project "PhoenixEngine"
 	kind "StaticLib"
 	language "C++"
@@ -49,10 +43,14 @@ project "PhoenixEngine"
 		"PhoenixEngine/Source/**.txt" } }
 
 	filter "configurations:Debug"
+		targetdir "Build/Debug"
+		debugdir "Build/Debug"
 		defines { "DEBUG" }
 		flags { "Symbols" }
 
 	filter "configurations:Release"
+		targetdir "Build/Release"
+		debugdir "Build/Release"
 		defines { "NDEBUG" }
 		optimize "On"
 
@@ -79,10 +77,14 @@ project "Game"
 	}
 
 	filter "configurations:Debug"
+		targetdir "Build/Debug"
+		debugdir "Build/Debug"
 		defines { "DEBUG" }
 		flags { "Symbols" }
 
 	filter "configurations:Release"
+		targetdir "Build/Release"
+		debugdir "Build/Release"
 		defines { "NDEBUG" }
 		optimize "On"
 
