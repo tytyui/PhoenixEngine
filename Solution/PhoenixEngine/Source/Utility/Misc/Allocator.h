@@ -108,7 +108,7 @@ namespace Phoenix
 		if (UserPtrOffset < PointerSize)
 		{
 			// #FIXME: Verify this in 64 bit mode.
-			F_DebugBreak();
+			F_DebugBreakOnce();
 			UserPtrOffset += Alignment;
 		}
 

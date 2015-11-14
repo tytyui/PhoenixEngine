@@ -68,8 +68,8 @@ FImage& FImage::operator=(FImage&& RHS)
 void FImage::Init(const FInitParams& InitParams)
 {
 	F_Assert(InitParams.ImageData, "ImageData is null.");
-	F_Assert(InitParams.ImageData->Width != 0, "Width should not be zero.");
-	F_Assert(InitParams.ImageData->Height != 0, "Height should not be zero.");
+	F_Assert(InitParams.ImageData->Width, "Width should not be zero.");
+	F_Assert(InitParams.ImageData->Height, "Height should not be zero.");
 
 	DeInit();
 

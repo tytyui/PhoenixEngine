@@ -30,8 +30,8 @@ namespace Phoenix
 	{
 		IWindow* MainWindow{ nullptr };
 		FGFXEngine::DrawFunction DrawFunc{ &FGFXEngine::EmptyFunction };
-		TUniquePtr<FGFXHandles> Handles{ std::make_unique<FGFXHandles>() };
-		TUniquePtr<FGFXCaches> Caches{ std::make_unique<FGFXCaches>() };
+		TUniquePtr<FGFXHandles> Handles;
+		TUniquePtr<FGFXCaches> Caches;
 		bool bIsInit{ false };
 
 		// #FIXME: Testing values.
@@ -59,6 +59,13 @@ namespace Phoenix
 
 	struct FGFXHelper
 	{
+		static bool LoadAndCacheImage(
+			FGFXCaches& GFXCaches,
+			FGFXHandles& GFXHandles,
+			FString& TexFileName,
+			const FChar* const RelativeDirPath,
+			const EPixelFormat::Value PixelFormat);
+
 		static bool LoadAndCacheModel(
 			FGFXCaches& GFXCaches,
 			FGFXHandles& GFXHandles,
@@ -66,12 +73,12 @@ namespace Phoenix
 			const FChar* const RelativeDirPath,
 			const EMeshAttribute::Type MeshAttributes);
 
-		static bool LoadAndCacheImage(
+		static bool LoadAndCacheShader(
 			FGFXCaches& GFXCaches,
 			FGFXHandles& GFXHandles,
-			FString& TexFileName,
+			FShader::CodeT& ShaderFileNames,
 			const FChar* const RelativeDirPath,
-			const EPixelFormat::Value PixelFormat);
+			const FChar* const ShaderKey);
 	};
 }
 
@@ -97,6 +104,9 @@ void FGFXEngine::Init(IWindow& InMainWindow)
 {
 	DeInit();
 	auto& Eng = Get();
+
+	Eng.Caches = std::make_unique<FGFXCaches>();
+	Eng.Handles = std::make_unique<FGFXHandles>();
 
 	Eng.MainWindow = &InMainWindow;
 	Eng.MainWindow->SetGraphicsContextCurrent();
@@ -149,8 +159,8 @@ void FGFXEngine::DeInit()
 	Eng.Model.DeInit();
 	Eng.Camera = FCamera();
 
-	Eng.Caches = std::make_unique<FGFXCaches>();
-	Eng.Handles = std::make_unique<FGFXHandles>();
+	Eng.Caches.reset();
+	Eng.Handles.reset();
 	Eng.DrawFunc = &FGFXEngine::EmptyFunction;
 	Eng.MainWindow = nullptr;
 
@@ -238,37 +248,33 @@ void FGFXEngine::DebugInitializeTestCode()
 
 #pragma region (ModelShader) Initialize Shader
 	{
-		TArray<FString, 2> Code;
-		TArray<const FChar* const, 2> Files = {
-			"Assets/Shaders/Model_VS.txt",
-			"Assets/Shaders/Model_FS.txt",
-		};
+		const FChar* const RelativeDirPath = EAssetPath::Get(EAssetPath::Shaders);
+		FShader::CodeT Code;
 
-		for (UInt32 I = 0; I < Files.size(); ++I)
+		Code.fill(nullptr);
+
+		Code[EShaderIndex::Vertex] = "Model_VS.txt";
+		Code[EShaderIndex::Fragment] = "Model_FS.txt";
+
+		const bool Result = FGFXHelper::LoadAndCacheShader(
+			*Eng.Caches,
+			*Eng.Handles,
+			Code,
+			RelativeDirPath,
+			"ModelDiffuse");
+
+		if (!Result)
 		{
-			FFileStream FileStream;
-			FileStream.open(Files[I], std::ios::in);
-
-			if (!FileStream.is_open())
-			{
-				F_LogError("Failed to open file " << Files[I]);
-				return;
-			}
-
-			FStringStream SS;
-			SS << FileStream.rdbuf();
-			FileStream.close();
-
-			Code[I] = SS.str();
+			F_LogError("Failed to load and cache shader.");
 		}
 
-		FShader::FInitParams Params;
+		Eng.ModelShader = Eng.Caches->GetShaderCache().GetItem("ModelDiffuse", Eng.ModelShader);
 
-		Params.Code[EShaderIndex::Vertex] = Code[0].c_str();
-		Params.Code[EShaderIndex::Fragment] = Code[1].c_str();
-
-		Eng.ModelShader = Eng.Handles->GetShaderHandles().CreateHandle();
-		Eng.ModelShader->Init(Params);
+		if (!Eng.ModelShader.IsValid())
+		{
+			F_LogError("Failed to initialize shader.");
+			return;
+		}
 	}
 #pragma endregion
 
@@ -279,18 +285,25 @@ void FGFXEngine::DebugInitializeTestCode()
 		FString ModelFileName = LoadFile;
 		const FChar* const RelativeDirPath = EAssetPath::Get(EAssetPath::Models);
 
-		FGFXHelper::LoadAndCacheModel(
+		const bool Result = FGFXHelper::LoadAndCacheModel(
 			*Eng.Caches,
 			*Eng.Handles,
 			ModelFileName,
 			RelativeDirPath,
 			EMeshAttribute::All);
 
+		if (!Result)
+		{
+			F_LogError("Failed to load and cache model.");
+			return;
+		}
+
 		ModelFileName = LoadFile;
 		Eng.Model = Eng.Caches->GetModelCache().GetItem(ModelFileName, Eng.Model);
 
 		if (!Eng.Model.IsValid())
 		{
+			F_LogError("Failed to initialize model.");
 			return;
 		}
 	}
@@ -312,18 +325,25 @@ void FGFXEngine::DebugInitializeTestCode()
 		FString ModelFileName = LoadFile;
 		const FChar* const RelativeDirPath = EAssetPath::Get(EAssetPath::Models);
 
-		FGFXHelper::LoadAndCacheModel(
+		const bool Result = FGFXHelper::LoadAndCacheModel(
 			*Eng.Caches,
 			*Eng.Handles,
 			ModelFileName,
 			RelativeDirPath,
 			EMeshAttribute::All);
 		
+		if (!Result)
+		{
+			F_LogError("Failed to load and cache fbx model.");
+			return;
+		}
+
 		ModelFileName = LoadFile;
 		Eng.FBXModel = Eng.Caches->GetModelCache().GetItem(ModelFileName, Eng.FBXModel);
 
 		if (!Eng.FBXModel.IsValid())
 		{
+			F_LogError("Failed to initialize FBX model.");
 			return;
 		}
 	}
@@ -463,6 +483,52 @@ const FChar* const EAssetPath::Get(const Value AssetPath)
 	return Result;
 }
 
+bool FGFXHelper::LoadAndCacheImage(
+	FGFXCaches& GFXCaches,
+	FGFXHandles& GFXHandles,
+	FString& TexFileName,
+	const FChar* const RelativeDirPath,
+	const EPixelFormat::Value PixelFormat)
+{
+	FImageCache& ImgCache = GFXCaches.GetImageCache();
+	FImageHandles& ImgHandles = GFXHandles.GetImageHandles();
+
+	if (ImgCache.HasItem(TexFileName))
+	{
+		return true;
+	}
+
+	const FString FullPath = RelativeDirPath + TexFileName;
+
+	FImageProcessor::FLoadParams LoadParams;
+	LoadParams.File = FullPath.c_str();
+	LoadParams.ImageLayout = PixelFormat;
+
+	FImageProcessor ImageProcessor;
+	ImageProcessor.Load(LoadParams);
+
+	if (!ImageProcessor.IsValid())
+	{
+		F_LogError("Image processor is invalid.");
+		return false;
+	}
+
+	FImage::FInitParams InitParams;
+	InitParams.ImageData = &ImageProcessor.GetImageData();
+
+	THandle<FImage> ImgHandle = ImgHandles.CreateHandle();
+	ImgHandle->Init(InitParams);
+
+	if (!ImgHandle->IsValid())
+	{
+		F_LogError("Image handle is invalid.");
+		return false;
+	}
+
+	ImgCache.AddEntry(std::move(TexFileName), std::move(ImgHandle));
+	return true;
+}
+
 bool FGFXHelper::LoadAndCacheModel(
 	FGFXCaches& GFXCaches,
 	FGFXHandles& GFXHandles,
@@ -491,6 +557,7 @@ bool FGFXHelper::LoadAndCacheModel(
 	
 	if (!ModelProcessor.HasMeshDataEntries())
 	{
+		F_LogError("Model processor is missing its mesh data entries.");
 		return false;
 	}
 
@@ -512,7 +579,7 @@ bool FGFXHelper::LoadAndCacheModel(
 
 			if (!IsCached)
 			{
-				F_LogError("Failed to cache image " << TexFileName);
+				F_LogError("Failed to cache diffuse map: " << TexFileName);
 				return false;
 			}
 		}
@@ -527,7 +594,7 @@ bool FGFXHelper::LoadAndCacheModel(
 				RelativeTexturesPath,
 				EPixelFormat::RGB);
 
-			F_LogWarningIf(!IsCached, "Failed to cache image " << TexFileName);
+			F_LogWarningIf(!IsCached, "Failed to cache normal map: " << TexFileName);
 		}
 	}
 
@@ -536,6 +603,7 @@ bool FGFXHelper::LoadAndCacheModel(
 
 	if (!ModelHandle.IsValid())
 	{
+		F_LogError("Model handle is invalid.");
 		return false;
 	}
 
@@ -543,47 +611,70 @@ bool FGFXHelper::LoadAndCacheModel(
 	return true;
 }
 
-bool FGFXHelper::LoadAndCacheImage(
+bool FGFXHelper::LoadAndCacheShader(
 	FGFXCaches& GFXCaches,
 	FGFXHandles& GFXHandles,
-	FString& TexFileName,
+	FShader::CodeT& ShaderFileNames,
 	const FChar* const RelativeDirPath,
-	const EPixelFormat::Value PixelFormat)
+	const FChar* const ShaderKey)
 {
-	FImageCache& ImgCache = GFXCaches.GetImageCache();
-	FImageHandles& ImgHandles = GFXHandles.GetImageHandles();
+	F_Assert(RelativeDirPath, "RelativeDirPath is null.");
+	F_Assert(ShaderKey, "ShaderKey is null.");
 
-	if (ImgCache.HasItem(TexFileName))
+	FShaderCache& ShaderCache = GFXCaches.GetShaderCache();
+	FShaderHandles& ShaderHandles = GFXHandles.GetShaderHandles();
+
+	if (ShaderCache.HasItem(ShaderKey))
 	{
 		return true;
 	}
 
-	const FString FullPath = RelativeDirPath + TexFileName;
+	FString FullPath;
+	FString RelativeDirPathStr = RelativeDirPath;
 
-	FImageProcessor::FLoadParams LoadParams;
-	LoadParams.File = FullPath.c_str();
-	LoadParams.ImageLayout = PixelFormat;
+	FShader::CodeStrT CodeStr;
+	FShader::FInitParams Params;
 
-	FImageProcessor ImageProcessor;
-	ImageProcessor.Load(LoadParams);
-
-	if (!ImageProcessor.IsValid())
+	for (UInt32 I = 0; I < ShaderFileNames.size(); ++I)
 	{
+		if (!ShaderFileNames[I])
+		{
+			continue;
+		}
+
+		FullPath = RelativeDirPathStr + ShaderFileNames[I];
+		F_Assert(FullPath.size(), "Invalid file path.");
+		
+		FFileStream FileStream;
+		FileStream.open(FullPath, std::ios::in);
+
+		if (!FileStream.is_open())
+		{
+			F_LogError("Failed to open file " << FullPath);
+			return false;
+		}
+
+		FStringStream SS;
+		SS << FileStream.rdbuf();
+		FileStream.close();
+
+		CodeStr[I] = SS.str();
+		Params.Code[I] = CodeStr[I].c_str();
+		F_Assert(CodeStr[I].size(), "Invalid shader file " << FullPath);
+	}
+	
+	THandle<FShader> ShaderHandle = ShaderHandles.CreateHandle();
+	ShaderHandle->Init(Params);
+
+	if (!ShaderHandle.IsValid())
+	{
+		F_LogError("Shader handle is invalid.");
 		return false;
 	}
 
-	FImage::FInitParams InitParams;
-	InitParams.ImageData = &ImageProcessor.GetImageData();
-
-	THandle<FImage> ImgHandle = ImgHandles.CreateHandle();
-	ImgHandle->Init(InitParams);
-
-	if (!ImgHandle->IsValid())
-	{
-		return false;
-	}
-
-	ImgCache.AddEntry(std::move(TexFileName), std::move(ImgHandle));
+	FString ShaderKeyStr = ShaderKey;
+	F_Assert(ShaderKeyStr.size(), "Shader key has a length of zero.");
+	ShaderCache.AddEntry(std::move(ShaderKeyStr), std::move(ShaderHandle));
 	return true;
 }
 

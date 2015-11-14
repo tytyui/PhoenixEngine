@@ -179,8 +179,9 @@ void FShader::InitShader(const EShaderIndex::Value ShaderIndex, const GLchar* co
 		GLchar InfoLog[1024] = "";
 		GLsizei WrittenLength = 0;
 
+		const FChar* const ShaderTypeStrPtr = EShaderIndex::ToString(ShaderIndex);
 		F_GL(GL::GetShaderInfoLog(Shader, InfoLog, sizeof(InfoLog), WrittenLength));
-		F_LogError("Failed to compile shader.  " << InfoLog);
+		F_LogError("Failed to compile shader type: " << ShaderTypeStrPtr << ".  " << InfoLog);
 
 		DeInitShader(ShaderIndex);
 		return;

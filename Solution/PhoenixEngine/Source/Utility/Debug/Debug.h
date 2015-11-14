@@ -99,8 +99,22 @@ namespace Phoenix
 
 #if PHOENIX_DEBUG_BREAK_POINTS_ON
 #	if _MSC_VER
+
 #		define F_DebugBreak() DebugBreak()
 #		define F_DebugBreakIf(Expr) if (Expr) { F_DebugBreak(); }
+
+#		define F_DebugBreakOnce()					\
+		{											\
+			static bool DebugBreakFlag = true;		\
+			if (DebugBreakFlag)						\
+			{										\
+				DebugBreakFlag = false;				\
+				F_DebugBreak();						\
+			}										\
+		}
+
+#		define F_DebugBreakOnceIf(Expr) if (Expr) { F_DebugBreakOnce(); }
+
 #	endif
 #endif
 
@@ -220,7 +234,18 @@ namespace Phoenix
 
 #ifndef F_DebugBreak
 #	define F_DebugBreak()
+#endif
+
+#ifndef F_DebugBreakIf
 #	define F_DebugBreakIf(Expr)
+#endif
+
+#ifndef F_DebugBreakOnce
+#	define F_DebugBreakOnce()
+#endif
+
+#ifndef F_DebugBreakOnceIf
+#	define F_DebugBreakOnceIf(Expr)
 #endif
 
 #ifndef F_DebugCode
@@ -237,21 +262,33 @@ namespace Phoenix
 
 #ifndef F_LogError
 #	define F_LogError(Msg)
+#endif
+
+#ifndef F_LogErrorIf
 #	define F_LogErrorIf(Expr, Msg)
 #endif
 
 #ifndef F_LogWarning
 #	define F_LogWarning(Msg)
+#endif
+
+#ifndef F_LogWarningIf
 #	define F_LogWarningIf(Expr, Msg)
 #endif
 
 #ifndef F_LogTrace
 #	define F_LogTrace(Msg)
+#endif
+
+#ifndef F_LogTraceIf
 #	define F_LogTraceIf(Expr, Msg)
 #endif
 
 #ifndef F_Log
 #	define F_Log(Msg)
+#endif
+
+#ifndef F_LogIf
 #	define F_LogIf(Expr, Msg)
 #endif
 
