@@ -161,23 +161,23 @@ namespace Phoenix
 #else
 
 #	if PHOENIX_DEBUG_THREAD_SAFE
-#		define PHOENIX_DEBUG_LOCK()	FMutexLock MutexLock(Log::Get().GetLock());
+#		define PHOENIX_DEBUG_LOCK()	FMutexLock MutexLock(Log::GetStaticObject().GetLock());
 #	else
 #		define PHOENIX_DEBUG_LOCK()
 #	endif
 
 #	if PHOENIX_DEBUG_LEVEL >= PHOENIX_DEBUG_LEVEL_1
-#		define F_LogOpen(File)												\
-			{																\
-				PHOENIX_DEBUG_LOCK();										\
-				Log::Get().Init(File);										\
-				F_Assert(Log::Get().IsValid(), "Failed to open file.");		\
+#		define F_LogOpen(File)															\
+			{																			\
+				PHOENIX_DEBUG_LOCK();													\
+				Log::GetStaticObject().Init(File);										\
+				F_Assert(Log::GetStaticObject().IsValid(), "Failed to open file.");		\
 			}
 
-#		define F_LogClose()													\
-			{																\
-				PHOENIX_DEBUG_LOCK();										\
-				Log::Get().DeInit();										\
+#		define F_LogClose()																\
+			{																			\
+				PHOENIX_DEBUG_LOCK();													\
+				Log::GetStaticObject().DeInit();										\
 			}
 #	endif
 
@@ -193,7 +193,7 @@ namespace Phoenix
 				<< '\n';								\
 														\
 			PHOENIX_DEBUG_LOCK();						\
-			Log::Get() << SS.str();						\
+			Log::GetStaticObject() << SS.str();			\
 		}
 
 #	if PHOENIX_DEBUG_LEVEL >= PHOENIX_DEBUG_LEVEL_1

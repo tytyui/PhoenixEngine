@@ -3,16 +3,24 @@
 
 #include "Utility/Debug/Assert.h"
 #include "Utility/FileIO/FileStream.h"
-#include "Utility/Misc/Singleton.h"
+#include "Utility/Misc/StaticObject.h"
 #include "Utility/Misc/String.h"
 #include "Utility/Threading/Mutex.h"
 
 namespace Phoenix
 {
-	class Log : public TSingleton<Log>
+	class Log
 	{
-		F_DeclareTSingleton(Log);
+		F_AddStaticObjectToClass(Log);
 	public:
+		Log() = default;
+
+		Log(const Log&) = delete;
+		Log& operator=(const Log&) = delete;
+
+		Log(Log&&) = delete;
+		Log& operator=(Log&&) = delete;
+
 		~Log();
 
 		void Init(const FString& File);
