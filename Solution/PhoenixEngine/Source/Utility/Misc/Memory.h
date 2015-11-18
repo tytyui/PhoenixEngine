@@ -67,9 +67,12 @@ namespace Phoenix
 	protected:
 	private:
 		T* Ptr{ nullptr };
+
+		void PostMoveReset();
 	};
 
 #pragma region TRawPtr Implementation
+
 	template <class T>
 	TRawPtr<T>::TRawPtr(const TRawPtr<T>& RHS)
 		: Ptr(RHS.Ptr)
@@ -79,7 +82,11 @@ namespace Phoenix
 	template <class T>
 	TRawPtr<T>& TRawPtr<T>::operator=(const TRawPtr<T>& RHS)
 	{
-		F_Assert(this != &RHS, "Self assignment is illegal.");
+		if (this == &RHS)
+		{
+			return *this;
+		}
+
 		Ptr = RHS.Ptr;
 		return *this;
 	}
@@ -88,16 +95,19 @@ namespace Phoenix
 	TRawPtr<T>::TRawPtr(TRawPtr&& RHS)
 		: Ptr(RHS.Ptr)
 	{
-		RHS.Ptr = nullptr;
+		RHS.PostMoveReset();
 	}
 
 	template <class T>
 	TRawPtr<T>& TRawPtr<T>::operator=(TRawPtr&& RHS)
 	{
-		F_Assert(this != &RHS, "Self assignment is illegal.");
+		if (this == &RHS)
+		{
+			return *this;
+		}
 
 		Ptr = RHS.Ptr;
-		RHS.Ptr = nullptr;
+		RHS.PostMoveReset();
 
 		return *this;
 	}
@@ -236,10 +246,14 @@ namespace Phoenix
 		const bool IsNotEqual = !(*this == RHS);
 		return IsNotEqual;
 	}
+
+	template <class T>
+	void TRawPtr<T>::PostMoveReset()
+	{
+		Ptr = nullptr;
+	}
+
 #pragma endregion
-
-
-
 }
 
 #endif

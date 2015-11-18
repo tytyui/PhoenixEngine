@@ -96,6 +96,18 @@ namespace Phoenix
 		}
 
 		//	--------------------------------------------------------------------------------
+		/*! \brief Calculates the length of the string.
+		*
+		*	Input: SomeString.txt
+		*	Output: 14
+		*/
+		static SizeT GetLength(const FChar* const Str)
+		{
+			const SizeT Length = std::strlen(Str);
+			return Length;
+		}
+
+		//	--------------------------------------------------------------------------------
 		/*! \brief Converts any upper case characters to lower case.
 		*
 		*	Input: Initial/Directory/AdditionalDirectory/SomeFile.cpp

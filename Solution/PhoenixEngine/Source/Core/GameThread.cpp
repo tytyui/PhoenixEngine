@@ -32,7 +32,6 @@ void FGameThread::Init(const FInitParams& InitParams)
 {
 	F_Assert(InitParams.IsValid(), "Initialization parameters must be valid.");
 	F_Assert(!IsRunning, "Game Thread is already running.");
-	F_LogTrace("GameThread::Init()");
 
 	InitData = InitParams;
 	IsRunning = true;
@@ -54,7 +53,6 @@ void FGameThread::ForceShutDown()
 void FGameThread::ThreadRun()
 {
 	ThreadInit();
-	F_LogTrace("GameThread::ThreadRun()");
 
 	const Float32 FramesPerSec = 60.f;
 	const Float32 MaxDeltaTime = 1.f / FramesPerSec;

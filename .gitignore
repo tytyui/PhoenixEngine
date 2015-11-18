@@ -7,12 +7,12 @@ Solution/Game/Debug
 Solution/Game/Release
 
 #Assets
-Solution/Libraries/Dll/x32/Assets/Audio
-Solution/Libraries/Dll/x32/Assets/DeprecatedShaders
-Solution/Libraries/Dll/x32/Assets/Materials
-Solution/Libraries/Dll/x32/Assets/Models
-#Solution/Libraries/Dll/x32/Assets/Shaders
-Solution/Libraries/Dll/x32/Assets/Textures
+Solution/Assets/Audio
+Solution/Assets/DeprecatedShaders
+Solution/Assets/Materials
+Solution/Assets/Models
+#Solution/Assets/Shaders
+Solution/Assets/Textures
 
 #Libs
 Solution/x64/Debug/PhoenixEngine.lib

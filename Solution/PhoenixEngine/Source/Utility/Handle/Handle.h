@@ -11,6 +11,8 @@ namespace Phoenix
 	template <class T>
 	class THandle
 	{
+		template <class U>
+		friend class THandles;
 	public:
 		THandle() = default;
 
@@ -21,8 +23,6 @@ namespace Phoenix
 		THandle& operator=(THandle&&);
 
 		~THandle();
-
-		void Init(THandlesData<T>* InHandleData, const SizeT InHIDataIndex);
 
 		bool IsValid() const;
 
@@ -47,8 +47,13 @@ namespace Phoenix
 		THandlesData<T>* HandleData{ nullptr };
 		SizeT HIDataIndex{ 0 };
 
+		void Init(THandlesData<T>* InHandleData, const SizeT InHIDataIndex);
+
 		template <bool AssertValidRefCount = true>
 		THandleItemData<T>& GetHandleItemData();
+
+		template <bool AssertValidRefCount = true>
+		const THandleItemData<T>& GetHandleItemData() const;
 
 		SizeT& GetRefCountReference();
 
@@ -72,7 +77,11 @@ namespace Phoenix
 	template <class T>
 	THandle<T>& THandle<T>::operator=(const THandle<T>& RHS)
 	{
-		F_Assert(this != &RHS, "Self assignment is illegal.");
+		if (this == &RHS)
+		{
+			return *this;
+		}
+
 		DeInit();
 
 		HandleData = RHS.HandleData;
@@ -98,7 +107,11 @@ namespace Phoenix
 	template <class T>
 	THandle<T>& THandle<T>::operator=(THandle<T>&& RHS)
 	{
-		F_Assert(this != &RHS, "Self assignment is illegal.");
+		if (this == &RHS)
+		{
+			return *this;
+		}
+
 		DeInit();
 
 		HandleData = RHS.HandleData;
@@ -112,19 +125,6 @@ namespace Phoenix
 	THandle<T>::~THandle()
 	{
 		DeInit();
-	}
-
-	template <class T>
-	void THandle<T>::Init(THandlesData<T>* InHandleData, const SizeT InHIDataIndex)
-	{
-		DeInit();
-
-		F_Assert(InHandleData, "InHandleData is null.");
-		F_Assert(InHIDataIndex < InHandleData->HIData.size(), 
-			"ID of " << InHIDataIndex << " is too large for container size of " << InHandleData->HIData.size());
-
-		HandleData = InHandleData;
-		HIDataIndex = InHIDataIndex;
 	}
 
 	template <class T>
@@ -144,7 +144,7 @@ namespace Phoenix
 
 		SizeT& ReferenceCount = GetRefCountReference();
 
-		F_Assert(ReferenceCount > 0, 
+		F_Assert(ReferenceCount > 0,
 			"When HandleData is not null, ReferenceCount should be at least 1.");
 		--ReferenceCount;
 
@@ -240,9 +240,22 @@ namespace Phoenix
 	template <class T>
 	const T* THandle<T>::operator->() const
 	{
-		THandleItemData<T>& HIData = GetHandleItemData();
+		const THandleItemData<T>& HIData = GetHandleItemData();
 		const T* const Item = &HandleData->Data[HIData.DataIndex];
 		return Item;
+	}
+
+	template <class T>
+	void THandle<T>::Init(THandlesData<T>* InHandleData, const SizeT InHIDataIndex)
+	{
+		DeInit();
+
+		F_Assert(InHandleData, "InHandleData is null.");
+		F_Assert(InHIDataIndex < InHandleData->HIData.size(),
+			"ID of " << InHIDataIndex << " is too large for container size of " << InHandleData->HIData.size());
+
+		HandleData = InHandleData;
+		HIDataIndex = InHIDataIndex;
 	}
 
 	template <class T>
@@ -251,12 +264,24 @@ namespace Phoenix
 	{
 		F_Assert(IsValid(), "Handle is not valid.");
 		THandleItemData<T>& HIData = HandleData->HIData[HIDataIndex];
+		F_AssertIf(
+			HIData.RefCount > 0,
+			"Invalid reference count of " << HIData.RefCount,
+			AssertValidRefCount);
 
-		if (AssertValidRefCount)
-		{
-			F_Assert(HIData.RefCount > 0, 
-				"Invalid reference count of " << HIData.RefCount);
-		}
+		return HIData;
+	}
+
+	template <class T>
+	template <bool AssertValidRefCount>
+	const THandleItemData<T>& THandle<T>::GetHandleItemData() const
+	{
+		F_Assert(IsValid(), "Handle is not valid.");
+		const THandleItemData<T>& HIData = HandleData->HIData[HIDataIndex];
+		F_AssertIf(
+			HIData.RefCount > 0,
+			"Invalid reference count of " << HIData.RefCount,
+			AssertValidRefCount);
 
 		return HIData;
 	}
@@ -273,7 +298,7 @@ namespace Phoenix
 	const SizeT& THandle<T>::GetRefCountReference() const
 	{
 		F_Assert(IsValid(), "Handle is not valid.");
-		THandleItemData<T>& HIData = HandleData->HIData[HIDataIndex];
+		const THandleItemData<T>& HIData = HandleData->HIData[HIDataIndex];
 		return HIData.RefCount;
 	}
 

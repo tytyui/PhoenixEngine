@@ -3,6 +3,7 @@
 
 #include "Utility/Containers/Array.h"
 #include "Utility/Containers/UnorderedMap.h"
+#include "Utility/Debug/Debug.h"
 #include "Utility/Handle/Handles.h"
 #include "Utility/Misc/Primitives.h"
 
@@ -25,6 +26,10 @@ namespace Phoenix
 
 		const T* GetItem(const KeyT& Key) const;
 
+		T& GetItem(const KeyT& Key, T& DefaultReturnValue);
+
+		const T& GetItem(const KeyT& Key, const T& DefaultReturnValue) const;
+
 		bool HasItem(const KeyT& Key) const;
 
 		SizeT GetItemCount() const;
@@ -41,6 +46,8 @@ namespace Phoenix
 	template <class T>
 	bool TNamedItemCache<T>::AddEntry(const KeyT& Key, const ValueT& Value)
 	{
+		F_Assert(Key.size(), "Key has a size of zero.");
+
 		const auto Pair = Items.try_emplace(Key, Value);
 		const bool WasEntryAdded = Pair.second;
 		return WasEntryAdded;
@@ -49,6 +56,8 @@ namespace Phoenix
 	template <class T>
 	bool TNamedItemCache<T>::AddEntry(KeyT&& Key, ValueT&& Value)
 	{
+		F_Assert(Key.size(), "Key has a size of zero.");
+
 		const auto Pair = Items.try_emplace(std::move(Key), std::move(Value));
 		const bool WasEntryAdded = Pair.second;
 		return WasEntryAdded;
@@ -63,6 +72,8 @@ namespace Phoenix
 	template <class T>
 	T* TNamedItemCache<T>::GetItem(const KeyT& Key)
 	{
+		F_Assert(Key.size(), "Key has a size of zero.");
+
 		const auto Iter = Items.find(Key);
 		const bool WasItemFound = Iter != Items.end();
 
@@ -78,6 +89,8 @@ namespace Phoenix
 	template <class T>
 	const T* TNamedItemCache<T>::GetItem(const KeyT& Key) const
 	{
+		F_Assert(Key.size(), "Key has a size of zero.");
+
 		const auto Iter = Items.find(Key);
 		const bool WasItemFound = Iter != Items.end();
 
@@ -91,8 +104,40 @@ namespace Phoenix
 	}
 
 	template <class T>
+	T& TNamedItemCache<T>::GetItem(const KeyT& Key, T& DefaultReturnValue)
+	{
+		F_Assert(Key.size(), "Key has a size of zero.");
+
+		T* Result = GetItem(Key);
+		if (!Result)
+		{
+			F_LogWarning("Failed to retrieve item by key: " << Key);
+			return DefaultReturnValue;
+		}
+
+		return *Result;
+	}
+
+	template <class T>
+	const T& TNamedItemCache<T>::GetItem(const KeyT& Key, const T& DefaultReturnValue) const
+	{
+		F_Assert(Key.size(), "Key has a size of zero.");
+
+		const T* const Result = GetItem(Key);
+		if (!Result)
+		{
+			F_LogWarning("Failed to retrieve item by key: " << Key);
+			return DefaultReturnValue;
+		}
+
+		return *Result;
+	}
+
+	template <class T>
 	bool TNamedItemCache<T>::HasItem(const KeyT& Key) const
 	{
+		F_Assert(Key.size(), "Key has a size of zero.");
+
 		const auto Iter = Items.find(Key);
 		const bool WasItemFound = Iter != Items.end();
 		return WasItemFound;
@@ -108,6 +153,8 @@ namespace Phoenix
 	template <class T>
 	bool TNamedItemCache<T>::RemoveItem(const KeyT& Key)
 	{
+		F_Assert(Key.size(), "Key has a size of zero.");
+
 		const auto Iter = Items.erase(Key);
 		const bool WasItemRemoved = Iter == 1;
 		return WasItemRemoved;

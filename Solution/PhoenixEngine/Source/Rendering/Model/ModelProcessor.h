@@ -56,12 +56,6 @@ namespace Phoenix
 		void LoadMisc(const FLoadParams& LoadParams);
 
 		void LoadPhoenix(const FLoadParams& LoadParams);
-
-		static bool IsFileFBX(const FString& File);
-
-		static bool IsFileMisc(const FString& File);
-
-		static bool IsFilePhoenix(const FString& File);
 	};
 }
 

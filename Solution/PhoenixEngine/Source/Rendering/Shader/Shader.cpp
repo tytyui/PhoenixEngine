@@ -27,11 +27,14 @@ FShader::FShader(FShader&& RHS)
 
 FShader& FShader::operator=(FShader&& RHS)
 {
-	F_Assert(this != &RHS, "Self assignment is illegal.");
+	if (this == &RHS)
+	{
+		return *this;
+	}
 
 	Program = RHS.Program;
 	Shaders = RHS.Shaders;
-	
+
 	RHS.PostMoveReset();
 	return *this;
 }
@@ -176,8 +179,9 @@ void FShader::InitShader(const EShaderIndex::Value ShaderIndex, const GLchar* co
 		GLchar InfoLog[1024] = "";
 		GLsizei WrittenLength = 0;
 
+		const FChar* const ShaderTypeStrPtr = EShaderIndex::ToString(ShaderIndex);
 		F_GL(GL::GetShaderInfoLog(Shader, InfoLog, sizeof(InfoLog), WrittenLength));
-		F_LogError("Failed to compile shader.  " << InfoLog);
+		F_LogError("Failed to compile shader type: " << ShaderTypeStrPtr << ".  " << InfoLog);
 
 		DeInitShader(ShaderIndex);
 		return;
@@ -256,7 +260,7 @@ void FShader::OnInitComplete()
 		return;
 	}
 
-	F_LogTrace("Shader created.");
+	F_Log("Shader created.");
 }
 
 void FShader::SetUniform(const FMatrix3D& Matrix3D, const GLchar* const UniformName) const

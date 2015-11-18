@@ -2,6 +2,7 @@
 #define PHOENIX_SHADER_H
 
 #include "Utility/Containers/Array.h"
+#include "Utility/Misc/String.h"
 #include "Math/Matrix3D.h"
 #include "Math/Matrix4D.h"
 #include "Rendering/GLInterface.h"
@@ -44,16 +45,35 @@ namespace Phoenix
 			const GL::EShader::Value Result = LookUpTable[ShaderIndex];
 			return Result;
 		}
+
+		static inline const FChar* const ToString(const EShaderIndex::Value ShaderIndex)
+		{
+			static_assert(EShaderIndex::Count == 6, "This table requires updating.");
+			static const TArray<const GLchar* const, EShaderIndex::Count> LookUpTable = {
+				"Compute",
+				"Vertex",
+				"TessControl",
+				"TessEvaluation",
+				"Geometry",
+				"Fragment"
+			};
+
+			const FChar* const Result = LookUpTable[ShaderIndex];
+			return Result;
+		}
 	}
 
 	class FShader
 	{
 	public:
+		typedef TArray<const GLchar*, EShaderIndex::Count> CodeT;
+		typedef TArray<FString, EShaderIndex::Count> CodeStrT;
+
 		static const GLint InvalidUniform;
 
 		struct FInitParams
 		{
-			TArray<const GLchar*, EShaderIndex::Count> Code;
+			CodeT Code;
 
 			FInitParams();
 
