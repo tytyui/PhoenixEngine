@@ -43,11 +43,11 @@ namespace Phoenix
 
 		bool bIsOpen;
 
+	public:
+
 		bool Open(EFileOpenMode::Value FileOpenMode);
 
 		void Close();
-
-	public:
 
 		void Read();
 

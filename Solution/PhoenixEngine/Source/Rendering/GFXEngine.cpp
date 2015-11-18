@@ -653,8 +653,11 @@ bool FGFXHelper::LoadAndCacheShader(
 			return false;
 		}
 
+		File.Close();
+
 		CodeStr[I] = File.Content();
 		Params.Code[I] = CodeStr[I].c_str();
+
 		F_Assert(CodeStr[I].size(), "Invalid shader file " << FullPath);
 	}
 	
