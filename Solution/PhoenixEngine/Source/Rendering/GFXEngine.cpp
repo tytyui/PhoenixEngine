@@ -2,7 +2,7 @@
 
 #include "ExternalLib/GLEWIncludes.h"
 #include "ExternalLib/GLIncludes.h"
-#include "Utility/FileIO/FileStream.h"
+#include "Utility/FileIO/File.h"
 #include "Utility/Misc/Memory.h"
 #include "Utility/Misc/Timer.h"
 #include "Math/Math.h"
@@ -238,20 +238,14 @@ void FGFXEngine::DebugInitializeTestCode()
 
 		for (UInt32 I = 0; I < Files.size(); ++I)
 		{
-			FFileStream FileStream;
-			FileStream.open(Files[I], std::ios::in);
-
-			if (!FileStream.is_open())
+			FFile File(Files[I]);
+			if (File.Empty())
 			{
 				F_LogError("Failed to open file " << Files[I]);
 				return;
 			}
 
-			FStringStream SS;
-			SS << FileStream.rdbuf();
-			FileStream.close();
-
-			Code[I] = SS.str();
+			Code[I] = File.Content();
 		}
 
 		FShader::FInitParams Params;
