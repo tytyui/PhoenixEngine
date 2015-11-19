@@ -1,6 +1,7 @@
 #pragma comment (lib, "PhoenixEngine.lib")
 
 #include "Core/Engine.h"
+#include "Components/Transform.h"
 
 using namespace Phoenix;
 
@@ -10,12 +11,13 @@ public:
 protected:
 	virtual void OnInit() override
 	{
-
+		auto& myObj = this->CreateGameObject();
+		myObj.AddComponent<Transform>();
+		
 	}
 
 	virtual void OnUpdate(const Float32 DeltaTimeSec) override
 	{
-
 	}
 
 	virtual void OnDeInit() override
