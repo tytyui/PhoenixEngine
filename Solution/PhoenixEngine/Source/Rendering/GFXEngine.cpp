@@ -3,7 +3,7 @@
 #include "ExternalLib/GLEWIncludes.h"
 #include "ExternalLib/GLIncludes.h"
 #include "Utility/Containers/Array.h"
-#include "Utility/FileIO/FileStream.h"
+#include "Utility/FileIO/File.h"
 #include "Utility/Misc/Memory.h"
 #include "Utility/Misc/Timer.h"
 #include "Math/Math.h"
@@ -645,21 +645,19 @@ bool FGFXHelper::LoadAndCacheShader(
 		FullPath = RelativeDirPathStr + ShaderFileNames[I];
 		F_Assert(FullPath.size(), "Invalid file path.");
 		
-		FFileStream FileStream;
-		FileStream.open(FullPath, std::ios::in);
+		FFile File(FullPath);
 
-		if (!FileStream.is_open())
+		if (File.Empty())
 		{
 			F_LogError("Failed to open file " << FullPath);
 			return false;
 		}
 
-		FStringStream SS;
-		SS << FileStream.rdbuf();
-		FileStream.close();
+		File.Close();
 
-		CodeStr[I] = SS.str();
+		CodeStr[I] = File.Content();
 		Params.Code[I] = CodeStr[I].c_str();
+
 		F_Assert(CodeStr[I].size(), "Invalid shader file " << FullPath);
 	}
 	
