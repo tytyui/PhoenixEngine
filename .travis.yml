@@ -1,15 +1,3 @@
-env:
-  global:
-   - secure: "f2E4+2idZqWKopqJB+uiGhRG6OWGYkJOtLmAfape0c4JZQyTvnEAXQFwa4zD5QIa2GHZ/idG3GixoC1COx03lpgzAkCNK2z4en9FbBuJOpj9ptq5uxXQ+Gx/OJZGqmk7Z+aHJtEB53iqZMK5b8wv0ixidYGPjRFc2XenKUlDEwEElwrOLVQ8h5C3BZZoZ1HfcUmJzHiciWDlobWEpij3QJujTdD5RcmHntj/S6Gw9NunEtJK5j2XGSkCKaJHhwq1aUuk5eYvaOiKArq44UkEg6Wz5SU+5F0uIFQwIAMMEiCzxG5E20zwnKO8WUz95WbQAqo/E9TJT5DHou8sJvBph0H1bmfSpr0+xA4YfzxOxbbWNA0hNtp1ycrkQs7y3sDtiBw70LDI3imHiFZhPxQLtg6kBMzelklydgzqsYEF+A47rRFh1TlE7rIkEaP6YnfYGvVHocF9WDHRSJPXu1g9aQpFQL6DBNFiiXUiYd7oaSlkNuFIZjSFXDq4zMoXA1sl3J0vt9UdPM8ub75GGMhcLNh+JyRr6/Rq4glvS2+DsfrgxJDjZTov9xzmXg3hHkhpHIC8VYqdySgQFxR8Ojj3DbqgN45ecoRoErIem0DtzjvyeQxDVBaIeTg37g/6y1v0OMitrBYNlKFsr/aQC/Y/nor/MUpLS74mj4TfNKlmSqY="
-
-addons:
-  coverity_scan:
-    project:
-      name: "PhoenixOrg/PhoenixEngine"
-    notification_email: mitchdandrews@gmail.com
-    build_command_prepend: "brew install glfw3 glew"
-    build_command: "xcodebuild -workspace Solution/PhoenixEngine.xcworkspace -scheme TestGame -sdk macosx ARCHS=i386 ONLY_ACTIVE_ARCH=NO"
-    branch_pattern: master
 
 language: objective-c
 
