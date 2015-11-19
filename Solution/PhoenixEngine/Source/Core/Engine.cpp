@@ -7,7 +7,6 @@
 #include "Utility/Misc/Timer.h"
 #include "Utility/Threading/Thread.h"
 #include "Math/Math.h"
-#include "Platform/Windowing/GenericWindow.h"
 #include "Platform/Window/GenericWindow.h"
 #include "Components/Cores/RenderCore.h"
 

@@ -16,7 +16,6 @@ void FRenderCore::Init()
 
 void FRenderCore::Update(float dt)
 {
-	F_Log("Render update() entity.");
 }
 
 FRenderCore::~FRenderCore()
@@ -30,6 +29,5 @@ void FRenderCore::Render()
 	{
 		auto& TransformComponent = InEntity.GetComponent<Transform>();
 		TransformComponent.SetPosition(FVector3D(0, 1, 2));
-		F_Log("Rendered entity.");
 	}
 }
