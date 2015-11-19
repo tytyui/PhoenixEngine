@@ -12,8 +12,10 @@ namespace Phoenix
 	class FGameScene
 	{
 		typedef std::vector<FGameObject> GameObjectArray;
-		struct CoreDeleter {
-			void operator() (BaseCore* InCore) const {
+		struct CoreDeleter
+		{
+			void operator() (BaseCore* InCore) const
+			{
 				InCore->GameScene = nullptr;
 				InCore->Entities.clear();
 			}
@@ -59,8 +61,10 @@ namespace Phoenix
 
 		GameObjectIdPool ObjectIdPool;
 
-		struct TGameObjectAttributes {
-			struct Attribute {
+		struct TGameObjectAttributes
+		{
+			struct Attribute
+			{
 				bool IsActive;
 
 				std::vector<bool> Cores;
@@ -68,11 +72,13 @@ namespace Phoenix
 
 			TGameObjectAttributes(std::size_t InGameObjectAmount) :
 				Storage(InGameObjectAmount),
-				Attributes(InGameObjectAmount) {
+				Attributes(InGameObjectAmount)
+			{
 
 			}
 
-			void Resize(std::size_t InAmount) {
+			void Resize(std::size_t InAmount)
+			{
 				Storage.Resize(InAmount);
 				Attributes.resize(InAmount);
 			}
@@ -84,13 +90,15 @@ namespace Phoenix
 
 		GameObjectAttributes;
 
-		struct TGameObjectCache {
+		struct TGameObjectCache
+		{
 			GameObjectArray Alive;
 			GameObjectArray Killed;
 			GameObjectArray Activated;
 			GameObjectArray Deactivated;
 
-			void ClearTemp() {
+			void ClearTemp()
+			{
 				Killed.clear();
 				Activated.clear();
 				Deactivated.clear();
@@ -110,8 +118,10 @@ namespace Phoenix
 		// Access to components
 		friend class FGameObject;
 	};
+
 	template<typename TCore>
-	void FGameScene::AddCore(TCore& InCore) {
+	void FGameScene::AddCore(TCore& InCore)
+	{
 		AddCore(InCore, TCore::GetTypeId());
 	}
 }

@@ -10,6 +10,7 @@
 #include "Utility/Threading/Thread.h"
 #include "Utility/Threading/ThreadSafeVector.h"
 #include "Core/GameScene.h"
+#include "Components/Cores/RenderCore.h"
 
 namespace Phoenix
 {
@@ -50,6 +51,7 @@ namespace Phoenix
 		FInitParams InitData;
 		FAudioEngine AudioEngine;
 		FGFXEngine GFXEngine;
+		FRenderCore RenderCore;
 		TUniquePtr<FGameScene> GameScene;
 
 		TAtomic<bool> IsRunning{ false };

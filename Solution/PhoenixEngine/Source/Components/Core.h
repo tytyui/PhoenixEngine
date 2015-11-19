@@ -4,6 +4,8 @@
 #include "Components/ComponentFilter.h"
 #include "GameObject/GameObject.h"
 #include "Utility/Misc/ClassTypeId.h"
+#include "Utility/Debug/Assert.h"
+#include "Utility/Debug/Debug.h"
 
 namespace Phoenix
 {
