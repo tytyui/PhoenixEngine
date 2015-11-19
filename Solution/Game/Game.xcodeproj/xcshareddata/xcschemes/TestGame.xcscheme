@@ -14,8 +14,8 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D96A62FE88D0E0005634DA788983DC00F17C9DE0FD65B000"
-               BuildableName = "TestGame"
+               BlueprintIdentifier = "551B3F13E2B8980098E8F034CDA4C0004FBC5895158A8800"
+               BuildableName = "TestGame.app"
                BlueprintName = "TestGame"
                ReferencedContainer = "container:TestGame.xcodeproj">
             </BuildableReference>
@@ -32,8 +32,8 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D96A62FE88D0E0005634DA788983DC00F17C9DE0FD65B000"
-            BuildableName = "TestGame"
+            BlueprintIdentifier = "551B3F13E2B8980098E8F034CDA4C0004FBC5895158A8800"
+            BuildableName = "TestGame.app"
             BlueprintName = "TestGame"
             ReferencedContainer = "container:TestGame.xcodeproj">
          </BuildableReference>
@@ -55,8 +55,8 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D96A62FE88D0E0005634DA788983DC00F17C9DE0FD65B000"
-            BuildableName = "TestGame"
+            BlueprintIdentifier = "551B3F13E2B8980098E8F034CDA4C0004FBC5895158A8800"
+            BuildableName = "TestGame.app"
             BlueprintName = "TestGame"
             ReferencedContainer = "container:TestGame.xcodeproj">
          </BuildableReference>
@@ -74,8 +74,8 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D96A62FE88D0E0005634DA788983DC00F17C9DE0FD65B000"
-            BuildableName = "TestGame"
+            BlueprintIdentifier = "551B3F13E2B8980098E8F034CDA4C0004FBC5895158A8800"
+            BuildableName = "TestGame.app"
             BlueprintName = "TestGame"
             ReferencedContainer = "container:TestGame.xcodeproj">
          </BuildableReference>

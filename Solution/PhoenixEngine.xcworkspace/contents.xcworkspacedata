@@ -5,6 +5,6 @@
 		location = "group:PhoenixEngine/PhoenixEngine.xcodeproj">
 	</FileRef>
 	<FileRef
-		location = "group:TestGame/TestGame.xcodeproj">
+		location = "group:Game/Game.xcodeproj">
 	</FileRef>
 </Workspace>
