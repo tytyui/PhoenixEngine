@@ -64,7 +64,8 @@ void FGameThread::ThreadRun()
 
 	FHighResolutionTimer Timer;
 	Timer.Reset();
-	
+
+
 	while (IsRunning)
 	{
 		Timer.Update();
@@ -89,7 +90,7 @@ void FGameThread::ThreadRun()
 
 			ReceivedEvents.clear();
 
-			// #FIXME: Dispatch events from game thread's event handler here.
+			RenderCore.Update(DeltaTimeSec);
 
 			GameScene->Update(DeltaTimeSec);
 
@@ -102,6 +103,8 @@ void FGameThread::ThreadRun()
 				F_LogWarning("Two or more updates occurred.  AccT: " << AccumulatedTime);
 			}
 		}
+
+		RenderCore.Render();
 
 		GFXEngine.Draw();
 		// #FIXME: Calculate an appropriate sleep 
@@ -134,6 +137,8 @@ void FGameThread::ThreadInit()
 		F_Assert(GameScene, "GameScene is null.");
 		GameScene->Init();
 	}
+
+	GameScene->AddCore<FRenderCore>(RenderCore);
 
 	F_LogTrace("GameThread::ThreadInit()\n");
 }

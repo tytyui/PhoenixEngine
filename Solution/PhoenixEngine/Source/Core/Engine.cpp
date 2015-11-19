@@ -8,6 +8,7 @@
 #include "Utility/Threading/Thread.h"
 #include "Math/Math.h"
 #include "Platform/Window/GenericWindow.h"
+#include "Components/Cores/RenderCore.h"
 
 using namespace Phoenix;
 
@@ -26,6 +27,7 @@ void FEngine::Run(FGameThread::FCreateGameSceneFunc CreateGameSceneFunc)
 	FHighResolutionTimer Timer;
 	Timer.Reset();
 
+	auto TestCore = new FRenderCore();
 	while (IsRunning)
 	{
 		Timer.Update();

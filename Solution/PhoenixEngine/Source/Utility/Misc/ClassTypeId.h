@@ -3,25 +3,22 @@
 
 namespace Phoenix
 {
-    template <typename TBase>
-    class ClassTypeId
-    {
-    public:
-        typedef std::size_t TypeId;
-        
-        template <typename T>
-        static TypeId GetType()
-        {
-            static const TypeId ID = NextTypeId++;
-            return ID;
-        }
-        
-    private:
-        static TypeId NextTypeId;
-    };
-    
-    template <typename TBase>
-    typename ClassTypeId<TBase>::TypeId ClassTypeId<TBase>::NextTypeId = 0;
+	typedef std::size_t TypeId;
+
+	template<typename TBase>
+	class ClassTypeId {
+	public:
+		template<typename T>
+		static TypeId GetTypeId() {
+			static const TypeId Id = NextTypeId++;
+			return Id;
+		}
+	private:
+		static TypeId NextTypeId;
+	};
+
+	template<typename TBase>
+	TypeId ClassTypeId<TBase>::NextTypeId = 0;
 }
 
 #endif
