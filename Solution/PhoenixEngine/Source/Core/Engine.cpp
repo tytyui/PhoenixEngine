@@ -7,10 +7,9 @@
 #include "Utility/Misc/Timer.h"
 #include "Utility/Threading/Thread.h"
 #include "Math/Math.h"
-#include "Platform/Windowing/GenericWindow.h"
+#include "Platform/Window/GenericWindow.h"
 
 using namespace Phoenix;
-
 
 void FEngine::Run(FGameThread::FCreateGameSceneFunc CreateGameSceneFunc)
 {
@@ -21,7 +20,7 @@ void FEngine::Run(FGameThread::FCreateGameSceneFunc CreateGameSceneFunc)
 	const Float32 FramesPerSec = 120.f;
 	const Float32 MaxDeltaTime = 1.f / FramesPerSec;
 
-	TThreadSafeVector<UInt32>::ContainerT ReceivedEvents;
+	TThreadSafeVector<FEvent>::ContainerT ReceivedEvents;
 	Float32 AccumulatedTime = 0.f;
 
 	FHighResolutionTimer Timer;
@@ -36,16 +35,16 @@ void FEngine::Run(FGameThread::FCreateGameSceneFunc CreateGameSceneFunc)
 		if (AccumulatedTime >= MaxDeltaTime)
 		{
 			AccumulatedTime = FMathf::Modulo(AccumulatedTime, MaxDeltaTime);
-			MainWindow->ProcessEvents();
+			Window->ProcessEvents();
 			
-			// #FIXME: Dispatch events here.
-
-			//OutgoingEvents.AddEntry(0);
+			OutgoingEvents.AddData(EventHandler.GetEvents());
+			EventHandler.GetEvents().clear();
 			IncomingEvents.GetDataAndClear(ReceivedEvents);
 
-			for (const auto& ReceivedEvent : ReceivedEvents)
+			for (SizeT I = 0; I < ReceivedEvents.size(); ++I)
 			{
-				// #FIXME: Handle received events here.
+				const FEvent& Event = ReceivedEvents[I];
+				HandleEvent(Event);
 			}
 
 			ReceivedEvents.clear();
@@ -64,12 +63,14 @@ void FEngine::Init(FGameThread::FCreateGameSceneFunc CreateGameSceneFunc)
 
 	FEndian::Init();
 
-	MainWindow = std::make_shared<FGenericWindow>(800, 600, "PhoenixEngine");
+	Window = std::make_shared<FGenericWindow>(800, 600, "PhoenixEngine");
+	Window->SetEventHandler(&EventHandler);
 
+	// #FIXME
 	{
 		FGameThread::FInitParams InitParams;
 
-		InitParams.Window = MainWindow;
+		InitParams.Window = Window;
 		InitParams.OutgoingEvents = &IncomingEvents;
 		InitParams.IncomingEvents = &OutgoingEvents;
 		InitParams.CreateGameSceneFunc = CreateGameSceneFunc;
@@ -92,4 +93,19 @@ void FEngine::DeInit()
 	GameThread.ForceShutDown();
 	IsRunning = false;
 	F_LogClose();
+}
+
+void FEngine::HandleEvent(const FEvent& Event)
+{
+	switch (Event.Info.Type)
+	{
+		case EEventType::Engine:
+		{
+			if (Event.Info.SubType == EEngineEventType::IsShutDown)
+			{
+				IsRunning = false;
+			}
+			break;
+		}
+	}
 }

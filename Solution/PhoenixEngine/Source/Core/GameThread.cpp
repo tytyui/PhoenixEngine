@@ -4,7 +4,8 @@
 #include "Utility/Debug/Debug.h"
 #include "Utility/Misc/Allocator.h"
 #include "Utility/Misc/Timer.h"
-#include "Platform/Windowing/IWindow.h"
+#include "Platform/Input/Keys.h"
+#include "Platform/Window/IWindow.h"
 
 using namespace Phoenix;
 
@@ -57,7 +58,7 @@ void FGameThread::ThreadRun()
 	const Float32 FramesPerSec = 60.f;
 	const Float32 MaxDeltaTime = 1.f / FramesPerSec;
 
-	TThreadSafeVector<UInt32>::ContainerT ReceivedEvents;
+	TThreadSafeVector<FEvent>::ContainerT ReceivedEvents;
 	Float32 AccumulatedTime = 0.f;
 	UInt32 UpdateCount = 0;
 
@@ -80,20 +81,22 @@ void FGameThread::ThreadRun()
 			// #FIXME: Receive and process messages from Engine.cpp here.
 			InitData.IncomingEvents->GetDataAndClear(ReceivedEvents);
 
-			for (const auto& ReceivedEvent : ReceivedEvents)
+			for (SizeT I = 0; I < ReceivedEvents.size(); ++I)
 			{
-				// #FIXME: Handle received events.
+				const FEvent& Event = ReceivedEvents[I];
+				ThreadHandleEvent(Event);
 			}
 
 			ReceivedEvents.clear();
 
+			// #FIXME: Dispatch events from game thread's event handler here.
+
 			GameScene->Update(DeltaTimeSec);
 
 			// #FIXME: Dispatch any messages to Engine.cpp here.
-			//InitData.OutgoingEvents->AddEntry(1);
 
 			++UpdateCount;
-			static const UInt32 MinFramesBeforeWarning = 2;
+			const UInt32 MinFramesBeforeWarning = 2;
 			if (UpdateCount == MinFramesBeforeWarning)
 			{
 				F_LogWarning("Two or more updates occurred.  AccT: " << AccumulatedTime);
@@ -138,7 +141,6 @@ void FGameThread::ThreadInit()
 void FGameThread::ThreadDeInit()
 {
 	F_LogTrace("GameThread::ThreadDeInit()");
-	InitData = FInitParams();
 
 	{
 		if (GameScene)
@@ -159,4 +161,38 @@ void FGameThread::ThreadDeInit()
 	{
 		AudioEngine.DeInit();
 	}
+
+	FEvent Event;
+	Event.Info = FEventInfo(EEventType::Engine, EEngineEventType::IsShutDown);
+	// #FIXME: Set any other data required for a "IsShutDown" notification.
+
+	InitData.OutgoingEvents->AddEntry(Event);
+	InitData = FInitParams();
+}
+
+void FGameThread::ThreadHandleEvent(const FEvent& Event)
+{
+	switch (Event.Info.Type)
+	{
+		case EEventType::Engine:
+		{
+			if (Event.Info.SubType == EEngineEventType::ShutDownNow)
+			{
+				IsRunning = false;
+			}
+			break;
+		}
+
+		case EEventType::Key:
+		{
+			if (Event.Key.Key == EKey::Escape && Event.Key.Action == EInputAction::Press)
+			{
+				IsRunning = false;
+			}
+			break;
+		}
+	}
+
+	// #FIXME: Pass it to the main event handler, which 
+	// will then fire off the events as required.
 }

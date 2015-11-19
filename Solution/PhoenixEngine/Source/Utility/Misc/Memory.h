@@ -3,6 +3,7 @@
 
 #include <memory>
 
+#include "Utility/Debug/Assert.h"
 #include "Utility/Misc/Primitives.h"
 
 namespace Phoenix
