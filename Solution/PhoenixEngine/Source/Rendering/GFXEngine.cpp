@@ -10,7 +10,7 @@
 #include "Math/Matrix3D.h"
 #include "Math/MatrixTransform.h"
 #include "Math/Vector4D.h"
-#include "Platform/Windowing/IWindow.h"
+#include "Platform/Window/IWindow.h"
 #include "Rendering/Camera.h"
 #include "Rendering/GLInterface.h"
 #include "Rendering/Caches/GFXCaches.h"

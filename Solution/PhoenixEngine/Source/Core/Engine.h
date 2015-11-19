@@ -3,6 +3,8 @@
 
 #include "Utility/Misc/Memory.h"
 #include "Utility/Threading/ThreadSafeVector.h"
+#include "Platform/Event/Event.h"
+#include "Platform/Event/EventHandler.h"
 #include "Core/GameThread.h"
 
 namespace Phoenix
@@ -23,12 +25,12 @@ namespace Phoenix
 		void Run(FGameThread::FCreateGameSceneFunc CreateGameSceneFunc);
 
 	private:
-		TSharedPtr<class IWindow> MainWindow;
+		TSharedPtr<class IWindow> Window;
 		FGameThread GameThread;
-
-		// #FIXME: Change UInt32 to the Event structure.
-		TThreadSafeVector<UInt32> OutgoingEvents;
-		TThreadSafeVector<UInt32> IncomingEvents;
+		
+		FEventHandler EventHandler;
+		TThreadSafeVector<FEvent> OutgoingEvents;
+		TThreadSafeVector<FEvent> IncomingEvents;
 
 		bool IsRunning{ false };
 
@@ -37,6 +39,8 @@ namespace Phoenix
 		bool IsValid() const;
 
 		void DeInit();
+
+		void HandleEvent(const FEvent& Event);
 	};
 }
 

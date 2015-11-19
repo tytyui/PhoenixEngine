@@ -1,6 +1,7 @@
 #ifndef PHOENIX_IWINDOW_H
 #define PHOENIX_IWINDOW_H
 
+#include "Utility/Misc/Memory.h"
 #include "Utility/Misc/String.h"
 #include "Math/Math.h"
 #include "Math/Vector2D.h"
@@ -80,6 +81,8 @@ namespace Phoenix
 		virtual void BufferSwap() = 0;
 
 		virtual void SetSwapInterval(const Int32 Interval) = 0;
+		
+		virtual void SetEventHandler(const TRawPtr<class FEventHandler>& InEventHandler) = 0;
 
 	protected:
 		virtual void Init() = 0;

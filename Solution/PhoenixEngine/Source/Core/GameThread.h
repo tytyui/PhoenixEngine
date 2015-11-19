@@ -1,14 +1,15 @@
 #ifndef PHOENIX_GAME_THREAD_H
 #define PHOENIX_GAME_THREAD_H
 
-#include "Audio/AudioEngine.h"
-#include "Rendering/GFXEngine.h"
 #include "Utility/Misc/Function.h"
 #include "Utility/Misc/Memory.h"
 #include "Utility/Misc/Primitives.h"
 #include "Utility/Threading/Atomic.h"
 #include "Utility/Threading/Thread.h"
 #include "Utility/Threading/ThreadSafeVector.h"
+#include "Platform/Event/Event.h"
+#include "Audio/AudioEngine.h"
+#include "Rendering/GFXEngine.h"
 #include "Core/GameScene.h"
 #include "Components/Cores/RenderCore.h"
 
@@ -22,8 +23,8 @@ namespace Phoenix
 		struct FInitParams
 		{
 			TSharedPtr<class IWindow> Window;
-			TThreadSafeVector<UInt32>* OutgoingEvents{ nullptr };
-			TThreadSafeVector<UInt32>* IncomingEvents{ nullptr };
+			TThreadSafeVector<FEvent>* OutgoingEvents{ nullptr };
+			TThreadSafeVector<FEvent>* IncomingEvents{ nullptr };
 			FCreateGameSceneFunc CreateGameSceneFunc{ nullptr };
 
 			bool IsValid() const;
@@ -61,6 +62,8 @@ namespace Phoenix
 		void ThreadInit();
 
 		void ThreadDeInit();
+
+		void ThreadHandleEvent(const FEvent& Event);
 	};
 }
 
