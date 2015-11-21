@@ -5,6 +5,6 @@
 #define GLM_FORCE_RADIANS
 #endif
 
-#include <GLM/common.hpp>
+#include "GLM/common.hpp"
 
 #endif

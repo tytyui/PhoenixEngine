@@ -5,7 +5,7 @@
 #define GLM_FORCE_RADIANS
 #endif
 
-#include <GLM/gtc/type_ptr.hpp>
-#include <GLM/gtc/matrix_transform.hpp>
+#include "GLM/gtc/type_ptr.hpp"
+#include "GLM/gtc/matrix_transform.hpp"
 
 #endif

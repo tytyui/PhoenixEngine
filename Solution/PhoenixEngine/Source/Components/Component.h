@@ -9,7 +9,7 @@ namespace Phoenix
 	class BaseComponent
 	{
 	public:
-		__int32 OwnerID;
+		int OwnerID;
 		class ComponentStorage* Storage;
 		class FGameScene* GameScene;
 
@@ -27,24 +27,6 @@ namespace Phoenix
 		static TypeId GetTypeId()
 		{
 			return ClassTypeId<BaseComponent>::GetTypeId<T>();
-		}
-
-		template<typename T>
-		bool GetComponent(T* OutComponentHandle)
-		{
-			OutComponentHandle = static_cast<T*>(&Storage->GetComponentById(OwnerID, T::GetTypeId()));
-			return (OutComponentHandle != nullptr);
-		}
-
-		template<typename T>
-		T* RequireComponent()
-		{
-			BaseComponent* TComponent = &Storage->GetComponentById(OwnerID, T::GetTypeId());
-			if (!TComponent)
-			{
-				assert("Expected component T");
-			}
-			return static_cast<T*>(TComponent);
 		}
 
 		// Each component must update each loop

@@ -2,7 +2,7 @@ workspace "PhoenixEngine"
 	configurations { "Debug", "Release" }
 	platforms{ "x32", "x64" }
 	
-	includedirs { "PhoenixEngine/Source", "Libraries/Include", "Libraries/Include/FBX/" }
+	includedirs { "PhoenixEngine/Source", "Libraries/Include", "Libraries/Include/FBX/", "Libraries/Include/GLM/" }
 	libdirs {
 		"Libraries/Lib/%{cfg.buildcfg}.%{cfg.platform}/**",
 		"/usr/local/lib",		
