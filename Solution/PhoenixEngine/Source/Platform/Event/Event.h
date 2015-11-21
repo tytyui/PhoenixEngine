@@ -14,30 +14,35 @@ namespace Phoenix
 {
 	struct FEventInfo
 	{
+		friend struct FEvent;
+		friend struct FKeyEvent;
+		friend struct FMouseEvent;
+
 		EEvent::TypeT Type;
 		EEvent::SubTypeT SubType;
 		Float32 TimeStamp;
 
-		FEventInfo() = default;
-
 		FEventInfo(
-			const EEvent::TypeT InType, 
+			const EEvent::TypeT InType,
 			const EEvent::SubTypeT InSubType);
 
 		FEventInfo(
 			const EEvent::TypeT InType,
 			const EEvent::SubTypeT InSubType,
 			const Float32 InTimeStamp);
+
+	private:
+		FEventInfo() = default;
 	};
 
 	struct FKeyEvent
 	{
+		friend struct FEvent;
+
 		FEventInfo Info;
 		EKey::Value Key;
 		EInputAction::Value Action;
 		EKeyMods::BitMask Mods;
-
-		FKeyEvent() = default;
 
 		FKeyEvent(
 			const EKeyEventType::Value SubType,
@@ -45,16 +50,19 @@ namespace Phoenix
 			const EInputAction::Value InAction,
 			const EKeyMods::BitMask InMods,
 			const Float32 TimeStamp);
+
+	private:
+		FKeyEvent() = default;
 	};
 
 	struct FMouseEvent
 	{
+		friend struct FEvent;
+
 		FEventInfo Info;
 		EMouseButton::Value Button;
 		EInputAction::Value Action;
 		EKeyMods::BitMask Mods;
-
-		FMouseEvent() = default;
 
 		FMouseEvent(
 			const EMouseEventType::Value SubType,
@@ -62,6 +70,9 @@ namespace Phoenix
 			const EInputAction::Value InAction,
 			const EKeyMods::BitMask InMods,
 			const Float32 TimeStamp);
+	
+	private:
+		FMouseEvent() = default;
 	};
 
 	struct FEvent
