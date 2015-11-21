@@ -702,6 +702,7 @@
 					Source,
 					../Libraries/Include,
 					../Libraries/Include/FBX,
+					../Libraries/Include/GLM,
 				);
 			};
 			name = Release;
@@ -758,6 +759,7 @@
 					Source,
 					../Libraries/Include,
 					../Libraries/Include/FBX,
+					../Libraries/Include/GLM,
 				);
 			};
 			name = Debug;

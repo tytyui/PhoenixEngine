@@ -232,6 +232,7 @@
 					../PhoenixEngine/Source,
 					../Libraries/Include,
 					../Libraries/Include/FBX,
+					../Libraries/Include/GLM,
 				);
 			};
 			name = Debug;
@@ -287,6 +288,7 @@
 					../PhoenixEngine/Source,
 					../Libraries/Include,
 					../Libraries/Include/FBX,
+					../Libraries/Include/GLM,
 				);
 			};
 			name = Release;

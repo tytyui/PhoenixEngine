@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "551B3F13E2B8980098E8F034CDA4C0004FBC5895158A8800"
-               BuildableName = "TestGame.app"
-               BlueprintName = "TestGame"
-               ReferencedContainer = "container:TestGame.xcodeproj">
+               BlueprintIdentifier = "BBC86D52FC0C100093C498242AB2600064B4B1E983F3BC00"
+               BuildableName = "Game"
+               BlueprintName = "Game"
+               ReferencedContainer = "container:Game.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -32,10 +32,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "551B3F13E2B8980098E8F034CDA4C0004FBC5895158A8800"
-            BuildableName = "TestGame.app"
-            BlueprintName = "TestGame"
-            ReferencedContainer = "container:TestGame.xcodeproj">
+            BlueprintIdentifier = "BBC86D52FC0C100093C498242AB2600064B4B1E983F3BC00"
+            BuildableName = "Game"
+            BlueprintName = "Game"
+            ReferencedContainer = "container:Game.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -46,7 +46,7 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
-      buildConfiguration = "Release"
+      buildConfiguration = "Debug"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
@@ -55,10 +55,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "551B3F13E2B8980098E8F034CDA4C0004FBC5895158A8800"
-            BuildableName = "TestGame.app"
-            BlueprintName = "TestGame"
-            ReferencedContainer = "container:TestGame.xcodeproj">
+            BlueprintIdentifier = "BBC86D52FC0C100093C498242AB2600064B4B1E983F3BC00"
+            BuildableName = "Game"
+            BlueprintName = "Game"
+            ReferencedContainer = "container:Game.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -74,10 +74,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "551B3F13E2B8980098E8F034CDA4C0004FBC5895158A8800"
-            BuildableName = "TestGame.app"
-            BlueprintName = "TestGame"
-            ReferencedContainer = "container:TestGame.xcodeproj">
+            BlueprintIdentifier = "BBC86D52FC0C100093C498242AB2600064B4B1E983F3BC00"
+            BuildableName = "Game"
+            BlueprintName = "Game"
+            ReferencedContainer = "container:Game.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

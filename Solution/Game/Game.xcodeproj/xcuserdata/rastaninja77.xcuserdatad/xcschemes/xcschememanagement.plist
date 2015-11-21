@@ -4,7 +4,7 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>TestGame.xcscheme_^#shared#^_</key>
+		<key>Game.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
@@ -12,7 +12,7 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>551B3F13E2B8980098E8F034CDA4C0004FBC5895158A8800</key>
+		<key>BBC86D52FC0C100093C498242AB2600064B4B1E983F3BC00</key>
 		<dict>
 			<key>primary</key>
 			<true/>

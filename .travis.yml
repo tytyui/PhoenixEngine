@@ -12,7 +12,7 @@ branches:
 
 install: brew install glfw3 glew
 
-script: xcodebuild -workspace Solution/PhoenixEngine.xcworkspace -scheme Game -sdk macosx ARCHS=i386 ONLY_ACTIVE_ARCH=NO
+script: xctool -workspace Solution/PhoenixEngine.xcworkspace -scheme Game -sdk macosx ARCHS=i386 ONLY_ACTIVE_ARCH=NO
 
 notifications:
   email:
