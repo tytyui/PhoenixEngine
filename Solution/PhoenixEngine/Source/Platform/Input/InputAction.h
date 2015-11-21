@@ -8,7 +8,7 @@ namespace Phoenix
 {
 	namespace EInputAction
 	{
-		typedef UInt32 Type;
+		typedef UInt8 Type;
 
 		enum Value : Type
 		{

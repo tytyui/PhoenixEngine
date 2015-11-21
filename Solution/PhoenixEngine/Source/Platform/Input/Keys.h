@@ -8,7 +8,8 @@ namespace Phoenix
 {
 	namespace EKey
 	{
-		typedef Int32 Type;
+		typedef Int16 Type;
+
 		enum Value : Type
 		{
 			Unknown = GLFW_KEY_UNKNOWN,

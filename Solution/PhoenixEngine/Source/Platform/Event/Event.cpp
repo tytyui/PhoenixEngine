@@ -32,3 +32,16 @@ FKeyEvent::FKeyEvent(
 	, Mods(InMods)
 {
 }
+
+FMouseEvent::FMouseEvent(
+	const EMouseEventType::Value SubType,
+	const EMouseButton::Value InButton,
+	const EInputAction::Value InAction,
+	const EKeyMods::BitMask InMods,
+	const Float32 TimeStamp)
+	: Info(EEventType::Mouse, SubType, TimeStamp)
+	, Button(InButton)
+	, Action(InAction)
+	, Mods(InMods)
+{
+}

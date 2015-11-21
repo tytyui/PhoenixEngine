@@ -58,6 +58,20 @@ namespace Phoenix
 			Position,
 			Count
 		};
+
+		static const FChar* const ToString(const Type CursorEventType)
+		{
+			static_assert(ECursorEventType::Count == 3, "This table requires updating.");
+			static const TArray<const FChar* const, ECursorEventType::Count> LookUpTable =
+			{
+				"Enter",
+				"Leave",
+				"Position",
+			};
+
+			const FChar* const Result = LookUpTable[CursorEventType];
+			return Result;
+		}
 	}
 
 	namespace EEngineEventType
@@ -70,6 +84,19 @@ namespace Phoenix
 			IsShutDown,
 			Count
 		};
+
+		static const FChar* const ToString(const Type EngineEventType)
+		{
+			static_assert(EEngineEventType::Count == 2, "This table requires updating.");
+			static const TArray<const FChar* const, EEngineEventType::Count> LookUpTable =
+			{
+				"ShutDownNow",
+				"IsShutDown",
+			};
+
+			const FChar* const Result = LookUpTable[EngineEventType];
+			return Result;
+		}
 	}
 
 	namespace EKeyEventType
@@ -81,6 +108,18 @@ namespace Phoenix
 			Default,
 			Count
 		};
+
+		static const FChar* const ToString(const Type KeyEventType)
+		{
+			static_assert(EKeyEventType::Count == 1, "This table requires updating.");
+			static const TArray<const FChar* const, EKeyEventType::Count> LookUpTable =
+			{
+				"Default",
+			};
+
+			const FChar* const Result = LookUpTable[KeyEventType];
+			return Result;
+		}
 	}
 
 	namespace EMouseEventType
@@ -89,10 +128,21 @@ namespace Phoenix
 
 		enum Value : Type
 		{
-			Down,
-			Scroll,
-			Up,
+			Default,
+			Count
 		};
+
+		static const FChar* const ToString(const Type MouseEventType)
+		{
+			static_assert(EMouseEventType::Count == 1, "This table requires updating.");
+			static const TArray<const FChar* const, EMouseEventType::Count> LookUpTable =
+			{
+				"Default",
+			};
+
+			const FChar* const Result = LookUpTable[MouseEventType];
+			return Result;
+		}
 	}
 
 	namespace EWindowEventType
@@ -106,12 +156,34 @@ namespace Phoenix
 			FocusLost,
 			FrameBufferResized,
 			Restored,
+
 			Iconified,
 			PositionChanged,
 			Refreshed,
 			SizeChanged,
 			Count
 		};
+
+		static const FChar* const ToString(const Type WindowEventType)
+		{
+			static_assert(EWindowEventType::Count == 9, "This table requires updating.");
+			static const TArray<const FChar* const, EWindowEventType::Count> LookUpTable =
+			{
+				"CloseAttempt",
+				"FocusGained",
+				"FocusLost",
+				"FrameBufferResized",
+				"Restored",
+
+				"Iconified",
+				"PositionChanged",
+				"Refreshed",
+				"SizeChanged"
+			};
+
+			const FChar* const Result = LookUpTable[WindowEventType];
+			return Result;
+		}
 	}
 }
 

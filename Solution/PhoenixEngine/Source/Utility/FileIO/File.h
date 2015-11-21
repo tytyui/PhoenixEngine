@@ -1,5 +1,5 @@
-#ifndef __SPATTERFILE_H__
-#define __SPATTERFILE_H__
+#ifndef PHOENIX_FILE_H
+#define PHOENIX_FILE_H
 
 #include "Utility/Misc/FileStream.h"
 #include "Utility/Misc/Memory.h"

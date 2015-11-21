@@ -50,24 +50,7 @@ void FEventHandler::CursorPosCallback(const Float32 CursorX, const Float32 Curso
 {
 }
 
-void FEventHandler::KeyCallback(
-	const EKeyEventType::Value SubType,
-	const EKey::Value Key,
-	const EInputAction::Value Action,
-	const EKeyMods::BitMask Mods,
-	const Float32 TimeStamp)
-{
-	FEvent Event;
-	Event.Key = FKeyEvent(SubType, Key, Action, Mods, 0.f);
-
-	AddEvent(Event);
-}
-
 void FEventHandler::UnicodeKeyCallback(const UInt32 Key, const Int32 Mods)
-{
-}
-
-void FEventHandler::MouseButtonCallback(const Int32 Button, const Int32 Action, const Int32 Mods)
 {
 }
 

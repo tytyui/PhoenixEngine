@@ -270,22 +270,18 @@ void FGenericWindow::KeyCallback(GLFWwindow* Instance, Int32 Key, Int32 ScanCode
 {
 	auto& Ref = GetClass(Instance);
 
-	const EKeyEventType::Value KeyEventType = EKeyEventType::Default;
 	const EInputAction::Value InputAction = static_cast<EInputAction::Value>(Action);
-	const EKey::Value InputKey = static_cast<EKey::Value>(Key);
-	const EKeyMods::BitMask InputMods = static_cast<EKeyMods::BitMask>(Mods);
-	const Float32 TimeStamp = 0.f;
 
 	switch (InputAction)
 	{
 		case EInputAction::Release:
-		{
-			Ref.EventHandler->KeyCallback(KeyEventType, InputKey, InputAction, InputMods, TimeStamp);
-			break;
-		}
-
 		case EInputAction::Press:
 		{
+			const EKeyEventType::Value KeyEventType = EKeyEventType::Default;
+			const EKey::Value InputKey = static_cast<EKey::Value>(Key);
+			const EKeyMods::BitMask InputMods = static_cast<EKeyMods::BitMask>(Mods);
+			const Float32 TimeStamp = 0.f;
+
 			Ref.EventHandler->KeyCallback(KeyEventType, InputKey, InputAction, InputMods, TimeStamp);
 			break;
 		}
@@ -315,7 +311,36 @@ void FGenericWindow::UnicodeKeyCallback(GLFWwindow* Instance, UInt32 Key, Int32 
 void FGenericWindow::MouseButtonCallback(GLFWwindow* Instance, Int32 Button, Int32 Action, Int32 Mods)
 {
 	auto& Ref = GetClass(Instance);
-	Ref.EventHandler->MouseButtonCallback(Button, Action, Mods);
+
+	const EMouseEventType::Value MouseEventType = EMouseEventType::Default;
+	const EMouseButton::Value MouseButton = static_cast<EMouseButton::Value>(Button);
+	const EInputAction::Value InputAction = static_cast<EInputAction::Value>(Action);
+	const EKeyMods::BitMask InputMods = static_cast<EKeyMods::BitMask>(Mods);
+	const Float32 TimeStamp = 0.f;
+
+	switch (InputAction)
+	{
+		case EInputAction::Release:
+		case EInputAction::Press:
+		{
+			Ref.EventHandler->MouseButtonCallback(MouseEventType, MouseButton, InputAction, InputMods, TimeStamp);
+			break;
+		}
+
+		case EInputAction::Repeat:
+		{
+			// Note: This is intentionally ignored, because this event is not what you
+			// often want in games, and the cost of sending this otherwise unnecessary 
+			// event to each class that receives input simply isn't worth it.
+			break;
+		}
+
+		default:
+		{
+			F_Assert(false, "Invalid input action or unsupported enum with a value of " << InputAction);
+			break;
+		}
+	}
 }
 
 void FGenericWindow::ScrollCallback(GLFWwindow* Instance, Float64 DeltaX, Float64 DeltaY)

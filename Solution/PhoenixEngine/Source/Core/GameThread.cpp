@@ -198,6 +198,8 @@ void FGameThread::ThreadHandleEvent(const FEvent& Event)
 		}
 	}
 
+	F_LogTrace(Event);
+
 	// #FIXME: Pass it to the main event handler, which 
 	// will then fire off the events as required.
 }

@@ -6,8 +6,10 @@
 #include "Utility/Misc/StaticObject.h"
 #include "Platform/Event/Event.h"
 #include "Platform/Event/EventTypes.h"
+#include "Platform/Input/InputAction.h"
 #include "Platform/Input/KeyMods.h"
 #include "Platform/Input/Keys.h"
+#include "Platform/Input/MouseButton.h"
 
 namespace Phoenix
 {
@@ -45,16 +47,13 @@ namespace Phoenix
 
 		void CursorPosCallback(const Float32 CursorX, const Float32 CursorY);
 
-		void KeyCallback(
-			const EKeyEventType::Value SubType,
-			const EKey::Value Key,
-			const EInputAction::Value Action,
-			const EKeyMods::BitMask Mods,
-			const Float32 TimeStamp);
+		template <class... Arguments>
+		void KeyCallback(Arguments&&... Args);
 
 		void UnicodeKeyCallback(const UInt32 Key, const Int32 Mods);
 
-		void MouseButtonCallback(const Int32 Button, const Int32 Action, const Int32 Mods);
+		template <class... Arguments>
+		void MouseButtonCallback(Arguments&&... Args);
 
 		void ScrollCallback(const Float32 DeltaX, const Float32 DeltaY);
 
@@ -64,6 +63,24 @@ namespace Phoenix
 
 		void AddEvent(const FEvent& Event);
 	};
+
+	template <class... Arguments>
+	void FEventHandler::KeyCallback(Arguments&&... Args)
+	{
+		FEvent Event;
+		Event.Key = FKeyEvent(std::forward<Arguments>(Args)...);
+
+		AddEvent(Event);
+	}
+
+	template <class... Arguments>
+	void FEventHandler::MouseButtonCallback(Arguments&&... Args)
+	{
+		FEvent Event;
+		Event.Mouse = FMouseEvent(std::forward<Arguments>(Args)...);
+
+		AddEvent(Event);
+	}
 }
 
 #endif
